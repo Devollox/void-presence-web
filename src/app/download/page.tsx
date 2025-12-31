@@ -52,12 +52,15 @@ async function getLatestRelease(): Promise<{
 
 		const data = await res.json()
 
-		const assets: ReleaseAsset[] =
-			data.assets?.map((asset: any) => ({
+		const rawAssets = Array.isArray(data.assets) ? data.assets : []
+
+		const assets: ReleaseAsset[] = rawAssets
+			.filter((asset: any) => !asset.name.endsWith('.yml'))
+			.map((asset: any) => ({
 				name: asset.name,
 				size: asset.size / (1024 * 1024),
 				downloadUrl: asset.browser_download_url,
-			})) || []
+			}))
 
 		const release: ReleaseInfo = {
 			version: data.tag_name,
