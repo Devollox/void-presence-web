@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import Logo from '../../public/9qYdasdsadPFSA.png'
+import Logo from '../../public/logo.png'
 import RpcLabel from '../label'
 import styles from './rpc-preview.module.css'
 
@@ -141,3 +141,4 @@ export default function RpcPreview({
 		</section>
 	)
 }
+
