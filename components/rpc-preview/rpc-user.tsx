@@ -51,7 +51,7 @@ const RpcUser = ({
 		<div className={styles.rpc_avatar}>
 			<div className={styles.avatar_placeholder}>
 				<Image
-					src={avatarSrc || '/9qYdasdsadPFSA.png'}
+					src={avatarSrc || '/logo.png'}
 					alt='Avatar'
 					width={48}
 					height={48}
@@ -210,3 +210,4 @@ export default function RpcPreview({
 		</div>
 	)
 }
+
