@@ -41,9 +41,9 @@ async function getLatestRelease(): Promise<{
 	try {
 		const res = await fetch(
 			'https://api.github.com/repos/Devollox/void-presence/releases/latest',
-			{
-				next: { revalidate: 5 },
-			}
+			  {
+			    cache: 'no-store',
+			  }
 		)
 
 		if (!res.ok) {
