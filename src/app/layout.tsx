@@ -44,7 +44,6 @@ export const metadata: Metadata = {
 			},
 		],
 	},
-	manifest: '/favicons/manifest.json',
 	openGraph: {
 		type: 'website',
 		url: siteUrl,
