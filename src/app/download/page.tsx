@@ -55,7 +55,6 @@ async function getLatestRelease(): Promise<{
 		const rawAssets = Array.isArray(data.assets) ? data.assets : []
 
 		const assets: ReleaseAsset[] = rawAssets
-			.filter((asset: any) => !asset.name.endsWith('.yml'))
 			.map((asset: any) => ({
 				name: asset.name,
 				size: asset.size / (1024 * 1024),
