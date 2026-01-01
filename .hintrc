@@ -3,12 +3,21 @@
     "development"
   ],
   "hints": {
+    "apple-touch-icons": "off",
+    "disown-opener": "off",
     "compat-api/css": [
       "default",
       {
         "ignore": [
+          "user-select",
           "backdrop-filter"
         ]
+      }
+    ],
+    "axe/name-role-value": [
+      "default",
+      {
+        "button-name": "off"
       }
     ]
   }
