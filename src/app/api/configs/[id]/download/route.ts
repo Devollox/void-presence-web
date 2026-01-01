@@ -35,6 +35,7 @@ export async function GET(
 		})
 	} catch (err) {
 		console.error('DOWNLOAD ROUTE ERROR', err)
+
 		const message = err instanceof Error ? err.message : JSON.stringify(err)
 		return NextResponse.json(
 			{ error: 'Internal error', message },
