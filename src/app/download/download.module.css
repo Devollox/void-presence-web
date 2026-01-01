@@ -364,6 +364,7 @@
 }
 
 .rpc_card_preview {
+	border-radius: 16px;
 	background-color: black;
 	display: flex;
 	justify-content: center;
@@ -399,3 +400,4 @@
 		max-width: 100%;
 	}
 }
+
