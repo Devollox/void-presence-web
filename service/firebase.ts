@@ -137,8 +137,8 @@ export function onStatsChange(callback: (stats: Stats) => void) {
 	const unsubscribe = onValue(statsRef, snapshot => {
 		const data = snapshot.val()
 		callback({
-			visitors: data?.visitors || { count: 0, lastUpdated: 0 },
-			downloads: data?.downloads || { count: 0, lastUpdated: 0 },
+			visitors: data.visitors,
+			downloads: data.downloads,
 		})
 	})
 	return unsubscribe

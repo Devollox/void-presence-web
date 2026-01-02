@@ -24,7 +24,7 @@ export default function Button() {
 					setDownloadUrl(exeAsset.browser_download_url)
 				}
 			} catch (error) {
-				console.error('Ошибка загрузки релиза:', error)
+				console.error('Error:', error)
 			} finally {
 				setLoading(false)
 			}

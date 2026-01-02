@@ -15,19 +15,13 @@ export default function Stats() {
 		downloads: { count: 0, lastUpdated: 0 },
 	})
 
-	const [prevDownloads, setPrevDownloads] = useState(0)
-	const [prevVisitors, setPrevVisitors] = useState(0)
 	const [loaded, setLoaded] = useState(false)
 
 	useEffect(() => {
 		incrementVisitors()
 
 		const unsubscribe = onStatsChange(next => {
-			setStats(prev => {
-				setPrevDownloads(prev.downloads.count)
-				setPrevVisitors(prev.visitors.count)
-				return next
-			})
+			setStats(next)
 			setLoaded(true)
 		})
 
@@ -38,11 +32,7 @@ export default function Stats() {
 		<div className={styles.downloads_container}>
 			<strong>
 				{loaded ? (
-					<CountUp
-						from={prevDownloads}
-						to={stats.downloads.count}
-						duration={2.5}
-					/>
+					<CountUp to={stats.downloads.count} duration={2.5} />
 				) : (
 					<span>0</span>
 				)}
@@ -51,11 +41,7 @@ export default function Stats() {
 
 			<strong>
 				{loaded ? (
-					<CountUp
-						from={prevVisitors}
-						to={stats.visitors.count}
-						duration={2.5}
-					/>
+					<CountUp to={stats.visitors.count} duration={2.5} />
 				) : (
 					<span>0</span>
 				)}
