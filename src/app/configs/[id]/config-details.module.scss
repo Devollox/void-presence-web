@@ -33,13 +33,20 @@
 	height: 360px;
 }
 
+@media (min-width: 830px) {
+	.rpc_card_preview {
+		> div {
+			min-width: 340px;
+		}
+	}
+}
+
 @media (max-width: 830px) {
 	.addon_splitview_container {
 		grid-template-columns: 1fr;
 		padding: 24px 20px;
-		min-height: 950px;
+		min-height: 1080px;
 	}
-
 	.addon_splitview_container > div {
 		height: 380px;
 	}
