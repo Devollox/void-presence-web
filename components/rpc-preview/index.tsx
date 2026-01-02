@@ -69,7 +69,7 @@ export default function RpcPreview({
 									alt='Avatar'
 									width={48}
 									height={48}
-									priority
+									unoptimized
 								/>
 							</div>
 							<div className={styles.status_indicator} />
@@ -90,7 +90,7 @@ export default function RpcPreview({
 									src={currentImage.largeImage}
 									alt='Activity art'
 									className={styles.large_art}
-									priority
+									unoptimized
 								/>
 								<div className={styles.art_overlay} />
 							</div>
