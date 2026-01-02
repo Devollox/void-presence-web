@@ -15,8 +15,6 @@ export default function Stats() {
 		downloads: { count: 0, lastUpdated: 0 },
 	})
 
-	const [prevDownloads, setPrevDownloads] = useState(0)
-	const [prevVisitors, setPrevVisitors] = useState(0)
 	const [loaded, setLoaded] = useState(false)
 
 	useEffect(() => {
@@ -24,8 +22,8 @@ export default function Stats() {
 
 		const unsubscribe = onStatsChange(next => {
 			setStats(prev => {
-				setPrevDownloads(prev.downloads.count || 0)
-				setPrevVisitors(prev.visitors.count || 0)
+				prev.downloads.count || 0
+				prev.visitors.count || 0
 				return next
 			})
 			setLoaded(true)
@@ -40,7 +38,6 @@ export default function Stats() {
 				{loaded ? (
 					<CountUp
 						key={`downloads-${stats.downloads.count}`}
-						from={prevDownloads}
 						to={stats.downloads.count}
 						duration={2.5}
 					/>
@@ -54,7 +51,6 @@ export default function Stats() {
 				{loaded ? (
 					<CountUp
 						key={`visitors-${stats.visitors.count}`}
-						from={prevVisitors}
 						to={stats.visitors.count}
 						duration={2.5}
 					/>
