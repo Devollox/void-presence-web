@@ -41,9 +41,9 @@ async function getLatestRelease(): Promise<{
 	try {
 		const res = await fetch(
 			'https://api.github.com/repos/Devollox/void-presence/releases/latest',
-			  {
-			    cache: 'no-store',
-			  }
+			{
+				cache: 'no-store',
+			}
 		)
 
 		if (!res.ok) {
@@ -54,12 +54,11 @@ async function getLatestRelease(): Promise<{
 
 		const rawAssets = Array.isArray(data.assets) ? data.assets : []
 
-		const assets: ReleaseAsset[] = rawAssets
-			.map((asset: any) => ({
-				name: asset.name,
-				size: asset.size / (1024 * 1024),
-				downloadUrl: asset.browser_download_url,
-			}))
+		const assets: ReleaseAsset[] = rawAssets.map((asset: any) => ({
+			name: asset.name,
+			size: asset.size / (1024 * 1024),
+			downloadUrl: asset.browser_download_url,
+		}))
 
 		const release: ReleaseInfo = {
 			version: data.tag_name,
