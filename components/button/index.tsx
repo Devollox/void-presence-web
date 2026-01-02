@@ -41,7 +41,6 @@ export default function Button() {
 		<div className={styles.btn_container}>
 			<a
 				href={downloadUrl}
-				target='_blank'
 				rel='noreferrer'
 				onClick={handleDownload}
 				className={loading ? styles.disabled : ''}
