@@ -34,12 +34,12 @@ export const metadata: Metadata = {
 	manifest: '/favicons/manifest.json',
 	icons: {
 		icon: [
-			{ url: '/favicons/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
 			{
 				url: '/favicons/web-app-manifest-192x192.png',
 				sizes: '192x192',
 				type: 'image/png',
 			},
+			{ url: '/favicons/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
 		],
 		apple: [
 			{
