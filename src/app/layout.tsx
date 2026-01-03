@@ -31,15 +31,20 @@ export const metadata: Metadata = {
 		'rich presence manager',
 		'discord presence app',
 	],
+	manifest: '/favicons/manifest.json',
 	icons: {
 		icon: [
 			{ url: '/favicons/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
-			{ url: '/favicons/icon-192.png', sizes: '192x192', type: 'image/png' },
+			{
+				url: '/favicons/web-app-manifest-192x192.png',
+				sizes: '192x192',
+				type: 'image/png',
+			},
 		],
 		apple: [
 			{
-				url: '/favicons/apple-touch-icon.png',
-				sizes: '180x180',
+				url: '/favicons/web-app-manifest-192x192.png',
+				sizes: '192x192',
 				type: 'image/png',
 			},
 		],
