@@ -11,10 +11,6 @@
 			"src": "/favicons/web-app-manifest-192x192.png"
 		},
 		{
-			"sizes": "150x150",
-			"src": "/favicons/web-app-manifest-150x150.png"
-		},
-		{
 			"sizes": "32x32",
 			"src": "/favicons/web-app-manifest-32x32.png"
 		},
