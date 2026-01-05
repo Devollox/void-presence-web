@@ -1,11 +1,24 @@
 import Page from '@components/page'
 import PageHeader from '@components/page-header'
+import { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
 import { getConfigsByAuthor, type Config } from '../../../service/firebase'
 import { authOptions } from '../api/auth/[...nextauth]/route'
 import { ProfileContainerClient } from './profile-container-client'
 import styles from './profile-details.module.scss'
 import { SaveUserOnMount } from './save-user-on-mount'
+
+export const metadata: Metadata = {
+	title: 'Your profile',
+	description:
+		'View your Void Presence profile, session details, and all configs linked to your Author ID.',
+	openGraph: {
+		title: 'Void Presence – Profile',
+		description:
+			'Manage your Discord Rich Presence configs, view your Author ID, and access your saved profiles.',
+		url: '/profile',
+	},
+}
 
 export default async function ProfilePage() {
 	const session = await getServerSession(authOptions)
