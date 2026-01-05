@@ -34,7 +34,7 @@ interface RpcPreviewProps {
 	currentImage?: ImageCycle
 	currentButtons?: ButtonPair | null
 	currentIndex?: number
-	config?: ConfigData
+	config?: Partial<ConfigData>
 	avatarSrc?: string
 }
 
@@ -88,40 +88,42 @@ const RpcActivityArt = ({
 const RpcActivityDetails = ({
 	currentCycle = { details: 'No details', state: 'No state' },
 	currentIndex = 0,
-	config = {
-		cycles: [],
-		imageCycles: [],
-		buttonPairs: [],
-	},
+	config,
 }: {
 	currentCycle?: Cycle
 	currentIndex?: number
-	config?: ConfigData
-}) => (
-	<div className={styles.activity_details}>
-		<div className={styles.details_title}>{currentCycle.details}</div>
-		<div className={styles.details_state}>{currentCycle.state}</div>
-		<div className={styles.progress_bar}>
-			<div className={styles.progress_bg}>
-				<div
-					className={styles.progress_fill}
-					style={{
-						width:
-							config.cycles.length > 0
-								? `${((currentIndex + 1) / config.cycles.length) * 100}%`
-								: '100%',
-					}}
-				/>
-			</div>
-			<div className={styles.progress_time}>
-				{config.cycles.length > 0
-					? Math.round(((currentIndex + 1) / config.cycles.length) * 100)
-					: 100}
-				%
+	config?: Partial<ConfigData>
+}) => {
+	const cycles = config?.cycles ?? []
+	const images = config?.imageCycles ?? []
+	const buttonPairs = config?.buttonPairs ?? []
+
+	const maxLen = Math.max(
+		cycles.length || 1,
+		images.length || 1,
+		buttonPairs.length || 1
+	)
+
+	const clampedIndex = (((currentIndex ?? 0) % maxLen) + maxLen) % maxLen
+	const progress =
+		maxLen > 0 ? Math.round(((clampedIndex + 1) / maxLen) * 100) : 100
+
+	return (
+		<div className={styles.activity_details}>
+			<div className={styles.details_title}>{currentCycle.details}</div>
+			<div className={styles.details_state}>{currentCycle.state}</div>
+			<div className={styles.progress_bar}>
+				<div className={styles.progress_bg}>
+					<div
+						className={styles.progress_fill}
+						style={{ width: `${progress}%` }}
+					/>
+				</div>
+				<div className={styles.progress_time}>{progress}%</div>
 			</div>
 		</div>
-	</div>
-)
+	)
+}
 
 const RpcButton = ({ label, url }: { label: string; url: string }) => (
 	<a
@@ -157,7 +159,7 @@ const RpcActivity = ({
 	currentCycle?: Cycle
 	currentImage?: ImageCycle
 	currentIndex?: number
-	config?: ConfigData
+	config?: Partial<ConfigData>
 }) => (
 	<div className={styles.rpc_activity}>
 		<div className={styles.activity_type}>{activityType}</div>
@@ -210,4 +212,3 @@ export default function RpcPreview({
 		</div>
 	)
 }
-
