@@ -3,7 +3,7 @@
 import RpcPreview from '@components/rpc-preview/rpc-user'
 import type { Session } from 'next-auth'
 import { signOut } from 'next-auth/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Config } from '../../../service/firebase'
 import styles from './profile-details.module.scss'
 
@@ -13,8 +13,24 @@ type Props = {
 	lastConfig: Config | null
 }
 
+function getPreviewTick() {
+	const now = Date.now()
+	return Math.floor(now / 3000)
+}
+
 export function ProfileDetailsClient({ user, lastConfig }: Props) {
 	const [copied, setCopied] = useState(false)
+	const [previewTick, setPreviewTick] = useState(0)
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setPreviewTick(getPreviewTick())
+		}, 3000)
+
+		return () => {
+			clearInterval(interval)
+		}
+	}, [])
 
 	const configData = lastConfig?.configData
 	const cycles = configData?.cycles?.length
@@ -27,9 +43,13 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 		? configData.buttonPairs
 		: [{ label1: '', url1: '' }]
 
-	const firstCycle = cycles[0]
-	const firstImage = images[0]
-	const firstButtons = buttonsList[0]
+	const cycleIndex = previewTick % cycles.length
+	const imageIndex = previewTick % images.length
+	const buttonIndex = previewTick % buttonsList.length
+
+	const firstCycle = cycles[cycleIndex]
+	const firstImage = images[imageIndex]
+	const firstButtons = buttonsList[buttonIndex]
 
 	const handleCopyUserId = async () => {
 		if (!user?.id) return
@@ -85,7 +105,7 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 										currentCycle={firstCycle}
 										currentImage={firstImage}
 										currentButtons={firstButtons}
-										currentIndex={0}
+										currentIndex={cycleIndex}
 										config={configData}
 									/>
 								) : (
