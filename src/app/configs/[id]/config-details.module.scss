@@ -13,17 +13,6 @@
 	backdrop-filter: blur(24px);
 }
 
-.addon_backdrop {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 400px;
-	object-fit: cover;
-	opacity: 0.25;
-	filter: blur(6px);
-	transform: scale(1.05);
-}
-
 .addon_splitview_container {
 	position: relative;
 	display: grid;
@@ -624,4 +613,26 @@
 	height: 36px;
 	border-radius: 0 0 18px 18px;
 	border: 1px solid hsla(255, 255%, 255%, 0.06);
+}
+.addon_backdrop {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 400px;
+	object-fit: cover;
+	opacity: 0;
+	filter: blur(6px);
+	transform: scale(1.05);
+	animation: backdrop-fade-in 0.45s ease-out forwards;
+}
+
+@keyframes backdrop-fade-in {
+	from {
+		opacity: 0;
+		transform: scale(1.03);
+	}
+	to {
+		opacity: 0.25;
+		transform: scale(1.05);
+	}
 }

@@ -101,6 +101,8 @@ function CustomRpcPreview({
 		<div className={styles.rpc_card_preview}>
 			<div className={styles.rpc_card_preview_inner}>
 				<RpcPreview
+					discriminator={`#${config.authorId!.slice(0, 4)}` || '#0001'}
+					username={config.author || 'User'}
 					activityType={config.title}
 					currentCycle={cycle}
 					currentImage={image}
@@ -258,13 +260,13 @@ export function ConfigsClient({
 							<p>No configs match your search. Try different keywords.</p>
 						</div>
 					) : (
-						<div className={styles.theme_listings}>
+						<div className={styles.cards_grid}>
 							{sortedConfigs.map((config, index) => {
 								const hasColor = Boolean(colors[config.id])
 								const highlight = hasColor ? colors[config.id] : '#5b5b5b'
-								const baseBg = 'hsla(0, 0%, 10%, 0.96)'
-								const borderColor = `${highlight}66`
 								const baseIndex = mounted ? previewTick + index : 0
+								const borderColor = `${highlight}66`
+								const baseBg = 'rgba(26, 26, 26, 0.96)'
 
 								return (
 									<div
@@ -280,11 +282,23 @@ export function ConfigsClient({
 									>
 										<div className={styles.card}>
 											<div className={styles.card_header}>
-												<h3 className={styles.card_title}>{config.title}</h3>
-												<div className={styles.card_author}>
-													Author: <span>{config.author}</span>
+												<div className={styles.card_title}>
+													<h3 className={styles.card_title}>{config.title}</h3>
+													<div className={styles.card_author}>
+														Author: <span>{config.author}</span>
+													</div>
+												</div>
+												<div className={styles.download_tag}>
+													<Download
+														size={14}
+														className={styles.download_icon}
+													/>
+													<span className={styles.download_text}>
+														{config.downloads.toLocaleString()}
+													</span>
 												</div>
 											</div>
+
 											<CustomRpcPreview
 												config={config}
 												previewIndex={baseIndex}
@@ -297,26 +311,18 @@ export function ConfigsClient({
 													)
 												}
 											/>
+
 											<div className={styles.card_actions}>
-												<div className={styles.download_tag}>
-													<Download
-														size={14}
-														className={styles.package_stat_icon}
-													/>
-													<span className={styles.download_tag_text}>
-														{config.downloads.toLocaleString()}
-													</span>
-												</div>
-												<div className={styles.action_buttons}>
+												<div className={styles.card_buttons}>
 													<a
-														className={styles.download_btn_primary}
+														className={styles.btn_primary}
 														href={`/api/configs/${config.id}/download`}
 													>
 														Download
 														<span className={styles.download_size}> JSON</span>
 													</a>
 													<a
-														className={styles.copy_btn}
+														className={styles.btn_secondary}
 														href={`/configs/${config.id}`}
 													>
 														Show details

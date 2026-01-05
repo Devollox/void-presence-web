@@ -105,6 +105,7 @@ export function ConfigDetailsClient({
 		<section id='addon-details' className={styles.page_section}>
 			<div className={styles.theme_view_panel}>
 				<img
+					key={firstImage.largeImage || '/images/config-backdrop.png'}
 					src={firstImage.largeImage || '/images/config-backdrop.png'}
 					className={styles.addon_backdrop}
 					alt=''
@@ -147,6 +148,8 @@ export function ConfigDetailsClient({
 						<div className={styles.addon_details_middle_column}>
 							<div className={styles.rpc_card_preview}>
 								<RpcPreview
+									discriminator={`#${config.authorId!.slice(0, 4)}` || '#0001'}
+									username={config.author || 'User'}
 									activityType={config.title}
 									currentCycle={firstCycle}
 									currentImage={firstImage}
