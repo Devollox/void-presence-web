@@ -1,0 +1,376 @@
+'use client'
+
+import { Download, Search, Trash, X } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import RpcPreview from '../../../components/rpc-preview/rpc-user'
+import type { Config } from '../../../service/firebase'
+import { deleteConfig, onConfigsChange } from '../../../service/firebase'
+import styles from './profile-configs.module.css'
+
+type Props = {
+	configs: Config[]
+	userId: string
+}
+
+type CustomRpcPreviewProps = {
+	config: Config
+	previewIndex: number
+	onColorReady?: (color: string) => void
+	hasColor: boolean
+	name?: string
+	id: string
+}
+
+function CustomRpcPreview({
+	config,
+	previewIndex,
+	onColorReady,
+	hasColor,
+	id,
+	name,
+}: CustomRpcPreviewProps) {
+	const configData: any = config.configData
+	const cycles = configData.cycles ?? []
+	const images = configData.imageCycles ?? []
+	const buttonPairs = configData.buttonPairs ?? []
+
+	const cycleIndex = previewIndex % (cycles.length || 1)
+	const imageIndex = previewIndex % (images.length || 1)
+	const buttonIndex = previewIndex % (buttonPairs.length || 1)
+
+	const cycle = cycles[cycleIndex] || { details: '', state: '' }
+	const image = images[imageIndex] || { largeImage: '' }
+	const buttons = buttonPairs[buttonIndex] ?? {
+		label1: '',
+		url1: '',
+	}
+
+	useEffect(() => {
+		if (!image.largeImage || !onColorReady || hasColor) return
+		if (image.largeImage.startsWith('https://i.pinimg.com')) return
+
+		let cancelled = false
+		const img = new Image()
+		img.crossOrigin = 'anonymous'
+		img.src = image.largeImage
+
+		img.onload = () => {
+			if (cancelled) return
+			try {
+				const canvas = document.createElement('canvas')
+				const ctx = canvas.getContext('2d')
+				if (!ctx) return
+
+				const w = 24
+				const h = 24
+				canvas.width = w
+				canvas.height = h
+				ctx.drawImage(img, 0, 0, w, h)
+
+				const data = ctx.getImageData(0, 0, w, h).data
+				let r = 0
+				let g = 0
+				let b = 0
+				let count = 0
+
+				for (let i = 0; i < data.length; i += 4) {
+					const a = data[i + 3]
+					if (a < 128) continue
+					r += data[i]
+					g += data[i + 1]
+					b += data[i + 2]
+					count++
+				}
+
+				if (!count) return
+
+				r = Math.round(r / count)
+				g = Math.round(g / count)
+				b = Math.round(b / count)
+
+				const toHex = (n: number) => n.toString(16).padStart(2, '0')
+				const hex = `#${toHex(r)}${toHex(g)}${toHex(b)}`
+				onColorReady(hex)
+			} catch {}
+		}
+
+		img.onerror = () => {}
+
+		return () => {
+			cancelled = true
+		}
+	}, [image.largeImage, onColorReady, hasColor])
+
+	return (
+		<div className={styles.rpc_card_preview}>
+			<div className={styles.rpc_card_preview_inner}>
+				<RpcPreview
+					discriminator={`#${id.slice(0, 4)}` || '#0001'}
+					username={config.author || 'User'}
+					activityType={config.title}
+					currentCycle={cycle}
+					currentImage={image}
+					currentButtons={buttons}
+					currentIndex={cycleIndex}
+					config={configData}
+				/>
+			</div>
+		</div>
+	)
+}
+
+function SkeletonCard() {
+	return (
+		<div className={styles.skeleton_card_wrap}>
+			<div className={styles.skeleton_card}>
+				<div className={styles.skeleton_card_header}>
+					<div className={styles.skeleton_title}></div>
+					<div className={styles.skeleton_author}></div>
+				</div>
+				<div className={styles.skeleton_rpc_preview}></div>
+				<div className={styles.skeleton_card_actions}>
+					<div className={styles.skeleton_download_tag}></div>
+					<div className={styles.skeleton_action_buttons}>
+						<div className={styles.skeleton_btn_primary}></div>
+						<div className={styles.skeleton_btn_secondary}></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	)
+}
+
+function getPreviewTick() {
+	const now = Date.now()
+	return Math.floor(now / 3000)
+}
+
+function filterConfigs(configs: Config[], searchTerm: string) {
+	const term = searchTerm.toLowerCase()
+	if (!term) return configs
+	return configs.filter(
+		config =>
+			config.title.toLowerCase().includes(term) ||
+			config.author.toLowerCase().includes(term) ||
+			config.description.toLowerCase().includes(term)
+	)
+}
+
+function sortConfigs(configs: Config[]) {
+	return [...configs].sort((a, b) => {
+		const aDownloads =
+			typeof a.downloads === 'number'
+				? a.downloads
+				: parseInt(String(a.downloads ?? '0')) || 0
+
+		const bDownloads =
+			typeof b.downloads === 'number'
+				? b.downloads
+				: parseInt(String(b.downloads ?? '0')) || 0
+
+		return bDownloads - aDownloads
+	})
+}
+
+export function ProfileConfigsClient({ configs, userId }: Props) {
+	const [searchTerm, setSearchTerm] = useState('')
+	const [previewTick, setPreviewTick] = useState(0)
+	const [mounted, setMounted] = useState(false)
+	const [colors, setColors] = useState<Record<string, string>>({})
+	const [loading, setLoading] = useState(configs.length === 0)
+	const [liveConfigs, setLiveConfigs] = useState<Config[]>(configs)
+	const [deleting, setDeleting] = useState<string | null>(null)
+
+	useEffect(() => {
+		setMounted(true)
+	}, [])
+
+	useEffect(() => {
+		const unsubscribe = onConfigsChange(
+			next => {
+				setLiveConfigs(next)
+				setLoading(false)
+			},
+			undefined,
+			userId
+		)
+
+		const interval = setInterval(() => {
+			setPreviewTick(getPreviewTick())
+		}, 3000)
+
+		return () => {
+			unsubscribe()
+			clearInterval(interval)
+		}
+	}, [userId])
+
+	const filteredConfigs = useMemo(
+		() => filterConfigs(liveConfigs, searchTerm),
+		[liveConfigs, searchTerm]
+	)
+	const sortedConfigs = useMemo(
+		() => sortConfigs(filteredConfigs),
+		[filteredConfigs]
+	)
+
+	const showSkeleton = loading && !sortedConfigs.length
+
+	return (
+		<section className={styles.profile_section}>
+			<div className={styles.profile_configs_layout}>
+				<div className={styles.profile_header_row}>
+					<div className={styles.profile_header_title}>Your configs</div>
+					<div className={styles.profile_header_badge}>
+						{sortedConfigs.length} total
+					</div>
+				</div>
+
+				<div className={styles.profile_search_row}>
+					<form
+						className={styles.profile_search_container}
+						onSubmit={e => e.preventDefault()}
+					>
+						<Search className={styles.profile_search_icon} />
+						<input
+							className={styles.profile_search_input}
+							type='text'
+							placeholder='Search by title, author or description...'
+							name='q'
+							value={searchTerm}
+							onChange={e => setSearchTerm(e.target.value)}
+						/>
+						{searchTerm && (
+							<button
+								type='button'
+								className={styles.profile_search_clear}
+								onClick={() => setSearchTerm('')}
+							>
+								<X size={16} />
+							</button>
+						)}
+					</form>
+				</div>
+
+				<div className={styles.profile_stats_row}>
+					<span>{sortedConfigs.length} configs found</span>
+				</div>
+
+				{showSkeleton ? (
+					<div className={styles.profile_cards_grid}>
+						<SkeletonCard />
+						<SkeletonCard />
+						<SkeletonCard />
+						<SkeletonCard />
+						<SkeletonCard />
+						<SkeletonCard />
+					</div>
+				) : sortedConfigs.length === 0 ? (
+					<div className={styles.profile_empty_state}>
+						<p>No configs match your search. Try different keywords.</p>
+					</div>
+				) : (
+					<div className={styles.profile_cards_grid}>
+						{sortedConfigs.map((config, index) => {
+							const hasColor = Boolean(colors[config.id])
+							const highlight = hasColor ? colors[config.id] : '#5b5b5b'
+							const baseIndex = mounted ? previewTick + index : 0
+							const borderColor = `${highlight}66`
+							const baseBg = 'rgba(26, 26, 26, 0.96)'
+
+							return (
+								<div
+									key={config.id}
+									className={`${styles.profile_card_wrap} ${
+										hasColor ? styles.profile_card_wrap_hasColor : ''
+									}`}
+									style={{
+										background: baseBg,
+										borderColor,
+										['--card-highlight' as any]: highlight,
+									}}
+								>
+									<div className={styles.profile_card}>
+										<div className={styles.profile_card_header}>
+											<div className={styles.profile_card_title}>
+												<h3 className={styles.profile_card_title}>
+													{config.title}
+												</h3>
+												<div className={styles.card_author}>
+													Author: <span>{config.author}</span>
+												</div>
+											</div>
+											<div>
+												<div className={styles.profile_download_tag}>
+													<Download
+														size={14}
+														className={styles.profile_download_icon}
+													/>
+													<span className={styles.download_text}>
+														{config.downloads.toLocaleString()}
+													</span>
+												</div>
+												<button
+													type='button'
+													className={`${styles.profile_download_tag} ${styles.profile_delete_tag}`}
+													style={{ marginLeft: '5px', cursor: 'pointer' }}
+													disabled={deleting === config.id}
+													onClick={async () => {
+														setDeleting(config.id)
+														try {
+															await deleteConfig(config.id)
+															setLiveConfigs(prev =>
+																prev.filter(c => c.id !== config.id)
+															)
+														} finally {
+															setDeleting(null)
+														}
+													}}
+												>
+													<Trash size={14} />
+												</button>
+											</div>
+										</div>
+
+										<CustomRpcPreview
+											config={config}
+											previewIndex={baseIndex}
+											hasColor={hasColor}
+											onColorReady={hex =>
+												setColors(prev =>
+													prev[config.id] ? prev : { ...prev, [config.id]: hex }
+												)
+											}
+											id={userId}
+										/>
+
+										<div className={styles.profile_card_actions}>
+											<div className={styles.profile_card_buttons}>
+												<a
+													className={styles.profile_btn_primary}
+													href={`/api/configs/${config.id}/download`}
+												>
+													Download
+													<span className={styles.profile_download_size}>
+														{' '}
+														JSON
+													</span>
+												</a>
+												<a
+													className={styles.profile_btn_secondary}
+													href={`/configs/${config.id}`}
+												>
+													Show details
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							)
+						})}
+					</div>
+				)}
+			</div>
+		</section>
+	)
+}
