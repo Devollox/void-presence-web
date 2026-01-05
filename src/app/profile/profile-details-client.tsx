@@ -13,9 +13,8 @@ type Props = {
 	lastConfig: Config | null
 }
 
-function getPreviewTick() {
-	const now = Date.now()
-	return Math.floor(now / 3000)
+function getNextTick(prev: number) {
+	return prev + 1
 }
 
 export function ProfileDetailsClient({ user, lastConfig }: Props) {
@@ -24,7 +23,7 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setPreviewTick(getPreviewTick())
+			setPreviewTick(prev => getNextTick(prev))
 		}, 3000)
 
 		return () => {
@@ -32,7 +31,8 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 		}
 	}, [])
 
-	const configData = lastConfig?.configData
+	const configData: any = lastConfig?.configData
+
 	const cycles = configData?.cycles?.length
 		? configData.cycles
 		: [{ details: '', state: '' }]
@@ -43,9 +43,17 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 		? configData.buttonPairs
 		: [{ label1: '', url1: '' }]
 
-	const cycleIndex = previewTick % cycles.length
-	const imageIndex = previewTick % images.length
-	const buttonIndex = previewTick % buttonsList.length
+	const maxLen = Math.max(
+		cycles.length || 1,
+		images.length || 1,
+		buttonsList.length || 1
+	)
+
+	const localIndex = maxLen ? previewTick % maxLen : 0
+
+	const cycleIndex = localIndex % cycles.length
+	const imageIndex = localIndex % images.length
+	const buttonIndex = localIndex % buttonsList.length
 
 	const firstCycle = cycles[cycleIndex]
 	const firstImage = images[imageIndex]
@@ -57,7 +65,7 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 			await navigator.clipboard.writeText(String(user.id))
 			setCopied(true)
 			setTimeout(() => setCopied(false), 1500)
-		} catch (e) {}
+		} catch {}
 	}
 
 	return (
@@ -105,7 +113,7 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 										currentCycle={firstCycle}
 										currentImage={firstImage}
 										currentButtons={firstButtons}
-										currentIndex={cycleIndex}
+										currentIndex={localIndex}
 										config={configData}
 									/>
 								) : (

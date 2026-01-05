@@ -13,11 +13,6 @@ type Props = {
 	params: Promise<Params> | Params
 }
 
-function getPreviewTick() {
-	const now = Date.now()
-	return Math.floor(now / 3000)
-}
-
 export async function generateMetadata(props: Props): Promise<Metadata> {
 	const { id } = await props.params
 	const config: Config | null = await getConfigById(id)
@@ -51,7 +46,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function ConfigDetailsPage(props: Props) {
 	const { id } = await props.params
 	const config: Config | null = await getConfigById(id)
-	const previewTick = getPreviewTick()
+	const previewTick = 0
 
 	if (!config) {
 		return (

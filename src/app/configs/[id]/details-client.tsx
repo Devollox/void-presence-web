@@ -13,9 +13,8 @@ type Props = {
 	initialPreviewTick: number
 }
 
-function getPreviewTick() {
-	const now = Date.now()
-	return Math.floor(now / 3000)
+function getNextTick(prev: number) {
+	return prev + 1
 }
 
 export function ConfigDetailsClient({
@@ -33,7 +32,7 @@ export function ConfigDetailsClient({
 		})
 
 		const interval = setInterval(() => {
-			setPreviewTick(getPreviewTick())
+			setPreviewTick(prev => getNextTick(prev))
 		}, 3000)
 
 		return () => {
@@ -81,7 +80,7 @@ export function ConfigDetailsClient({
 		)
 	}
 
-	const configData = config.configData
+	const configData: any = config.configData
 
 	const cycles = configData.cycles?.length
 		? configData.cycles
@@ -93,9 +92,17 @@ export function ConfigDetailsClient({
 		? configData.buttonPairs
 		: [{ label1: '', url1: '' }]
 
-	const cycleIndex = previewTick % cycles.length
-	const imageIndex = previewTick % images.length
-	const buttonIndex = previewTick % buttonsList.length
+	const maxLen = Math.max(
+		cycles.length || 1,
+		images.length || 1,
+		buttonsList.length || 1
+	)
+
+	const localIndex = previewTick % maxLen
+
+	const cycleIndex = localIndex % cycles.length
+	const imageIndex = localIndex % images.length
+	const buttonIndex = localIndex % buttonsList.length
 
 	const firstCycle = cycles[cycleIndex]
 	const firstImage = images[imageIndex]
@@ -154,13 +161,13 @@ export function ConfigDetailsClient({
 									currentCycle={firstCycle}
 									currentImage={firstImage}
 									currentButtons={firstButtons}
-									currentIndex={cycleIndex}
+									currentIndex={localIndex}
 									config={configData}
 								/>
 							</div>
 						</div>
 
-						<div className={`${styles.addon_details_middle_column}`}>
+						<div className={styles.addon_details_middle_column}>
 							<div className={styles.actions_panel}>
 								<h2 className={styles.actions_title}>Config actions</h2>
 								<p className={styles.actions_subtitle}>

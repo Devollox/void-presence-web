@@ -27,16 +27,23 @@ function CustomRpcPreview({
 	onColorReady,
 	hasColor,
 	id,
-	name,
 }: CustomRpcPreviewProps) {
 	const configData: any = config.configData
 	const cycles = configData.cycles ?? []
 	const images = configData.imageCycles ?? []
 	const buttonPairs = configData.buttonPairs ?? []
 
-	const cycleIndex = previewIndex % (cycles.length || 1)
-	const imageIndex = previewIndex % (images.length || 1)
-	const buttonIndex = previewIndex % (buttonPairs.length || 1)
+	const maxLen = Math.max(
+		cycles.length || 1,
+		images.length || 1,
+		buttonPairs.length || 1
+	)
+
+	const localIndex = maxLen ? previewIndex % maxLen : 0
+
+	const cycleIndex = localIndex % (cycles.length || 1)
+	const imageIndex = localIndex % (images.length || 1)
+	const buttonIndex = localIndex % (buttonPairs.length || 1)
 
 	const cycle = cycles[cycleIndex] || { details: '', state: '' }
 	const image = images[imageIndex] || { largeImage: '' }
@@ -111,7 +118,7 @@ function CustomRpcPreview({
 					currentCycle={cycle}
 					currentImage={image}
 					currentButtons={buttons}
-					currentIndex={cycleIndex}
+					currentIndex={localIndex}
 					config={configData}
 				/>
 			</div>
@@ -140,9 +147,8 @@ function SkeletonCard() {
 	)
 }
 
-function getPreviewTick() {
-	const now = Date.now()
-	return Math.floor(now / 3000)
+function getNextTick(prev: number) {
+	return prev + 1
 }
 
 function filterConfigs(configs: Config[], searchTerm: string) {
@@ -196,7 +202,7 @@ export function ProfileConfigsClient({ configs, userId }: Props) {
 		)
 
 		const interval = setInterval(() => {
-			setPreviewTick(getPreviewTick())
+			setPreviewTick(prev => getNextTick(prev))
 		}, 3000)
 
 		return () => {
