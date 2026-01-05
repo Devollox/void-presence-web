@@ -36,7 +36,7 @@ function CustomRpcPreview({
 		buttonPairs.length || 1
 	)
 
-	const localIndex = previewIndex % maxLen
+	const localIndex = maxLen ? previewIndex % maxLen : 0
 
 	const cycleIndex = localIndex % (cycles.length || 1)
 	const imageIndex = localIndex % (images.length || 1)
@@ -109,7 +109,6 @@ function CustomRpcPreview({
 		<div className={styles.rpc_card_preview}>
 			<div className={styles.rpc_card_preview_inner}>
 				<RpcPreview
-					discriminator={`#${config.authorId!.slice(0, 4)}` || '#0001'}
 					username={config.author || 'User'}
 					activityType={config.title}
 					currentCycle={cycle}
@@ -184,7 +183,7 @@ export function ConfigsClient({
 	const [previewTick, setPreviewTick] = useState(0)
 	const [mounted, setMounted] = useState(false)
 	const [colors, setColors] = useState<Record<string, string>>({})
-	const [loading, setLoading] = useState(initialConfigs.length === 0)
+	const [loading, setLoading] = useState(!initialConfigs.length)
 
 	useEffect(() => {
 		setMounted(true)
