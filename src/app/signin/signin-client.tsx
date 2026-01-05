@@ -1,5 +1,6 @@
 'use client'
 
+import Footer from '@components/footer'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import Page from '../../../components/page'
@@ -104,6 +105,7 @@ export function SignInPageClient() {
 					</div>
 				</div>
 			</main>
+			<Footer />
 		</Page>
 	)
 }
