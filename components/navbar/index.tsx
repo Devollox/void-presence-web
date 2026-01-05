@@ -1,7 +1,15 @@
+'use client'
+
+import { UserPen } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import styles from './navbar.module.css'
 
 export default function Navbar() {
+	const { data: session, status } = useSession()
+
+	const isAuth = status === 'authenticated' && !!session?.user
+
 	return (
 		<header id='navbar' className={styles.navbar}>
 			<div className={styles.page_section_inner}>
@@ -19,19 +27,12 @@ export default function Navbar() {
 					<Link className={styles.nav_item} href='/configs'>
 						Configs
 					</Link>
-
 					<Link className={styles.nav_item} href='/docs'>
-						Documention
+						Documentation
 					</Link>
-
 					<Link className={styles.nav_item} href='/download'>
 						Download
 					</Link>
-
-					<Link className={styles.nav_item} href='/status'>
-						Status
-					</Link>
-
 					<Link
 						className={styles.nav_item}
 						target='_blank'
@@ -52,6 +53,30 @@ export default function Navbar() {
 							></path>
 						</svg>
 					</Link>
+
+					{!isAuth && (
+						<Link className={styles.nav_item} href='/signin' rel='noreferrer'>
+							<button
+								type='button'
+								className={`${styles.btn} ${styles.btn_secondary}`}
+							>
+								<UserPen size={16} />
+								<span>Sign In</span>
+							</button>
+						</Link>
+					)}
+
+					{isAuth && (
+						<Link className={styles.nav_item} href='/profile'>
+							<button
+								type='button'
+								className={`${styles.btn} ${styles.btn_secondary}`}
+							>
+								<UserPen size={16} />
+								<span>{session.user?.name ?? 'Profile'}</span>
+							</button>
+						</Link>
+					)}
 				</nav>
 			</div>
 		</header>

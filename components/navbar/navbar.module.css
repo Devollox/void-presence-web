@@ -130,3 +130,34 @@
 		padding-bottom: 20px;
 	}
 }
+.btn.btn_secondary {
+	background-color: transparent;
+	border: 2px solid hsla(0, 0%, 100%, 0.05);
+	border-radius: 8px;
+	color: #888;
+}
+.btn.btn_secondary:hover {
+	border-color: hsla(0, 0%, 100%, 0.1);
+}
+.btn {
+	font-size: 14px;
+	font-weight: 500;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	transition: background 0.15s, box-shadow 0.15s, color 0.15s, border 0.15s;
+	cursor: pointer;
+	padding: 8px 12px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+
+	> svg {
+		margin-right: 8px;
+	}
+}
