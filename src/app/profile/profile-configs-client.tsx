@@ -52,14 +52,16 @@ function CustomRpcPreview({
 		url1: '',
 	}
 
+	const initialImage = images[0] || { largeImage: '' }
+
 	useEffect(() => {
-		if (!image.largeImage || !onColorReady || hasColor) return
-		if (image.largeImage.startsWith('https://i.pinimg.com')) return
+		if (!initialImage.largeImage || !onColorReady || hasColor) return
+		if (initialImage.largeImage.startsWith('https://i.pinimg.com')) return
 
 		let cancelled = false
 		const img = new Image()
 		img.crossOrigin = 'anonymous'
-		img.src = image.largeImage
+		img.src = initialImage.largeImage
 
 		img.onload = () => {
 			if (cancelled) return
@@ -106,7 +108,7 @@ function CustomRpcPreview({
 		return () => {
 			cancelled = true
 		}
-	}, [image.largeImage, onColorReady, hasColor])
+	}, [initialImage.largeImage, onColorReady, hasColor])
 
 	return (
 		<div className={styles.rpc_card_preview}>
@@ -128,18 +130,18 @@ function CustomRpcPreview({
 
 function SkeletonCard() {
 	return (
-		<div className={styles.skeleton_card_wrap}>
-			<div className={styles.skeleton_card}>
-				<div className={styles.skeleton_card_header}>
-					<div className={styles.skeleton_title}></div>
-					<div className={styles.skeleton_author}></div>
+		<div className={styles.profile_skeleton_card_wrap}>
+			<div className={styles.profile_skeleton_card}>
+				<div className={styles.profile_skeleton_card_header}>
+					<div className={styles.profile_skeleton_title}></div>
+					<div className={styles.profile_skeleton_author}></div>
 				</div>
-				<div className={styles.skeleton_rpc_preview}></div>
-				<div className={styles.skeleton_card_actions}>
-					<div className={styles.skeleton_download_tag}></div>
-					<div className={styles.skeleton_action_buttons}>
-						<div className={styles.skeleton_btn_primary}></div>
-						<div className={styles.skeleton_btn_secondary}></div>
+				<div className={styles.profile_skeleton_rpc_preview}></div>
+				<div className={styles.profile_skeleton_card_actions}>
+					<div className={styles.profile_skeleton_download_tag}></div>
+					<div className={styles.profile_skeleton_action_buttons}>
+						<div className={styles.profile_skeleton_btn_primary}></div>
+						<div className={styles.profile_skeleton_btn_secondary}></div>
 					</div>
 				</div>
 			</div>

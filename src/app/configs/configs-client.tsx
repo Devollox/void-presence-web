@@ -49,14 +49,16 @@ function CustomRpcPreview({
 		url1: '',
 	}
 
+	const initialImage = images[0] || { largeImage: '' }
+
 	useEffect(() => {
-		if (!image.largeImage || !onColorReady || hasColor) return
-		if (image.largeImage.startsWith('https://i.pinimg.com')) return
+		if (!initialImage.largeImage || !onColorReady || hasColor) return
+		if (initialImage.largeImage.startsWith('https://i.pinimg.com')) return
 
 		let cancelled = false
 		const img = new Image()
 		img.crossOrigin = 'anonymous'
-		img.src = image.largeImage
+		img.src = initialImage.largeImage
 
 		img.onload = () => {
 			if (cancelled) return
@@ -103,7 +105,7 @@ function CustomRpcPreview({
 		return () => {
 			cancelled = true
 		}
-	}, [image.largeImage, onColorReady, hasColor])
+	}, [initialImage.largeImage, onColorReady, hasColor])
 
 	return (
 		<div className={styles.rpc_card_preview}>
