@@ -4,6 +4,7 @@ import {
 	getDatabase,
 	onValue,
 	ref,
+	remove,
 	runTransaction,
 } from 'firebase/database'
 
@@ -19,7 +20,7 @@ const firebaseConfig = {
 	measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 }
 
-const app = initializeApp(firebaseConfig)
+export const app = initializeApp(firebaseConfig)
 export const db = getDatabase(app, firebaseConfig.databaseURL)
 
 export interface ButtonPair {
@@ -44,6 +45,7 @@ export interface Config {
 	id: string
 	title: string
 	author: string
+	authorId: string | null
 	downloads: number
 	description: string
 	configData: ConfigData
@@ -51,19 +53,21 @@ export interface Config {
 
 export function onConfigsChange(
 	callback: (configs: Config[]) => void,
-	refPath?: string
+	refPath?: string,
+	authorId?: string
 ) {
 	const path = refPath || 'configs'
 	const configsRef = ref(db, path)
 
 	const unsubscribe = onValue(configsRef, snapshot => {
 		const data = snapshot.val()
-		const configs: Config[] = Object.entries(data || {}).map(([id, raw]) => {
+		const allConfigs: Config[] = Object.entries(data || {}).map(([id, raw]) => {
 			const config = raw as any
 			return {
 				id,
 				title: config.title || 'Unnamed',
 				author: config.author || 'Unknown',
+				authorId: config.authorId ?? null,
 				downloads:
 					typeof config.downloads === 'number'
 						? config.downloads
@@ -76,7 +80,18 @@ export function onConfigsChange(
 				},
 			}
 		})
-		callback(configs)
+
+		const filtered = authorId
+			? allConfigs.filter(
+					cfg =>
+						cfg.authorId !== null &&
+						cfg.authorId !== undefined &&
+						cfg.authorId !== '' &&
+						String(cfg.authorId) === String(authorId)
+			  )
+			: allConfigs
+
+		callback(filtered)
 	})
 
 	return unsubscribe
@@ -167,6 +182,7 @@ export function onConfigByIdChange(
 			id,
 			title: data.title || 'Unnamed',
 			author: data.author || 'Unknown',
+			authorId: data.authorId ?? null,
 			downloads,
 			description: data.description || '',
 			configData: data.configData || {
@@ -195,6 +211,7 @@ export async function getConfigs(): Promise<Config[]> {
 			id,
 			title: config.title || 'Unnamed',
 			author: config.author || 'Unknown',
+			authorId: config.authorId ?? null,
 			downloads:
 				typeof config.downloads === 'number'
 					? config.downloads
@@ -215,4 +232,62 @@ export async function getConfigById(id: string): Promise<Config | null> {
 	const all = await getConfigs()
 	const found = all.find(c => c.id === id)
 	return found ?? null
+}
+
+export async function createUserIfNotExists(userId: string, name?: string) {
+	const userRef = ref(db, `users/${userId}`)
+
+	await runTransaction(userRef, current => {
+		if (current) return current
+
+		return {
+			name: name ?? 'Unknown',
+			createdAt: Date.now(),
+		}
+	})
+}
+
+export async function getConfigsByAuthor(authorId: string): Promise<Config[]> {
+	const configsRef = ref(db, 'configs')
+	const snapshot = await get(configsRef)
+	if (!snapshot.exists()) return []
+
+	const data = snapshot.val() as Record<string, any>
+
+	const configs: Config[] = Object.entries(data)
+		.map(([id, raw]) => {
+			const config = raw as any
+			return {
+				id,
+				title: config.title || 'Unnamed',
+				author: config.author || 'Unknown',
+				authorId: config.authorId ?? null,
+				downloads:
+					typeof config.downloads === 'number'
+						? config.downloads
+						: parseInt(String(config.downloads ?? '0')) || 0,
+				description: config.description || '',
+				configData: config.configData || {
+					cycles: [{ details: 'Idling in the void', state: 'Just vibing' }],
+					imageCycles: [],
+					buttonPairs: [],
+				},
+			}
+		})
+		.filter(
+			cfg =>
+				cfg.authorId !== null &&
+				cfg.authorId !== undefined &&
+				cfg.authorId !== '' &&
+				String(cfg.authorId) === String(authorId)
+		)
+
+	return configs
+}
+
+export async function deleteConfig(configId: string): Promise<void> {
+	const cfgRef = ref(db, `configs/${configId}`)
+	const snap = await get(cfgRef)
+	if (!snap.exists()) return
+	await remove(cfgRef)
 }
