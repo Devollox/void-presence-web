@@ -19,7 +19,7 @@ export default function DownloadButtons({ assets }: Props) {
 		try {
 			incrementDownloadsStats()
 		} finally {
-			window.open(asset.downloadUrl, '_blank')
+			window.open(asset.downloadUrl)
 		}
 	}
 
