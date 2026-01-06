@@ -101,9 +101,9 @@
 }
 
 .footer_social_button:hover {
-	background: rgba(148, 163, 184, 0.12);
-	border-color: rgba(148, 163, 184, 0.6);
-	transform: translateY(-1px);
+	background: #1a1a1a8e;
+	border: 1px solid #ffffff0f;
+	color: #9ca3af;
 }
 
 .footer_social_label {
@@ -206,4 +206,14 @@
 	height: 100vh;
 	display: flex;
 	align-items: flex-end;
+}
+
+.footer_chip {
+	font-size: 11px;
+	padding: 4px 10px;
+	border-radius: 999px;
+	background: #0a0a0ad9;
+	border: 1px solid #ffffff1f;
+	color: #9ca3af;
+	margin-left: 10px;
 }

@@ -19,20 +19,34 @@ const RESOURCES: Link[] = [
 	{ label: 'Status', href: '/status' },
 ]
 
+const META: Link[] = [
+	{
+		label: 'Changelog',
+		href: 'https://github.com/Devollox/void-presence/releases',
+	},
+	{ label: 'Repository', href: 'https://github.com/Devollox/void-presence' },
+]
+
 const Footer = () => {
 	const year = new Date().getFullYear()
 
 	return (
 		<footer className={styles.footer_container}>
+			<div className={styles.footer_glow} />
+
 			<div className={styles.footer_inner}>
 				<div className={styles.footer_grid}>
 					<div className={styles.footer_brand_column}>
 						<div className={styles.footer_brand_header}>
-							<div className={styles.footer_logo_circle}>VP</div>
+							<div className={styles.footer_logo_circle}>
+								<span className={styles.footer_logo_accent} />
+								<span className={styles.footer_logo_text}>VP</span>
+							</div>
 							<div>
 								<h3 className={styles.footer_brand_title}>Void Presence</h3>
 								<p className={styles.footer_brand_text}>
-									Your Discord status, rendered cleanly on desktop.
+									Advanced Discord Rich Presence manager with profiles, cycles,
+									buttons and images.
 								</p>
 							</div>
 						</div>
@@ -86,6 +100,19 @@ const Footer = () => {
 								))}
 							</ul>
 						</div>
+
+						<div className={styles.footer_links_group}>
+							<h4 className={styles.footer_group_title}>Meta</h4>
+							<ul className={styles.footer_links_list}>
+								{META.map(link => (
+									<li key={link.href}>
+										<a href={link.href} className={styles.footer_link_item}>
+											{link.label}
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
 					</div>
 				</div>
 
@@ -93,9 +120,14 @@ const Footer = () => {
 					<div className={styles.footer_bottom_text}>
 						<div>© {year} Void Presence. All rights reserved.</div>
 						<div className={styles.footer_bottom_sub}>
-							Desktop Discord presence client: profiles, cycles, buttons and
+							Desktop Discord presence client – profiles, cycles, buttons and
 							images in one place.
 						</div>
+					</div>
+
+					<div className={styles.footer_bottom_meta}>
+						<span className={styles.footer_chip}>Electron · React</span>
+						<span className={styles.footer_chip}>Rich Presence</span>
 					</div>
 				</div>
 			</div>
