@@ -927,7 +927,7 @@ modal_info::-webkit-scrollbar-track {
 	}
 }
 
-.skeleton_card_wrap {
+.profile_skeleton_card_wrap {
 	display: block;
 	position: relative;
 	border-radius: 16px;
@@ -938,7 +938,7 @@ modal_info::-webkit-scrollbar-track {
 	animation: skeletonShimmer 2s infinite;
 }
 
-.skeleton_card {
+.profile_skeleton_card {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -946,19 +946,19 @@ modal_info::-webkit-scrollbar-track {
 	gap: 16px;
 }
 
-.skeleton_card_header {
+.profile_skeleton_card_header {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 }
 
-.skeleton_title,
-.skeleton_author,
-.skeleton_rpc_preview,
-.skeleton_download_tag,
-.skeleton_btn_primary,
-.skeleton_btn_secondary,
-.skeleton_search {
+.profile_skeleton_title,
+.profile_skeleton_author,
+.profile_skeleton_rpc_preview,
+.profile_skeleton_download_tag,
+.profile_skeleton_btn_primary,
+.profile_skeleton_btn_secondary,
+.profile_skeleton_search {
 	background: linear-gradient(
 		90deg,
 		hsla(0, 0%, 20%, 0.5) 25%,
@@ -969,13 +969,13 @@ modal_info::-webkit-scrollbar-track {
 	animation: skeletonShimmer 2s infinite;
 }
 
-.skeleton_title {
+.profile_skeleton_title {
 	width: 70%;
 	height: 20px;
 	border-radius: 4px;
 }
 
-.skeleton_author {
+.profile_skeleton_author {
 	width: 50%;
 	height: 16px;
 	border-radius: 4px;
@@ -989,7 +989,7 @@ modal_info::-webkit-scrollbar-track {
 		font-weight: 500;
 	}
 }
-.skeleton_rpc_preview {
+.profile_skeleton_rpc_preview {
 	height: 320px;
 	border-radius: 12px;
 }
@@ -998,31 +998,31 @@ modal_info::-webkit-scrollbar-track {
 	box-shadow: 0 20px 40px hsla(0, 0%, 0%, 0.5);
 	border-color: hsla(255, 255%, 255%, 0.12);
 }
-.skeleton_card_actions {
+.profile_skeleton_card_actions {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex end;
 }
 
-.skeleton_download_tag {
+.profile_skeleton_download_tag {
 	width: 60px;
 	height: 32px;
 	border-radius: 8px;
 }
 
-.skeleton_action_buttons {
+.profile_skeleton_action_buttons {
 	display: flex;
 	gap: 8px;
 }
 
-.skeleton_btn_primary,
-.skeleton_btn_secondary {
+.profile_skeleton_btn_primary,
+.profile_skeleton_btn_secondary {
 	flex: 1;
 	height: 40px;
 	border-radius: 8px;
 }
 
-.skeleton_search {
+.profile_skeleton_search {
 	color: transparent;
 }
 

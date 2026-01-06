@@ -506,31 +506,23 @@
 .skel_actions_subtitle,
 .skel_btn,
 .skel_details_toggle {
-	position: relative;
-	overflow: hidden;
-	background: hsla(0, 0%, 20%, 0.35);
+	background: linear-gradient(
+		90deg,
+		hsla(0, 0%, 20%, 0.5) 25%,
+		hsla(0, 0%, 30%, 0.3) 50%,
+		hsla(0, 0%, 20%, 0.5) 75%
+	);
+	background-size: 200% 100%;
+	animation: skeletonShimmer 2s infinite;
 }
 
-.skel_back_link::after,
-.skel_title::after,
-.skel_subtitle::after,
-.skel_meta_row::after,
-.skel_rpc::after,
-.skel_actions_title::after,
-.skel_actions_subtitle::after,
-.skel_btn::after,
-.skel_details_toggle::after {
-	content: '';
-	position: absolute;
-	inset: 0;
-	transform: translateX(-100%);
-	background: linear-gradient(
-		120deg,
-		transparent 0%,
-		hsla(0, 0%, 100%, 0.12) 40%,
-		transparent 80%
-	);
-	animation: skel-shimmer 1.4s infinite;
+@keyframes skeletonShimmer {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
 }
 
 .skel_back_link {
@@ -614,6 +606,7 @@
 	border-radius: 0 0 18px 18px;
 	border: 1px solid hsla(255, 255%, 255%, 0.06);
 }
+
 .addon_backdrop {
 	position: absolute;
 	inset: 0;
