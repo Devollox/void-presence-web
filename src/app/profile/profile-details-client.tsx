@@ -72,8 +72,8 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 		<section id='addon-details' className={styles.page_section}>
 			<div className={styles.theme_view_panel}>
 				<img
-					key={firstImage.largeImage || '/images/config-backdrop.png'}
-					src={firstImage.largeImage || '/images/config-backdrop.png'}
+					key={firstImage.largeImage}
+					src={firstImage.largeImage}
 					className={styles.addon_backdrop}
 					alt=''
 				/>

@@ -9,7 +9,7 @@ import { CopyJsonButton } from './copy-button'
 import { ConfigStructure } from './structure'
 
 type Props = {
-	initialConfig: Config
+	configId: string
 	initialPreviewTick: number
 }
 
@@ -17,18 +17,15 @@ function getNextTick(prev: number) {
 	return prev + 1
 }
 
-export function ConfigDetailsClient({
-	initialConfig,
-	initialPreviewTick,
-}: Props) {
-	const [config, setConfig] = useState<Config | null>(initialConfig)
+export function ConfigDetailsClient({ configId, initialPreviewTick }: Props) {
+	const [config, setConfig] = useState<Config | null>(null)
 	const [previewTick, setPreviewTick] = useState(initialPreviewTick)
+	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
-		const id = initialConfig.id
-
-		const unsubscribe = onConfigByIdChange(id, next => {
+		const unsubscribe = onConfigByIdChange(configId, next => {
 			setConfig(next)
+			setLoading(false)
 		})
 
 		const interval = setInterval(() => {
@@ -39,9 +36,9 @@ export function ConfigDetailsClient({
 			unsubscribe()
 			clearInterval(interval)
 		}
-	}, [initialConfig.id])
+	}, [configId])
 
-	if (!config) {
+	if (loading) {
 		return (
 			<section id='addon-details' className={styles.page_section}>
 				<div className={styles.theme_view_panel}>
@@ -80,6 +77,28 @@ export function ConfigDetailsClient({
 		)
 	}
 
+	if (!config) {
+		return (
+			<section id='addon-details' className={styles.page_section}>
+				<div className={styles.theme_view_panel}>
+					<div className={styles.addon_splitview_container}>
+						<div className={styles.addon_details_right_column}>
+							<div className={styles.addon_details_segment}>
+								<a href='/configs' className={styles.back_link}>
+									← Back to Configs
+								</a>
+								<h1 className={styles.title}>Config not found</h1>
+								<div className={styles.title_description}>
+									This config may have been removed or is not available.
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
 	const configData: any = config.configData
 
 	const cycles = configData.cycles?.length
@@ -98,7 +117,7 @@ export function ConfigDetailsClient({
 		buttonsList.length || 1
 	)
 
-	const localIndex = previewTick % maxLen
+	const localIndex = maxLen ? previewTick % maxLen : 0
 
 	const cycleIndex = localIndex % cycles.length
 	const imageIndex = localIndex % images.length
@@ -112,8 +131,8 @@ export function ConfigDetailsClient({
 		<section id='addon-details' className={styles.page_section}>
 			<div className={styles.theme_view_panel}>
 				<img
-					key={firstImage.largeImage || '/images/config-backdrop.png'}
-					src={firstImage.largeImage || '/images/config-backdrop.png'}
+					key={firstImage.largeImage}
+					src={firstImage.largeImage}
 					className={styles.addon_backdrop}
 					alt=''
 				/>

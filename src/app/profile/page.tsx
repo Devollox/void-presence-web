@@ -2,7 +2,6 @@ import Page from '@components/page'
 import PageHeader from '@components/page-header'
 import { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
-import { getConfigsByAuthor, type Config } from '../../../service/firebase'
 import { authOptions } from '../api/auth/[...nextauth]/route'
 import { ProfileContainerClient } from './profile-container-client'
 import styles from './profile-details.module.scss'
@@ -81,7 +80,6 @@ export default async function ProfilePage() {
 
 	const user = session.user as any
 	const userId = String(user.id ?? '')
-	const configs: Config[] = userId ? await getConfigsByAuthor(userId) : []
 
 	return (
 		<Page>
@@ -94,7 +92,7 @@ export default async function ProfilePage() {
 				<SaveUserOnMount />
 
 				<ProfileContainerClient
-					initialConfigs={configs}
+					initialConfigs={[]}
 					user={user}
 					session={session}
 					userId={userId}

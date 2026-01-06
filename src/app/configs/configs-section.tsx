@@ -1,16 +1,14 @@
 import Footer from '../../../components/footer'
 import Page from '../../../components/page'
 import PageHeader from '../../../components/page-header'
-import { Config } from '../../../service/firebase'
 import { ConfigsClient } from './configs-client'
 import styles from './configs.module.css'
 
 type Props = {
 	initialSearchTerm: string
-	initialConfigs: Config[]
 }
 
-export function ConfigsSection({ initialSearchTerm, initialConfigs }: Props) {
+export function ConfigsSection({ initialSearchTerm }: Props) {
 	return (
 		<Page>
 			<main id='main-page-content'>
@@ -21,7 +19,7 @@ export function ConfigsSection({ initialSearchTerm, initialConfigs }: Props) {
 
 				<div className={styles.themes_panel}>
 					<ConfigsClient
-						initialConfigs={initialConfigs}
+						initialConfigs={[]}
 						initialSearchTerm={initialSearchTerm}
 					/>
 				</div>

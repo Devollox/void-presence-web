@@ -17,7 +17,6 @@ type CustomRpcPreviewProps = {
 	previewIndex: number
 	onColorReady?: (color: string) => void
 	hasColor: boolean
-	name?: string
 	id: string
 }
 
@@ -185,9 +184,11 @@ export function ProfileConfigsClient({ configs, userId }: Props) {
 	const [previewTick, setPreviewTick] = useState(0)
 	const [mounted, setMounted] = useState(false)
 	const [colors, setColors] = useState<Record<string, string>>({})
-	const [loading, setLoading] = useState(configs.length === 0)
 	const [liveConfigs, setLiveConfigs] = useState<Config[]>(configs)
+	const [hasLoadedFirstSnapshot, setHasLoadedFirstSnapshot] = useState(false)
 	const [deleting, setDeleting] = useState<string | null>(null)
+
+	const loading = !hasLoadedFirstSnapshot
 
 	useEffect(() => {
 		setMounted(true)
@@ -197,7 +198,7 @@ export function ProfileConfigsClient({ configs, userId }: Props) {
 		const unsubscribe = onConfigsChange(
 			next => {
 				setLiveConfigs(next)
-				setLoading(false)
+				setHasLoadedFirstSnapshot(true)
 			},
 			undefined,
 			userId
@@ -222,7 +223,7 @@ export function ProfileConfigsClient({ configs, userId }: Props) {
 		[filteredConfigs]
 	)
 
-	const showSkeleton = loading && !sortedConfigs.length
+	const showSkeleton = loading
 
 	return (
 		<section className={styles.profile_section}>
@@ -266,9 +267,6 @@ export function ProfileConfigsClient({ configs, userId }: Props) {
 
 				{showSkeleton ? (
 					<div className={styles.profile_cards_grid}>
-						<SkeletonCard />
-						<SkeletonCard />
-						<SkeletonCard />
 						<SkeletonCard />
 						<SkeletonCard />
 						<SkeletonCard />

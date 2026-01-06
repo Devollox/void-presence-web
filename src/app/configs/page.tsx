@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { getConfigs, type Config } from '../../../service/firebase'
 import { ConfigsSection } from './configs-section'
 
 type SearchParams = {
@@ -25,9 +24,6 @@ export const metadata: Metadata = {
 export default async function ConfigsPage(props: PageProps) {
 	const { q = '' } = await props.searchParams
 	const searchTerm = q || ''
-	const configs: Config[] = await getConfigs()
 
-	return (
-		<ConfigsSection initialSearchTerm={searchTerm} initialConfigs={configs} />
-	)
+	return <ConfigsSection initialSearchTerm={searchTerm} />
 }

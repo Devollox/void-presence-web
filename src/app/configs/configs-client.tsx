@@ -185,7 +185,7 @@ export function ConfigsClient({
 	const [previewTick, setPreviewTick] = useState(0)
 	const [mounted, setMounted] = useState(false)
 	const [colors, setColors] = useState<Record<string, string>>({})
-	const [loading, setLoading] = useState(!initialConfigs.length)
+	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
 		setMounted(true)
@@ -256,8 +256,6 @@ export function ConfigsClient({
 				<section id='configs-content' className={styles.page_section}>
 					{showSkeleton ? (
 						<div className={styles.theme_listings}>
-							<SkeletonCard />
-							<SkeletonCard />
 							<SkeletonCard />
 							<SkeletonCard />
 							<SkeletonCard />
