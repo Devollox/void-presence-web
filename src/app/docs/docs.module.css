@@ -43,16 +43,13 @@
 	max-width: 520px;
 }
 
-.docs_section {
-	padding: 32px 0 48px;
-}
-
 .docs_layout {
 	max-width: 1400px;
+	min-height: calc(100vh - 120px);
+	padding: 40px var(--section-padding-desktop);
+	gap: 40px;
 	margin: 0 auto;
-	padding: 0 var(--section-padding-desktop);
 	display: flex;
-	gap: 28px;
 }
 
 .docs_content {
