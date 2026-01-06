@@ -7,39 +7,39 @@ import styles from './navbar.module.css'
 
 export default function Navbar() {
 	const { data: session, status } = useSession()
-
 	const isAuth = status === 'authenticated' && !!session?.user
 
 	return (
-		<header id='navbar' className={styles.navbar}>
-			<div className={styles.page_section_inner}>
-				<div>
-					<Link className={styles.navbar_logo_container} href='/'>
-						<div>Void Presence.</div>
-					</Link>
-				</div>
+		<header className={styles.navbar_root}>
+			<div className={styles.navbar_shell}>
+				<Link href='/' className={styles.navbar_brand}>
+					<div className={styles.navbar_logo_mark}>VP</div>
+					<div className={styles.navbar_brand_text}>
+						<span className={styles.navbar_brand_title}>Void Presence</span>
+						<span className={styles.navbar_brand_subtitle}>
+							Discord Rich Presence manager
+						</span>
+					</div>
+				</Link>
 
-				<nav
-					id='navbar-nav-items'
-					className={styles.flex_container}
-					data-toggle='affix'
-				>
-					<Link className={styles.nav_item} href='/configs'>
+				<nav className={styles.navbar_nav}>
+					<Link className={styles.nav_link} href='/configs'>
 						Configs
 					</Link>
-					<Link className={styles.nav_item} href='/docs'>
-						Documentation
+					<Link className={styles.nav_link} href='/docs'>
+						Docs
 					</Link>
-					<Link className={styles.nav_item} href='/download'>
+					<Link className={styles.nav_link} href='/download'>
 						Download
 					</Link>
 					<Link
-						className={styles.nav_item}
+						className={styles.nav_link}
 						target='_blank'
 						href='https://github.com/Devollox/void-presence'
 						rel='noreferrer'
 					>
 						GitHub
+						<span className={styles.nav_external_dot} />
 						<svg
 							aria-hidden='true'
 							className={styles.navbar_external_arrow}
@@ -55,19 +55,19 @@ export default function Navbar() {
 					</Link>
 
 					{!isAuth && (
-						<Link className={styles.nav_item} href='/signin' rel='noreferrer'>
+						<Link className={styles.nav_cta_wrap} href='/signin'>
 							<button
 								type='button'
 								className={`${styles.btn} ${styles.btn_secondary}`}
 							>
 								<UserPen size={16} />
-								<span>Sign In</span>
+								<span>Sign in</span>
 							</button>
 						</Link>
 					)}
 
 					{isAuth && (
-						<Link className={styles.nav_item} href='/profile'>
+						<Link className={styles.nav_cta_wrap} href='/profile'>
 							<button
 								type='button'
 								className={`${styles.btn} ${styles.btn_secondary}`}
