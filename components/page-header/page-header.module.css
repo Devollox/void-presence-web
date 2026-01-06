@@ -3,6 +3,8 @@
 	margin-top: 80px;
 	backdrop-filter: blur(20px);
 	height: 120px;
+	align-items: flex-start;
+	justify-content: flex-start;
 }
 
 .page_section_inner {
@@ -39,12 +41,13 @@
 
 .title {
 	color: #f1f1f1;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin: 0 0 8px;
 	font-size: 48px;
 	font-weight: 700;
-	display: flex;
+	text-align: center;
 }
 
 .title_tooltip {
@@ -77,6 +80,7 @@
 }
 @media screen and (max-width: 440px) {
 	.content_header {
-		margin-top: 150px;
+		margin-top: 70px;
+		margin-bottom: 30px;
 	}
 }
