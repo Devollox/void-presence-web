@@ -1,3 +1,5 @@
+import { PanelLayout } from '@components/panel-layout'
+import layoutStyles from '@components/panel-layout/layout-panels.module.css'
 import type { Metadata } from 'next'
 import Footer from '../../../components/footer'
 import Page from '../../../components/page'
@@ -51,7 +53,6 @@ async function getLatestRelease(): Promise<{
 		}
 
 		const data = await res.json()
-
 		const rawAssets = Array.isArray(data.assets) ? data.assets : []
 
 		const assets: ReleaseAsset[] = rawAssets.map((asset: any) => ({
@@ -81,6 +82,70 @@ async function getLatestRelease(): Promise<{
 export default async function DownloadPage() {
 	const { release, error } = await getLatestRelease()
 
+	const left = (
+		<>
+			<div className={styles.filter_header}>Latest build</div>
+
+			{error ? (
+				<div className={styles.error_banner}>{error}</div>
+			) : release ? (
+				<>
+					<DownloadButtons assets={release.assets} />
+
+					<div className={styles.release_meta}>
+						<div className={styles.release_row}>
+							<span className={styles.release_label}>Version</span>
+							<span className={styles.release_value}>{release.version}</span>
+						</div>
+						<div className={styles.release_row}>
+							<span className={styles.release_label}>Release date</span>
+							<span className={styles.release_value}>{release.date}</span>
+						</div>
+					</div>
+				</>
+			) : (
+				<div className={layoutStyles.stats_summary}>
+					<span>No release info available.</span>
+				</div>
+			)}
+
+			<div className={layoutStyles.secondary_box}>
+				<h4 className={layoutStyles.secondary_title}>Need help installing?</h4>
+				<p className={layoutStyles.secondary_text}>
+					Check the install guide on the main page for platform-specific setup
+					and tips.
+				</p>
+			</div>
+		</>
+	)
+
+	const right = (
+		<section className={styles.page_section}>
+			<div className={layoutStyles.preview_card_wrap}>
+				<div className={layoutStyles.preview_card}>
+					<div className={layoutStyles.preview_header}>
+						<h3 className={layoutStyles.preview_title}>
+							Live presence preview
+						</h3>
+						{release && (
+							<div className={layoutStyles.preview_badge}>
+								<span className={layoutStyles.preview_badge_text}>
+									{release.version}
+								</span>
+							</div>
+						)}
+					</div>
+
+					<div className={styles.rpc_card_preview}>
+						<RpcPreviewClient config={config} />
+					</div>
+
+					{release && release.notes && <ChangelogClient release={release} />}
+				</div>
+			</div>
+		</section>
+	)
+
 	return (
 		<Page>
 			<main id='main-page-content'>
@@ -88,74 +153,7 @@ export default async function DownloadPage() {
 					title='Download Void Presence'
 					subtitle='Get the desktop client and keep your Discord Rich Presence always in sync.'
 				/>
-
-				<div className={styles.download_panel}>
-					<div className={styles.download_left_side}>
-						<div className={styles.filter_header}>Latest build</div>
-
-						{error ? (
-							<div className={styles.error_banner}>{error}</div>
-						) : release ? (
-							<>
-								<DownloadButtons assets={release.assets} />
-
-								<div className={styles.release_meta}>
-									<div className={styles.release_row}>
-										<span className={styles.release_label}>Version</span>
-										<span className={styles.release_value}>
-											{release.version}
-										</span>
-									</div>
-									<div className={styles.release_row}>
-										<span className={styles.release_label}>Release date</span>
-										<span className={styles.release_value}>{release.date}</span>
-									</div>
-								</div>
-							</>
-						) : (
-							<div className={styles.stats_summary}>
-								<span>No release info available.</span>
-							</div>
-						)}
-
-						<div className={styles.secondary_box}>
-							<h4 className={styles.secondary_title}>Need help installing?</h4>
-							<p className={styles.secondary_text}>
-								Check the install guide on the main page for platform-specific
-								setup and tips.
-							</p>
-						</div>
-					</div>
-
-					<div className={styles.download_right_side}>
-						<section className={styles.page_section}>
-							<div className={styles.preview_card_wrap}>
-								<div className={styles.preview_card}>
-									<div className={styles.preview_header}>
-										<h3 className={styles.preview_title}>
-											Live presence preview
-										</h3>
-										{release && (
-											<div className={styles.preview_badge}>
-												<span className={styles.preview_badge_text}>
-													{release.version}
-												</span>
-											</div>
-										)}
-									</div>
-
-									<div className={styles.rpc_card_preview}>
-										<RpcPreviewClient config={config} />
-									</div>
-
-									{release && release.notes && (
-										<ChangelogClient release={release} />
-									)}
-								</div>
-							</div>
-						</section>
-					</div>
-				</div>
+				<PanelLayout left={left} right={right} />
 			</main>
 			<Footer />
 		</Page>

@@ -19,7 +19,12 @@ export default function DownloadButtons({ assets }: Props) {
 		try {
 			incrementDownloadsStats()
 		} finally {
-			window.open(asset.downloadUrl)
+			const link = document.createElement('a')
+			link.href = asset.downloadUrl
+			link.download = asset.name
+			document.body.appendChild(link)
+			link.click()
+			document.body.removeChild(link)
 		}
 	}
 
