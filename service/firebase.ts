@@ -247,44 +247,6 @@ export async function createUserIfNotExists(userId: string, name?: string) {
 	})
 }
 
-export async function getConfigsByAuthor(authorId: string): Promise<Config[]> {
-	const configsRef = ref(db, 'configs')
-	const snapshot = await get(configsRef)
-	if (!snapshot.exists()) return []
-
-	const data = snapshot.val() as Record<string, any>
-
-	const configs: Config[] = Object.entries(data)
-		.map(([id, raw]) => {
-			const config = raw as any
-			return {
-				id,
-				title: config.title || 'Unnamed',
-				author: config.author || 'Unknown',
-				authorId: config.authorId ?? null,
-				downloads:
-					typeof config.downloads === 'number'
-						? config.downloads
-						: parseInt(String(config.downloads ?? '0')) || 0,
-				description: config.description || '',
-				configData: config.configData || {
-					cycles: [{ details: 'Idling in the void', state: 'Just vibing' }],
-					imageCycles: [],
-					buttonPairs: [],
-				},
-			}
-		})
-		.filter(
-			cfg =>
-				cfg.authorId !== null &&
-				cfg.authorId !== undefined &&
-				cfg.authorId !== '' &&
-				String(cfg.authorId) === String(authorId)
-		)
-
-	return configs
-}
-
 export async function deleteConfig(configId: string): Promise<void> {
 	const cfgRef = ref(db, `configs/${configId}`)
 	const snap = await get(cfgRef)
