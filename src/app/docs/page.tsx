@@ -48,8 +48,9 @@ export default function DocsPage() {
 					management via drag and drop.
 				</p>
 				<p className={styles.docs_text}>
-					Status updates every 30 seconds, giving you full control over how your
-					Discord activity looks across different machines and setups.
+					Text, image and button cycles are independent: you can mix different
+					lengths and Void Presence will automatically loop each set on a timer,
+					keeping your activity fresh without manual updates.
 				</p>
 			</div>
 
@@ -57,13 +58,16 @@ export default function DocsPage() {
 				<h3 className={styles.docs_subtitle}>Features</h3>
 				<ul className={styles.docs_list}>
 					<li className={styles.docs_list_item}>
-						Custom button pairs – Multiple button sets with labels and URLs.
+						Custom button pairs – Multiple button sets with labels and URLs;
+						leave the second empty if you only need a single button.
 					</li>
 					<li className={styles.docs_list_item}>
-						Status cycles – Rotate details and state texts over time.
+						Status cycles – Rotate multiple details and state texts on a timer,
+						independently from images and buttons.
 					</li>
 					<li className={styles.docs_list_item}>
-						Image rotation – Cycle through large and small Rich Presence images.
+						Image rotation – Cycle through large and small Rich Presence images;
+						shorter image lists are reused automatically.
 					</li>
 					<li className={styles.docs_list_item}>
 						Profiles with drag &amp; drop – Create and reorder presence presets.
@@ -81,13 +85,23 @@ export default function DocsPage() {
 				<h3 className={styles.docs_subtitle}>Quick usage</h3>
 				<ol className={styles.docs_list_ordered}>
 					<li className={styles.docs_list_item}>
-						Set Client ID from the Discord Developer Portal.
+						Set Client ID from the{' '}
+						<a
+							style={{ color: 'white' }}
+							href='https://discord.com/developers/applications'
+							target='_blank'
+							rel='noreferrer'
+						>
+							Discord Developer Portal
+						</a>
+						.
 					</li>
 					<li className={styles.docs_list_item}>
 						Choose update interval (default: 30 seconds).
 					</li>
 					<li className={styles.docs_list_item}>
-						Add images, button pairs and status cycles.
+						Add images, button pairs and status cycles; each list can have its
+						own length, cycles will loop automatically.
 					</li>
 					<li className={styles.docs_list_item}>
 						Create profiles and reorder them with drag and drop.
