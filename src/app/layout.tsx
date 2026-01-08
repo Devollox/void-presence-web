@@ -32,6 +32,9 @@ export const metadata: Metadata = {
 		'rich presence manager',
 		'discord presence app',
 	],
+	alternates: {
+		canonical: '/',
+	},
 	manifest: '/favicons/manifest.json',
 	icons: {
 		icon: [
