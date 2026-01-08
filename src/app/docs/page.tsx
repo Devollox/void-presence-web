@@ -35,6 +35,15 @@ export default function DocsPage() {
 					'Download the latest Void Presence build on the download page and follow this guide to configure it.',
 				]}
 			/>
+
+			<InfoBox
+				variant='muted'
+				lines={[
+					'If your Rich Presence buttons are not visible in Discord, see the status page for details.',
+				]}
+				linkHref='/status'
+				linkLabel='Read setup & troubleshooting'
+			/>
 		</>
 	)
 
