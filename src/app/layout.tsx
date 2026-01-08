@@ -88,8 +88,8 @@ export const metadata: Metadata = {
 			},
 			{
 				rel: 'apple-touch-icon',
-				sizes: '180x180',
-				url: '/favicons/apple-touch-icon.png',
+				sizes: '192x192',
+				url: '/favicons/android-icon-192x192.png',
 			},
 			{
 				rel: 'icon',
