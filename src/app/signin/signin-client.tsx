@@ -1,12 +1,13 @@
 'use client'
 
 import Footer from '@components/footer'
+import Page from '@components/page'
+import PageHeader from '@components/page-header'
 import { PanelLayout } from '@components/panel-layout'
 import layoutStyles from '@components/panel-layout/layout-panels.module.css'
+import { InfoBox } from '@components/status-info/info-box'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-import Page from '../../../components/page'
-import PageHeader from '../../../components/page-header'
 import styles from './signin.module.css'
 
 export function SignInPageClient() {
@@ -14,29 +15,28 @@ export function SignInPageClient() {
 
 	const left = (
 		<>
-			<div className={layoutStyles.stats_summary}>
-				<span>
-					Choose a provider to continue. You can disconnect at any time in your
-					account settings.
-				</span>
-			</div>
+			<InfoBox
+				lines={[
+					'Choose a provider to continue.',
+					'You can disconnect at any time in your account settings.',
+				]}
+			/>
 
-			<div className={layoutStyles.secondary_box}>
-				<h4 className={layoutStyles.secondary_title}>
-					Don&apos;t have the app yet?
-				</h4>
-				<p className={layoutStyles.secondary_text}>
-					Download the latest Void Presence build and start customizing your
-					Discord activity.
-				</p>
+			<InfoBox
+				variant='secondary'
+				title="Don't have the app yet?"
+				lines={[
+					'Download the latest Void Presence build and start customizing your Discord activity.',
+				]}
+			>
 				<Link
-					style={{ marginTop: '10px' }}
+					style={{ marginTop: '10px', display: 'inline-block' }}
 					href='/download'
 					className={styles.signin_btn_primary}
 				>
 					<span className={styles.asset_action_text}>Go to download page</span>
 				</Link>
-			</div>
+			</InfoBox>
 		</>
 	)
 

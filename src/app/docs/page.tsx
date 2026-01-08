@@ -1,5 +1,5 @@
 import { PanelLayout } from '@components/panel-layout'
-import layoutStyles from '@components/panel-layout/layout-panels.module.css'
+import { InfoBox } from '@components/status-info/info-box'
 import type { Metadata } from 'next'
 import Footer from '../../../components/footer'
 import Page from '../../../components/page'
@@ -20,23 +20,22 @@ export const metadata: Metadata = {
 
 export default function DocsPage() {
 	const left = (
-		<aside className={styles.docs_left_side}>
-			<div className={styles.docs_intro_box}>
-				<h4 className={styles.docs_intro_title}>Getting started</h4>
-				<p className={styles.docs_intro_text}>
-					Learn how to install the app, configure Discord Developer Portal, and
-					set up your first Rich Presence profile.
-				</p>
-			</div>
+		<>
+			<InfoBox
+				title='Getting started'
+				lines={[
+					'Learn how to install the app, configure Discord Developer Portal, and set up your first Rich Presence profile.',
+				]}
+			/>
 
-			<div className={layoutStyles.secondary_box}>
-				<h4 className={layoutStyles.secondary_title}>Need the app?</h4>
-				<p className={layoutStyles.secondary_text}>
-					Download the latest Void Presence build on the download page and
-					follow this guide to configure it.
-				</p>
-			</div>
-		</aside>
+			<InfoBox
+				variant='secondary'
+				title='Need the app?'
+				lines={[
+					'Download the latest Void Presence build on the download page and follow this guide to configure it.',
+				]}
+			/>
+		</>
 	)
 
 	const right = (

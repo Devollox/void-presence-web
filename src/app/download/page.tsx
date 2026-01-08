@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import Footer from '../../../components/footer'
 import Page from '../../../components/page'
 import PageHeader from '../../../components/page-header'
+import { InfoBox } from '../../../components/status-info/info-box'
 import config from '../../../data/config.json'
 import { normalizeReleaseNotes } from '../../../lib/release-notes'
 import ChangelogClient from './changelog-client'
@@ -87,7 +88,7 @@ export default async function DownloadPage() {
 			<div className={styles.filter_header}>Latest build</div>
 
 			{error ? (
-				<div className={styles.error_banner}>{error}</div>
+				<InfoBox variant='muted' lines={[error]} />
 			) : release ? (
 				<>
 					<DownloadButtons assets={release.assets} />
@@ -104,18 +105,16 @@ export default async function DownloadPage() {
 					</div>
 				</>
 			) : (
-				<div className={layoutStyles.stats_summary}>
-					<span>No release info available.</span>
-				</div>
+				<InfoBox lines={['No release info available.']} />
 			)}
 
-			<div className={layoutStyles.secondary_box}>
-				<h4 className={layoutStyles.secondary_title}>Need help installing?</h4>
-				<p className={layoutStyles.secondary_text}>
-					Check the install guide on the main page for platform-specific setup
-					and tips.
-				</p>
-			</div>
+			<InfoBox
+				variant='secondary'
+				title='Need help installing?'
+				lines={[
+					'Check the install guide on the main page for platform-specific setup and tips.',
+				]}
+			/>
 		</>
 	)
 

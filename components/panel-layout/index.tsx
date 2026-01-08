@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import layoutStyles from './layout-panels.module.css'
+import styles from './layout-panels.module.css'
 
 interface PanelLayoutProps {
 	left?: ReactNode
@@ -9,13 +9,13 @@ interface PanelLayoutProps {
 
 export function PanelLayout({ left, right, className }: PanelLayoutProps) {
 	const rootClassName = className
-		? `${layoutStyles.panel} ${className}`
-		: layoutStyles.panel
+		? `${styles.panel} ${className}`
+		: styles.panel
 
 	return (
 		<div className={rootClassName}>
-			<div className={layoutStyles.panel_left_side}>{left}</div>
-			<div className={layoutStyles.panel_right_side}>{right}</div>
+			<div className={styles.panel_left_side}>{left}</div>
+			<div className={styles.panel_right_side}>{right}</div>
 		</div>
 	)
 }

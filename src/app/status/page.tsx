@@ -4,6 +4,7 @@ import Footer from '../../../components/footer'
 import Page from '../../../components/page'
 import PageHeader from '../../../components/page-header'
 import { PanelLayout } from '../../../components/panel-layout'
+import { InfoBox } from '../../../components/status-info/info-box'
 import config from '../../../data/config.json'
 import RpcPreviewClient from '../download/rpc-preview-client'
 import styles from './status.module.css'
@@ -22,41 +23,31 @@ export const metadata: Metadata = {
 
 export default function StatusPage() {
 	const left = (
-		<div className={styles.status_left_side}>
-			<div className={styles.info_box}>
-				<h4 className={styles.info_title}>Current status</h4>
-				<p className={styles.info_text}>
-					Void Presence is operating normally. Rich Presence updates are sent to
-					Discord on schedule.
-				</p>
-				<p className={styles.info_text}>
-					The only limitation right now is a Discord-side bug with button
-					visibility in your own client.
-				</p>
-			</div>
-
-			<div className={styles.info_box}>
-				<h4 className={styles.info_title}>What you will see</h4>
-				<p className={styles.info_text}>
-					In your own Discord client, Rich Presence buttons may be hidden or
-					look inconsistent.
-				</p>
-				<p className={styles.info_text}>
-					Friends and other users still see and can click the buttons as
-					expected, using your configured labels and URLs.
-				</p>
-			</div>
-
-			<div className={styles.info_box_muted}>
-				<p className={styles.info_small}>
-					If Discord changes this behavior in the future, Void Presence will
-					continue working without additional steps from you.
-				</p>
-				<a href='/docs' className={styles.back_link}>
-					Read setup &amp; troubleshooting
-				</a>
-			</div>
-		</div>
+		<>
+			<InfoBox
+				title='Current status'
+				lines={[
+					'Void Presence is operating normally.',
+					'Rich Presence updates are sent to Discord on schedule.',
+					'The only limitation right now is a Discord-side bug with button visibility in your own client.',
+				]}
+			/>
+			<InfoBox
+				title='What you will see'
+				lines={[
+					'In your own Discord client, Rich Presence buttons may be hidden or look inconsistent.',
+					'Friends and other users still see and can click the buttons as expected, using your configured labels and URLs.',
+				]}
+			/>
+			<InfoBox
+				variant='muted'
+				lines={[
+					'If Discord changes this behavior in the future, Void Presence will continue working without additional steps from you.',
+				]}
+				linkHref='/docs'
+				linkLabel='Read setup & troubleshooting'
+			/>
+		</>
 	)
 
 	const right = (
