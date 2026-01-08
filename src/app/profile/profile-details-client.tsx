@@ -82,6 +82,9 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 					<div className={styles.addon_splitview_container}>
 						<div className={styles.addon_details_right_column}>
 							<div className={styles.addon_details_segment}>
+								<a href='/configs' className={styles.back_link}>
+									← Back to Configs
+								</a>
 								<h1 className={styles.title}>{user.name || 'Your profile'}</h1>
 								<div className={styles.title_description}>
 									<strong>Email: </strong>
