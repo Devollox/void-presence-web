@@ -115,6 +115,15 @@ export default async function DownloadPage() {
 					'Check the install guide on the main page for platform-specific setup and tips.',
 				]}
 			/>
+
+			<InfoBox
+				variant='muted'
+				lines={[
+					'If your Rich Presence buttons are not visible in Discord, see the status page for details.',
+				]}
+				linkHref='/status'
+				linkLabel='Read setup & troubleshooting'
+			/>
 		</>
 	)
 
