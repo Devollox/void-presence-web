@@ -64,33 +64,6 @@ export default function DocsPage() {
 			</div>
 
 			<div className={styles.docs_card}>
-				<h3 className={styles.docs_subtitle}>Features</h3>
-				<ul className={styles.docs_list}>
-					<li className={styles.docs_list_item}>
-						Custom button pairs – Multiple button sets with labels and URLs;
-						leave the second empty if you only need a single button.
-					</li>
-					<li className={styles.docs_list_item}>
-						Status cycles – Rotate multiple details and state texts on a timer,
-						independently from images and buttons.
-					</li>
-					<li className={styles.docs_list_item}>
-						Image rotation – Cycle through large and small Rich Presence images;
-						shorter image lists are reused automatically.
-					</li>
-					<li className={styles.docs_list_item}>
-						Profiles with drag &amp; drop – Create and reorder presence presets.
-					</li>
-					<li className={styles.docs_list_item}>
-						Config import / export – Move setups between machines via JSON.
-					</li>
-					<li className={styles.docs_list_item}>
-						Auto-launch &amp; auto-hide – Optional start on boot and to tray.
-					</li>
-				</ul>
-			</div>
-
-			<div className={styles.docs_card}>
 				<h3 className={styles.docs_subtitle}>Quick usage</h3>
 				<ol className={styles.docs_list_ordered}>
 					<li className={styles.docs_list_item}>
@@ -123,6 +96,33 @@ export default function DocsPage() {
 						needed.
 					</li>
 				</ol>
+			</div>
+
+			<div className={styles.docs_card}>
+				<h3 className={styles.docs_subtitle}>Features</h3>
+				<ul className={styles.docs_list}>
+					<li className={styles.docs_list_item}>
+						Custom button pairs – Multiple button sets with labels and URLs;
+						leave the second empty if you only need a single button.
+					</li>
+					<li className={styles.docs_list_item}>
+						Status cycles – Rotate multiple details and state texts on a timer,
+						independently from images and buttons.
+					</li>
+					<li className={styles.docs_list_item}>
+						Image rotation – Cycle through large and small Rich Presence images;
+						shorter image lists are reused automatically.
+					</li>
+					<li className={styles.docs_list_item}>
+						Profiles with drag &amp; drop – Create and reorder presence presets.
+					</li>
+					<li className={styles.docs_list_item}>
+						Config import / export – Move setups between machines via JSON.
+					</li>
+					<li className={styles.docs_list_item}>
+						Auto-launch &amp; auto-hide – Optional start on boot and to tray.
+					</li>
+				</ul>
 			</div>
 		</article>
 	)
