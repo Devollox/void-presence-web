@@ -67,9 +67,9 @@ export default function DocsPage() {
 				<h3 className={styles.docs_subtitle}>Quick usage</h3>
 				<ol className={styles.docs_list_ordered}>
 					<li className={styles.docs_list_item}>
-						Set Client ID from the{' '}
+						Create a Discord application and set Client ID from the{' '}
 						<a
-							style={{ color: 'white' }}
+							style={{ color: 'white', textDecoration: 'underline' }}
 							href='https://discord.com/developers/applications'
 							target='_blank'
 							rel='noreferrer'
@@ -79,23 +79,136 @@ export default function DocsPage() {
 						.
 					</li>
 					<li className={styles.docs_list_item}>
-						Choose update interval (default: 30 seconds).
+						On the Rich Presence / Art Assets tab, upload images that you want
+						to use as large and small icons and remember their keys.
 					</li>
 					<li className={styles.docs_list_item}>
-						Add images, button pairs and status cycles; each list can have its
-						own length, cycles will loop automatically.
+						In Void Presence, choose update interval (default: 30 seconds) and
+						enter details, state, image keys and optional tooltips.
 					</li>
 					<li className={styles.docs_list_item}>
-						Create profiles and reorder them with drag and drop.
+						Add button pairs with labels and HTTPS URLs; leave the second button
+						empty if you only need one.
 					</li>
 					<li className={styles.docs_list_item}>
-						Use config import / export to sync setups across machines.
+						Create profiles and reorder them with drag and drop to group setups
+						for different games or activities.
+					</li>
+					<li className={styles.docs_list_item}>
+						Use config import / export to sync setups across machines via JSON.
 					</li>
 					<li className={styles.docs_list_item}>
 						Click Save to start Rich Presence and use Restart / Stop when
-						needed.
+						needed; make sure the Discord desktop app is running.
 					</li>
 				</ol>
+			</div>
+
+			<div className={styles.docs_card}>
+				<h3 className={styles.docs_subtitle}>Configuration details</h3>
+				<p className={styles.docs_text}>
+					To use Rich Presence, Discord desktop client must be running and you
+					need a Discord application with a valid Client ID created in the
+					Developer Portal.
+				</p>
+				<p className={styles.docs_text}>
+					Void Presence talks to the local Discord client via RPC: it sends the
+					current activity (details, state, images and buttons) on a timer using
+					your Client ID as the application identifier.
+				</p>
+
+				<ul className={styles.docs_list}>
+					<li className={styles.docs_list_item}>
+						<span className={styles.docs_code}>Client ID</span> – Application ID
+						from the Discord Developer Portal; this tells Discord which app the
+						presence belongs to.
+					</li>
+					<li className={styles.docs_list_item}>
+						<span className={styles.docs_code}>Details</span> – Main line of
+						text (for example “Working on Void Presence docs”).
+					</li>
+					<li className={styles.docs_list_item}>
+						<span className={styles.docs_code}>State</span> – Second line of
+						text under details, often used for status like “Idle” or “In game”.
+					</li>
+					<li className={styles.docs_list_item}>
+						<span className={styles.docs_code}>Large image / Small image</span>–
+						Keys of images that you uploaded on the Rich Presence tab for your
+						application in the Developer Portal.
+					</li>
+					<li className={styles.docs_list_item}>
+						<span className={styles.docs_code}>Large text / Small text</span> –
+						Tooltips for the large and small image that appear on hover in the
+						Discord client.
+					</li>
+					<li className={styles.docs_list_item}>
+						<span className={styles.docs_code}>Buttons</span> – Up to two
+						interactive buttons with label and URL; Discord only shows valid
+						HTTPS links.
+					</li>
+					<li className={styles.docs_list_item}>
+						<span className={styles.docs_code}>Update interval</span> – How
+						often Void Presence pushes a new activity to Discord; shorter
+						intervals look more dynamic but create more RPC traffic.
+					</li>
+				</ul>
+
+				<p className={styles.docs_text}>
+					Profiles in Void Presence store all of these fields plus your cycles
+					configuration, so you can switch between completely different setups
+					in one click.
+				</p>
+
+				<h4 className={styles.docs_subtitle}>
+					What the <span className={styles.docs_code}>+</span> buttons do
+				</h4>
+				<ul className={styles.docs_list}>
+					<li className={styles.docs_list_item}>
+						<span className={styles.docs_code}>+ Details &amp; State</span> –
+						Adds a new status cycle entry with its own details and state. All
+						cycles are rotated one by one using the update interval.
+					</li>
+					<li className={styles.docs_list_item}>
+						<span className={styles.docs_code}>+ image</span> – Adds a new image
+						cycle entry with large/small image keys and optional texts. Images
+						are rotated independently from text and buttons.
+					</li>
+					<li className={styles.docs_list_item}>
+						<span className={styles.docs_code}>+ pair</span> – Adds a new button
+						pair with up to two buttons (label + HTTPS URL). Leave the second
+						button empty if you only need a single button.
+					</li>
+					<li className={styles.docs_list_item}>
+						<span className={styles.docs_code}>+ config</span> – Creates a new
+						saved profile in the Config tab using the current setup (cycles,
+						images, button pairs and client settings).
+					</li>
+				</ul>
+			</div>
+			<div className={styles.docs_card}>
+				<h3 className={styles.docs_subtitle}>Profiles & cloud sync</h3>
+				<p className={styles.docs_text}>
+					Profiles store your cycles, images, buttons and client settings so you
+					can quickly switch between different setups.
+				</p>
+				<ul className={styles.docs_list}>
+					<li className={styles.docs_list_item}>
+						Local profiles – Use the config name field and{' '}
+						<span className={styles.docs_code}>save</span>
+						button to add a profile to the local list.
+					</li>
+					<li className={styles.docs_list_item}>
+						Export / import – Use{' '}
+						<span className={styles.docs_code}>export</span> and the import
+						dialog to move profiles as JSON between machines.
+					</li>
+					<li className={styles.docs_list_item}>
+						Cloud upload – With an Author ID set,{' '}
+						<span className={styles.docs_code}>Upload Current</span>
+						sends your active profile to the cloud list in the client and on the
+						website.
+					</li>
+				</ul>
 			</div>
 
 			<div className={styles.docs_card}>
