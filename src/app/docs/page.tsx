@@ -164,24 +164,19 @@ export default function DocsPage() {
 				</h4>
 				<ul className={styles.docs_list}>
 					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>+ Details &amp; State</span> –
+						<span className={styles.docs_code}>+ DETAILS &amp; STATE</span> –
 						Adds a new status cycle entry with its own details and state. All
 						cycles are rotated one by one using the update interval.
 					</li>
 					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>+ image</span> – Adds a new image
+						<span className={styles.docs_code}>+ IMAGE</span> – Adds a new image
 						cycle entry with large/small image keys and optional texts. Images
 						are rotated independently from text and buttons.
 					</li>
 					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>+ pair</span> – Adds a new button
+						<span className={styles.docs_code}>+ PAIR</span> – Adds a new button
 						pair with up to two buttons (label + HTTPS URL). Leave the second
 						button empty if you only need a single button.
-					</li>
-					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>+ config</span> – Creates a new
-						saved profile in the Config tab using the current setup (cycles,
-						images, button pairs and client settings).
 					</li>
 				</ul>
 			</div>
