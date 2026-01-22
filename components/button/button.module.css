@@ -75,14 +75,15 @@
 		align-items: center;
 	}
 
-	.btn {
-		width: 100%;
-		max-width: 440px;
-		min-width: 256px;
-	}
-	.btn_config {
-		width: 100%;
-		max-width: 440px;
-		min-width: 256px;
+	.btn_width {
+		button {
+			width: 100%;
+		}
+
+		> a {
+			width: 100%;
+			max-width: 440px;
+			min-width: 256px;
+		}
 	}
 }

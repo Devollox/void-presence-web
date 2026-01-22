@@ -46,7 +46,7 @@ export default function Button() {
 	}
 
 	return (
-		<div className={styles.btn_container}>
+		<div className={`${styles.btn_container} ${styles.btn_width}`}>
 			<a
 				href={downloadUrl}
 				rel='noreferrer'
@@ -63,7 +63,7 @@ export default function Button() {
 				</button>
 			</a>
 
-			<a className={styles.btn_config} href='/configs'>
+			<a href='/configs'>
 				<button
 					className={`${styles.btn} ${styles.btn_secondary}`}
 					id='hero-community-button'
