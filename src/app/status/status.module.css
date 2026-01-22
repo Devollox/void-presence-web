@@ -2,20 +2,6 @@
 	min-height: calc(100vh - 140px);
 }
 
-.preview_badge {
-	border-radius: 999px;
-	padding: 4px 10px;
-	background: hsla(0, 0%, 9%, 0.9);
-	border: 1px solid hsla(146, 64%, 45%, 0.7);
-}
-
-.preview_badge_text {
-	font-size: 11px;
-	text-transform: uppercase;
-	letter-spacing: 0.16em;
-	color: #bbf7d0;
-}
-
 .rpc_card_preview {
 	background-color: black;
 	display: flex;
@@ -23,10 +9,6 @@
 	align-items: center;
 	min-height: 260px;
 	padding: 40px;
-
-	> div > div > a {
-		display: none;
-	}
 }
 
 .preview_footer {

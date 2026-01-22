@@ -63,6 +63,14 @@ export default function StatusPage() {
 					<div className={styles.rpc_card_preview}>
 						<RpcPreviewClient config={config} />
 					</div>
+
+					<div className={styles.preview_footer}>
+						<p className={styles.preview_note}>
+							This preview shows how your activity looks to others. Button
+							visibility in your own client may differ because of the current
+							Discord bug.
+						</p>
+					</div>
 				</div>
 			</div>
 		</section>
