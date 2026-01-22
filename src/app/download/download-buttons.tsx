@@ -1,6 +1,7 @@
 'use client'
 
 import { Download } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { incrementDownloadsStats } from '../../../service/firebase'
 import styles from './download.module.css'
 
@@ -15,6 +16,8 @@ interface Props {
 }
 
 export default function DownloadButtons({ assets }: Props) {
+	const router = useRouter()
+
 	const handleDownload = async (asset: ReleaseAsset) => {
 		try {
 			incrementDownloadsStats()
@@ -25,6 +28,10 @@ export default function DownloadButtons({ assets }: Props) {
 			document.body.appendChild(link)
 			link.click()
 			document.body.removeChild(link)
+
+			setTimeout(() => {
+				router.push('/docs')
+			}, 1)
 		}
 	}
 

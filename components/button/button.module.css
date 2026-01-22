@@ -20,7 +20,11 @@
 	align-items: center;
 	justify-content: center;
 	text-decoration: none;
-	transition: background 0.15s, box-shadow 0.15s, color 0.15s, border 0.15s;
+	transition:
+		background 0.15s,
+		box-shadow 0.15s,
+		color 0.15s,
+		border 0.15s;
 	cursor: pointer;
 	padding: 8px 12px;
 	-webkit-user-select: none;
@@ -72,6 +76,11 @@
 	}
 
 	.btn {
+		width: 100%;
+		max-width: 440px;
+		min-width: 256px;
+	}
+	.btn_config {
 		width: 100%;
 		max-width: 440px;
 		min-width: 256px;
