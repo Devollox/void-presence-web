@@ -14,9 +14,8 @@ type DrawableEntity = {
 export default function RenderBackdropAnimation() {
 	useEffect(() => {
 		const background = document.getElementById(
-			'bgCanvas'
+			'bgCanvas',
 		) as HTMLCanvasElement | null
-
 		if (!background) return
 
 		const backgroundContext = background.getContext('2d')
@@ -35,12 +34,16 @@ export default function RenderBackdropAnimation() {
 			speed: number
 			x: number
 			y: number
+			life: number
+			fadeInSpeed: number
 
 			constructor(options: StarOptions = {}) {
 				this.size = 0
 				this.speed = 0
 				this.x = 0
 				this.y = 0
+				this.life = 0
+				this.fadeInSpeed = 0
 				this.reset(options)
 			}
 
@@ -49,12 +52,25 @@ export default function RenderBackdropAnimation() {
 				this.speed = Math.random() * 0.1
 				this.x = options.x ?? width
 				this.y = options.y ?? Math.random() * height
+				this.life = 0
+				this.fadeInSpeed = 0.01 + Math.random() * 0.02
 			}
 
 			update() {
 				this.x -= this.speed
-				if (this.x < 0) this.reset()
-				else ctx.fillRect(this.x, this.y, this.size, this.size)
+				if (this.x < 0) {
+					this.reset()
+					return
+				}
+
+				if (this.life < 1) {
+					this.life += this.fadeInSpeed
+					if (this.life > 1) this.life = 1
+				}
+
+				ctx.globalAlpha = this.life
+				ctx.fillRect(this.x, this.y, this.size, this.size)
+				ctx.globalAlpha = 1
 			}
 		}
 
@@ -84,7 +100,7 @@ export default function RenderBackdropAnimation() {
 				this.len = Math.random() * 80 + 10
 				this.speed = Math.random() * 10 + 6
 				this.size = Math.random() * 1 - 0.1
-				this.waitTime = Date.now() * Math.random() * 3000 + 500
+				this.waitTime = Date.now() + Math.random() * 3000 + 500
 				this.active = false
 			}
 
@@ -111,7 +127,7 @@ export default function RenderBackdropAnimation() {
 		const entities: DrawableEntity[] = [
 			...Array.from(
 				{ length: Math.floor(height / 10) },
-				() => new Star({ x: Math.random() * width, y: Math.random() * height })
+				() => new Star({ x: Math.random() * width, y: Math.random() * height }),
 			),
 			new ShootingStar(),
 			new ShootingStar(),
@@ -128,6 +144,9 @@ export default function RenderBackdropAnimation() {
 			entities.forEach(e => e.update())
 			animationId = requestAnimationFrame(animate)
 		}
+
+		ctx.fillStyle = '#000'
+		ctx.fillRect(0, 0, width, height)
 
 		animationId = requestAnimationFrame(animate)
 
