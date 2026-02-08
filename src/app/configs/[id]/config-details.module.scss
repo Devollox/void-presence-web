@@ -292,7 +292,7 @@
 .details_toggle {
 	width: 100%;
 	padding: 10px 14px;
-	border-radius: 0 0 18px 18px;
+
 	border: 1px solid hsla(0, 0%, 100%, 0.06);
 	border-top: none;
 	background: hsla(0, 0%, 4%, 0.95);
@@ -372,7 +372,6 @@
 }
 
 .markdown_readme_content_open {
-	border: 1px solid hsla(255, 255%, 255%, 0.06);
 	padding: 16px 18px 14px;
 	max-height: 600px;
 	opacity: 1;
@@ -622,7 +621,7 @@
 	position: absolute;
 	inset: 0;
 	width: 100%;
-	height: 400px;
+	height: 390px;
 	object-fit: cover;
 	opacity: 0;
 	filter: blur(6px);
