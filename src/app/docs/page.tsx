@@ -27,7 +27,6 @@ export default function DocsPage() {
 					'Install the desktop client, create a Discord application, then configure your first Rich Presence profile in the main window.',
 				]}
 			/>
-
 			<InfoBox
 				variant='secondary'
 				title='Need the app?'
@@ -35,7 +34,6 @@ export default function DocsPage() {
 					'Download the latest Void Presence build on the download page and follow this guide to configure it.',
 				]}
 			/>
-
 			<InfoBox
 				variant='muted'
 				lines={[
@@ -57,17 +55,88 @@ export default function DocsPage() {
 					management via drag and drop.
 				</p>
 				<p className={styles.docs_text}>
-					Text, image and button cycles are independent: you can mix different
-					lengths and Void Presence will automatically loop each set on a timer,
-					keeping your activity fresh without manual updates.
+					The desktop window has a dark titlebar with a compact main card that
+					holds your client id, update interval, three cycle lists and a payload
+					preview panel at the bottom.
 				</p>
 			</section>
+
 			<section className={styles.docs_card}>
 				<h3 className={styles.docs_subtitle}>Quick usage</h3>
+
+				<div className={styles.quick_shell}>
+					<div className={styles.quick_top}>
+						<div className={styles.quick_status_chip}>
+							<span className={styles.quick_status_dot} />
+							<span>ACTIVE SESSION</span>
+						</div>
+						<div className={styles.quick_activity_title}>
+							<span className={styles.quick_activity_main}>Idle</span>
+							<span className={styles.quick_activity_sub}>
+								Waiting for Discord
+							</span>
+						</div>
+					</div>
+
+					<div className={styles.quick_row}>
+						<span className={styles.quick_label}>client id</span>
+						<input
+							className={styles.quick_input}
+							placeholder='Application ID'
+							readOnly
+							value='123456789012345678'
+						/>
+						<button className={styles.quick_btn}>save</button>
+					</div>
+
+					<div className={styles.quick_row}>
+						<span className={styles.quick_label}>update(sec)</span>
+						<input className={styles.quick_input} placeholder='30' readOnly />
+					</div>
+
+					<div className={styles.quick_blocks}>
+						<div className={styles.quick_block}>
+							<div className={styles.quick_block_header}>
+								<span className={styles.quick_block_label}>
+									Details &amp; State
+								</span>
+								<button className={styles.quick_block_add}>
+									+ DETAILS &amp; STATE
+								</button>
+							</div>
+							<div className={styles.quick_block_hint}>
+								left column · text rows
+							</div>
+						</div>
+
+						<div className={styles.quick_block}>
+							<div className={styles.quick_block_header}>
+								<span className={styles.quick_block_label}>images</span>
+								<button className={styles.quick_block_add}>+ image</button>
+							</div>
+							<div className={styles.quick_block_hint}>
+								center/right · large / small keys (small image and hover text
+								are optional)
+							</div>
+						</div>
+
+						<div className={styles.quick_block}>
+							<div className={styles.quick_block_header}>
+								<span className={styles.quick_block_label}>button pairs</span>
+								<button className={styles.quick_block_add}>+ pair</button>
+							</div>
+							<div className={styles.quick_block_hint}>
+								bottom block · button 1 / button 2
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<ol className={styles.docs_list_ordered}>
 					<li className={styles.docs_list_item}>
-						Open Discord desktop and keep it running; in Void Presence, the
-						status chip at the top of the main card will change once the RPC
+						Open Discord desktop and keep it running. In Void Presence, the
+						status chip at the top of the main card (same as in the mini preview
+						above) will switch from “Waiting for Discord” once the RPC
 						connection is ready.
 					</li>
 					<li className={styles.docs_list_item}>
@@ -82,37 +151,56 @@ export default function DocsPage() {
 						</a>
 						, click <span className={styles.docs_code}>New Application</span>,
 						give it a name and choose an{' '}
-						<span className={styles.docs_code}>App icon</span> that will be used
-						as the avatar for your activity when you are in a Discord voice or
-						text channel. After creating the app, copy its Application ID into
-						the rounded <span className={styles.docs_code}>client id</span>{' '}
-						field in Void Presence.
+						<span className={styles.docs_code}>App icon</span>. This icon will
+						be used as the avatar of your activity when you are in a Discord
+						voice or text channel.
 					</li>
 					<li className={styles.docs_list_item}>
-						Set the <span className={styles.docs_code}>update(sec)</span> value
-						to control how often the app rotates to the next entry in your
-						lists.
+						On the application page, copy the{' '}
+						<span className={styles.docs_code}>APPLICATION ID</span> and paste
+						it into the rounded{' '}
+						<span className={styles.docs_code}>client id</span> field at the top
+						of the main card in Void Presence (see the first row in the
+						preview). Then click the{' '}
+						<span className={styles.docs_code}>save</span> button on the right
+						of this row.
+					</li>
+					<li className={styles.docs_list_item}>
+						In the row below, set{' '}
+						<span className={styles.docs_code}>update(sec)</span> – this is how
+						often Void Presence will move to the next entry in your cycles (for
+						example, 30 seconds for a slow rotation).
 					</li>
 					<li className={styles.docs_list_item}>
 						In the <span className={styles.docs_code}>Details &amp; State</span>{' '}
-						section, click{' '}
-						<span className={styles.docs_code}>+ DETAILS &amp; STATE</span> to
-						add rows to the text cycle list.
+						block on the left side of the main card (first small block in the
+						preview), click{' '}
+						<span className={styles.docs_code}>+ DETAILS &amp; STATE</span>. In
+						each new row that appears, type the top line into the first pill
+						input (Details) and the second line into the lower pill input
+						(State).
 					</li>
 					<li className={styles.docs_list_item}>
-						In the <span className={styles.docs_code}>images</span> section,
-						click <span className={styles.docs_code}>+ image</span> to add rows
-						with large/small image keys and texts. (.png/.jpeg/.gif) - URL
+						In the <span className={styles.docs_code}>images</span> block
+						(middle block in the preview), click{' '}
+						<span className={styles.docs_code}>+ image</span>. For each row,
+						fill the large image key, and optionally the small image key and
+						hover texts – these fields can be left empty if you only need one
+						image without captions.
 					</li>
 					<li className={styles.docs_list_item}>
-						In the <span className={styles.docs_code}>button pairs</span>{' '}
-						section, click <span className={styles.docs_code}>+ pair</span> to
-						add rows with one or two HTTPS buttons.
+						In the <span className={styles.docs_code}>button pairs</span> block
+						(bottom block in the preview), click{' '}
+						<span className={styles.docs_code}>+ pair</span>. In each row, type
+						the label and HTTPS URL for Button 1 and optionally Button 2; if
+						Button 2 is empty, only the first button will appear in Discord.
 					</li>
 					<li className={styles.docs_list_item}>
-						Click <span className={styles.docs_code}>Save</span> to send the
-						first update; the current payload box at the bottom of the card will
-						show what Discord receives.
+						When all fields are filled, click the{' '}
+						<span className={styles.docs_code}>Save</span> button under the main
+						card in the app to apply your configuration. The current payload
+						panel at the bottom of the window will show exactly what is being
+						sent to Discord.
 					</li>
 				</ol>
 
@@ -158,7 +246,6 @@ export default function DocsPage() {
 					app: a label row, a rounded “+ Details &amp; State” button and a
 					vertical list of draggable rows inside the cycles-list area.
 				</p>
-
 				<div className={styles.demo_card}>
 					<div className={styles.demo_header}>
 						<span className={styles.demo_label}>Details &amp; State</span>
@@ -166,7 +253,6 @@ export default function DocsPage() {
 							+ DETAILS &amp; STATE
 						</button>
 					</div>
-
 					<div className={styles.demo_list} aria-label='cycles-list'>
 						<div className={styles.demo_row}>
 							<div className={styles.demo_row_body}>
@@ -185,7 +271,6 @@ export default function DocsPage() {
 							</div>
 							<button className={styles.demo_remove_btn}>×</button>
 						</div>
-
 						<div className={styles.demo_row}>
 							<div className={styles.demo_row_body}>
 								<input
@@ -203,7 +288,6 @@ export default function DocsPage() {
 							</div>
 							<button className={styles.demo_remove_btn}>×</button>
 						</div>
-
 						<div className={`${styles.demo_row} ${styles.demo_row_dragging}`}>
 							<div className={styles.demo_row_body}>
 								<input
@@ -222,13 +306,11 @@ export default function DocsPage() {
 							<button className={styles.demo_remove_btn}>×</button>
 						</div>
 					</div>
-
 					<div className={styles.demo_footer}>
 						<div className={styles.demo_chip}>UPDATE(SEC): 30</div>
 						<div className={styles.demo_chip}>3 STEPS IN CYCLE</div>
 					</div>
 				</div>
-
 				<p className={styles.docs_text}>
 					In the real app, each row in the cycles-list is draggable: on drag it
 					darkens, gets a glow border and shadow, and you can drop it above or
@@ -238,28 +320,129 @@ export default function DocsPage() {
 			</section>
 
 			<section className={styles.docs_card}>
+				<h3 className={styles.docs_subtitle}>Payload & logs</h3>
+				<p className={styles.docs_text}>
+					Below the main card, the current payload block shows the Buttons,
+					Object, State and Uptime fields that match what is currently sent to
+					Discord, and the logs tab collects a scrollable list of update
+					entries.
+				</p>
+				<div className={styles.payload_demo}>
+					<div className={styles.payload_demo_header}>current payload</div>
+					<div className={styles.payload_demo_grid}>
+						<span className={styles.payload_demo_label}>Buttons</span>
+						<span className={styles.payload_demo_value}>Support · Website</span>
+						<span className={styles.payload_demo_label}>Object</span>
+						<span className={styles.payload_demo_value}>
+							void_presence_activity_v2
+						</span>
+						<span className={styles.payload_demo_label}>State</span>
+						<span className={styles.payload_demo_value}>
+							Idle · Desktop client
+						</span>
+						<span className={styles.payload_demo_label}>Uptime</span>
+						<span className={styles.payload_demo_value}>00:12:34</span>
+					</div>
+					<div className={styles.payload_demo_status}>
+						last update: OK · 3 cycles
+					</div>
+				</div>
+				<div className={styles.logs_demo}>
+					<div className={styles.logs_demo_header}>
+						<span className={styles.logs_demo_title}>logs</span>
+						<span className={styles.logs_demo_counter}>3 entries</span>
+					</div>
+					<div className={styles.logs_demo_list}>
+						<div className={styles.logs_demo_item}>
+							<span className={styles.logs_demo_dot_success} />
+							<div>
+								<div className={styles.logs_demo_message}>Presence updated</div>
+								<div className={styles.logs_demo_meta}>OK · 18:32:10</div>
+							</div>
+						</div>
+						<div className={styles.logs_demo_item}>
+							<span className={styles.logs_demo_dot_success} />
+							<div>
+								<div className={styles.logs_demo_message}>Presence updated</div>
+								<div className={styles.logs_demo_meta}>OK · 18:31:40</div>
+							</div>
+						</div>
+						<div className={styles.logs_demo_item_warn}>
+							<span className={styles.logs_demo_dot_warn} />
+							<div>
+								<div className={styles.logs_demo_message}>
+									Discord not detected
+								</div>
+								<div className={styles.logs_demo_meta}>WARN · 18:30:02</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section className={styles.docs_card}>
 				<h3 className={styles.docs_subtitle}>Profiles &amp; cloud sync</h3>
 				<p className={styles.docs_text}>
 					Profiles store your cycles, images, buttons and client settings so you
 					can quickly switch between different setups.
 				</p>
-				<ul className={styles.docs_list}>
-					<li className={styles.docs_list_item}>
-						Local profiles – Use the config name field and{' '}
-						<span className={styles.docs_code}>save</span> button to add a
-						profile to the local list.
-					</li>
-					<li className={styles.docs_list_item}>
-						Export / import – Use{' '}
-						<span className={styles.docs_code}>export</span> and the import
-						dialog to move profiles as JSON between machines.
-					</li>
-					<li className={styles.docs_list_item}>
-						Cloud upload – With an Author ID set,{' '}
-						<span className={styles.docs_code}>Upload Current</span> sends your
-						active profile to the cloud list in the client and on the website.
-					</li>
-				</ul>
+				<div className={styles.profiles_demo}>
+					<div className={styles.profiles_demo_header}>
+						<span className={styles.profiles_demo_label}>Profiles</span>
+						<span className={styles.profiles_demo_sub}>
+							save / load presets
+						</span>
+					</div>
+					<div className={styles.profiles_demo_row}>
+						<span>name</span>
+						<input placeholder='config name' readOnly value='Tarkov · Stream' />
+						<button>save</button>
+					</div>
+					<div className={styles.profiles_demo_row}>
+						<span>author ID</span>
+						<input
+							placeholder='optional author ID for cloud sync'
+							readOnly
+							value='vp_devollox'
+						/>
+					</div>
+					<div className={styles.profiles_demo_list_header}>
+						<span className={styles.profiles_demo_list_label}>
+							saved configs
+						</span>
+						<button className={styles.profiles_demo_small_btn}>export</button>
+						<button className={styles.profiles_demo_small_btn}>+ config</button>
+					</div>
+					<div className={styles.profiles_demo_list}>
+						<div className={styles.profiles_demo_item}>
+							<div className={styles.profiles_demo_item_main}>
+								<div className={styles.profiles_demo_item_title}>
+									Tarkov · Stream
+								</div>
+								<div className={styles.profiles_demo_item_sub}>
+									3 text, 2 images, 2 buttons
+								</div>
+							</div>
+							<button className={styles.profiles_demo_item_btn}>load</button>
+						</div>
+						<div className={styles.profiles_demo_item}>
+							<div className={styles.profiles_demo_item_main}>
+								<div className={styles.profiles_demo_item_title}>
+									Dev · Website
+								</div>
+								<div className={styles.profiles_demo_item_sub}>
+									2 text, 1 image, 1 button
+								</div>
+							</div>
+							<button className={styles.profiles_demo_item_btn}>load</button>
+						</div>
+					</div>
+				</div>
+				<p className={styles.docs_text}>
+					Export and import use JSON files that match exactly the buttonPairs,
+					cycles and imageCycles structures from the desktop client, so shared
+					profiles behave the same on another machine.
+				</p>
 			</section>
 
 			<section className={styles.docs_card}>
