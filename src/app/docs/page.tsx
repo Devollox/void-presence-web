@@ -149,8 +149,8 @@ export default function DocsPage() {
 						>
 							Discord Developer Portal
 						</a>
-						, click <span className={styles.docs_code}>New Application</span>,
-						give it a name and choose an{' '}
+						, <span className={styles.docs_code}>New Application</span>, give it
+						a name and choose an{' '}
 						<span className={styles.docs_code}>App icon</span>. This icon will
 						be used as the avatar of your activity when you are in a Discord
 						voice or text channel.
@@ -205,10 +205,10 @@ export default function DocsPage() {
 				</ol>
 
 				<p className={styles.docs_text}>
-					Click <span className={styles.docs_code}>Save</span> after each change
-					– the app will automatically save your configuration and restart the
-					active Rich Presence session with the updated details, images and
-					buttons.
+					Click <span className={styles.docs_code}>Save and Restart RPC</span>{' '}
+					after each change – the app will automatically save your configuration
+					and restart the active Rich Presence session with the updated details,
+					images and buttons.
 				</p>
 			</section>
 
