@@ -24,7 +24,7 @@ export default function DocsPage() {
 			<InfoBox
 				title='Getting started'
 				lines={[
-					'Learn how to install the app, configure Discord Developer Portal, and set up your first Rich Presence profile.',
+					'Install the desktop client, create a Discord application, then configure your first Rich Presence profile in the main window.',
 				]}
 			/>
 
@@ -39,7 +39,7 @@ export default function DocsPage() {
 			<InfoBox
 				variant='muted'
 				lines={[
-					'If your Rich Presence buttons are not visible in Discord, see the status page for details.',
+					'If buttons or images are missing in Discord, open the status page to check setup, RPC connection and common issues.',
 				]}
 				linkHref='/status'
 				linkLabel='Read setup & troubleshooting'
@@ -49,7 +49,7 @@ export default function DocsPage() {
 
 	const right = (
 		<article className={styles.docs_content}>
-			<div className={styles.docs_card}>
+			<section className={styles.docs_card}>
 				<h3 className={styles.docs_title}>Overview</h3>
 				<p className={styles.docs_text}>
 					Void Presence is an advanced Discord Rich Presence manager with
@@ -61,13 +61,17 @@ export default function DocsPage() {
 					lengths and Void Presence will automatically loop each set on a timer,
 					keeping your activity fresh without manual updates.
 				</p>
-			</div>
-
-			<div className={styles.docs_card}>
+			</section>
+			<section className={styles.docs_card}>
 				<h3 className={styles.docs_subtitle}>Quick usage</h3>
 				<ol className={styles.docs_list_ordered}>
 					<li className={styles.docs_list_item}>
-						Create a Discord application and set Client ID from the{' '}
+						Open Discord desktop and keep it running; in Void Presence, the
+						status chip at the top of the main card will change once the RPC
+						connection is ready.
+					</li>
+					<li className={styles.docs_list_item}>
+						In the{' '}
 						<a
 							style={{ color: 'white', textDecoration: 'underline' }}
 							href='https://discord.com/developers/applications'
@@ -76,112 +80,165 @@ export default function DocsPage() {
 						>
 							Discord Developer Portal
 						</a>
-						.
+						, click <span className={styles.docs_code}>New Application</span>,
+						give it a name and choose an{' '}
+						<span className={styles.docs_code}>App icon</span> that will be used
+						as the avatar for your activity when you are in a Discord voice or
+						text channel. After creating the app, copy its Application ID into
+						the rounded <span className={styles.docs_code}>client id</span>{' '}
+						field in Void Presence.
 					</li>
 					<li className={styles.docs_list_item}>
-						On the Rich Presence / Art Assets tab, upload images that you want
-						to use as large and small icons and remember their keys.
+						Set the <span className={styles.docs_code}>update(sec)</span> value
+						to control how often the app rotates to the next entry in your
+						lists.
 					</li>
 					<li className={styles.docs_list_item}>
-						In Void Presence, choose update interval (default: 30 seconds) and
-						enter details, state, image keys and optional tooltips.
+						In the <span className={styles.docs_code}>Details &amp; State</span>{' '}
+						section, click{' '}
+						<span className={styles.docs_code}>+ DETAILS &amp; STATE</span> to
+						add rows to the text cycle list.
 					</li>
 					<li className={styles.docs_list_item}>
-						Add button pairs with labels and HTTPS URLs; leave the second button
-						empty if you only need one.
+						In the <span className={styles.docs_code}>images</span> section,
+						click <span className={styles.docs_code}>+ image</span> to add rows
+						with large/small image keys and texts. (.png/.jpeg/.gif) - URL
 					</li>
 					<li className={styles.docs_list_item}>
-						Create profiles and reorder them with drag and drop to group setups
-						for different games or activities.
+						In the <span className={styles.docs_code}>button pairs</span>{' '}
+						section, click <span className={styles.docs_code}>+ pair</span> to
+						add rows with one or two HTTPS buttons.
 					</li>
 					<li className={styles.docs_list_item}>
-						Use config import / export to sync setups across machines via JSON.
-					</li>
-					<li className={styles.docs_list_item}>
-						Click Save to start Rich Presence and use Restart / Stop when
-						needed; make sure the Discord desktop app is running.
+						Click <span className={styles.docs_code}>Save</span> to send the
+						first update; the current payload box at the bottom of the card will
+						show what Discord receives.
 					</li>
 				</ol>
-			</div>
 
-			<div className={styles.docs_card}>
-				<h3 className={styles.docs_subtitle}>Configuration details</h3>
 				<p className={styles.docs_text}>
-					To use Rich Presence, Discord desktop client must be running and you
-					need a Discord application with a valid Client ID created in the
-					Developer Portal.
+					Click <span className={styles.docs_code}>Save</span> after each change
+					– the app will automatically save your configuration and restart the
+					active Rich Presence session with the updated details, images and
+					buttons.
 				</p>
-				<p className={styles.docs_text}>
-					Void Presence talks to the local Discord client via RPC: it sends the
-					current activity (details, state, images and buttons) on a timer using
-					your Client ID as the application identifier.
-				</p>
+			</section>
 
+			<section className={styles.docs_card}>
+				<h3 className={styles.docs_subtitle}>How cycles work</h3>
+				<p className={styles.docs_text}>
+					Internally, each list (text, images, buttons) is an ordered array of
+					rows. On every tick, Void Presence moves an index forward and uses the
+					row at that position for the next Rich Presence update.
+				</p>
 				<ul className={styles.docs_list}>
 					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>Client ID</span> – Application ID
-						from the Discord Developer Portal; this tells Discord which app the
-						presence belongs to.
+						Text cycle – rows from the Details &amp; State list are used for the
+						main and secondary lines in Discord.
 					</li>
 					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>Details</span> – Main line of
-						text (for example “Working on Void Presence docs”).
+						Image cycle – rows from the images list control large/small image
+						keys and their hover texts.
 					</li>
 					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>State</span> – Second line of
-						text under details, often used for status like “Idle” or “In game”.
+						Button cycle – rows from the button pairs list control the two
+						clickable buttons; missing second button is simply ignored.
 					</li>
 					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>Large image / Small image</span>–
-						Keys of images that you uploaded on the Rich Presence tab for your
-						application in the Developer Portal.
-					</li>
-					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>Large text / Small text</span> –
-						Tooltips for the large and small image that appear on hover in the
-						Discord client.
-					</li>
-					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>Buttons</span> – Up to two
-						interactive buttons with label and URL; Discord only shows valid
-						HTTPS links.
-					</li>
-					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>Update interval</span> – How
-						often Void Presence pushes a new activity to Discord; shorter
-						intervals look more dynamic but create more RPC traffic.
+						If a list has only one row, the same values repeat on every step
+						while other lists still rotate through their own rows.
 					</li>
 				</ul>
+			</section>
 
+			<section className={styles.docs_card}>
+				<h3 className={styles.docs_subtitle}>Cycles UI demo</h3>
 				<p className={styles.docs_text}>
-					Profiles in Void Presence store all of these fields plus your cycles
-					configuration, so you can switch between completely different setups
-					in one click.
+					This example mirrors the Details &amp; State section in the desktop
+					app: a label row, a rounded “+ Details &amp; State” button and a
+					vertical list of draggable rows inside the cycles-list area.
 				</p>
 
-				<h4 className={styles.docs_subtitle}>
-					What the <span className={styles.docs_code}>+</span> buttons do
-				</h4>
-				<ul className={styles.docs_list}>
-					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>+ DETAILS &amp; STATE</span> –
-						Adds a new status cycle entry with its own details and state. All
-						cycles are rotated one by one using the update interval.
-					</li>
-					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>+ IMAGE</span> – Adds a new image
-						cycle entry with large/small image keys and optional texts. Images
-						are rotated independently from text and buttons.
-					</li>
-					<li className={styles.docs_list_item}>
-						<span className={styles.docs_code}>+ PAIR</span> – Adds a new button
-						pair with up to two buttons (label + HTTPS URL). Leave the second
-						button empty if you only need a single button.
-					</li>
-				</ul>
-			</div>
-			<div className={styles.docs_card}>
-				<h3 className={styles.docs_subtitle}>Profiles & cloud sync</h3>
+				<div className={styles.demo_card}>
+					<div className={styles.demo_header}>
+						<span className={styles.demo_label}>Details &amp; State</span>
+						<button className={styles.demo_add_btn}>
+							+ DETAILS &amp; STATE
+						</button>
+					</div>
+
+					<div className={styles.demo_list} aria-label='cycles-list'>
+						<div className={styles.demo_row}>
+							<div className={styles.demo_row_body}>
+								<input
+									className={styles.demo_input}
+									placeholder='Working on Void Presence'
+									readOnly
+									aria-label='Working on Void Presence'
+								/>
+								<input
+									className={styles.demo_input}
+									placeholder='Idle · Desktop client'
+									readOnly
+									aria-label='Idle · Desktop client'
+								/>
+							</div>
+							<button className={styles.demo_remove_btn}>×</button>
+						</div>
+
+						<div className={styles.demo_row}>
+							<div className={styles.demo_row_body}>
+								<input
+									className={styles.demo_input}
+									placeholder='Playing Escape from Tarkov'
+									readOnly
+									aria-label='Playing Escape from Tarkov'
+								/>
+								<input
+									className={styles.demo_input}
+									placeholder='Custom RPC overlay'
+									readOnly
+									aria-label='Custom RPC overlay'
+								/>
+							</div>
+							<button className={styles.demo_remove_btn}>×</button>
+						</div>
+
+						<div className={`${styles.demo_row} ${styles.demo_row_dragging}`}>
+							<div className={styles.demo_row_body}>
+								<input
+									className={styles.demo_input}
+									placeholder='Browsing configs on website'
+									readOnly
+									aria-label='Browsing configs on website'
+								/>
+								<input
+									className={styles.demo_input}
+									placeholder='Drag & drop profiles'
+									readOnly
+									aria-label='Drag & drop profiles'
+								/>
+							</div>
+							<button className={styles.demo_remove_btn}>×</button>
+						</div>
+					</div>
+
+					<div className={styles.demo_footer}>
+						<div className={styles.demo_chip}>UPDATE(SEC): 30</div>
+						<div className={styles.demo_chip}>3 STEPS IN CYCLE</div>
+					</div>
+				</div>
+
+				<p className={styles.docs_text}>
+					In the real app, each row in the cycles-list is draggable: on drag it
+					darkens, gets a glow border and shadow, and you can drop it above or
+					below other rows to change the order in which statuses appear in
+					Discord.
+				</p>
+			</section>
+
+			<section className={styles.docs_card}>
+				<h3 className={styles.docs_subtitle}>Profiles &amp; cloud sync</h3>
 				<p className={styles.docs_text}>
 					Profiles store your cycles, images, buttons and client settings so you
 					can quickly switch between different setups.
@@ -189,8 +246,8 @@ export default function DocsPage() {
 				<ul className={styles.docs_list}>
 					<li className={styles.docs_list_item}>
 						Local profiles – Use the config name field and{' '}
-						<span className={styles.docs_code}>save</span>
-						button to add a profile to the local list.
+						<span className={styles.docs_code}>save</span> button to add a
+						profile to the local list.
 					</li>
 					<li className={styles.docs_list_item}>
 						Export / import – Use{' '}
@@ -199,14 +256,13 @@ export default function DocsPage() {
 					</li>
 					<li className={styles.docs_list_item}>
 						Cloud upload – With an Author ID set,{' '}
-						<span className={styles.docs_code}>Upload Current</span>
-						sends your active profile to the cloud list in the client and on the
-						website.
+						<span className={styles.docs_code}>Upload Current</span> sends your
+						active profile to the cloud list in the client and on the website.
 					</li>
 				</ul>
-			</div>
+			</section>
 
-			<div className={styles.docs_card}>
+			<section className={styles.docs_card}>
 				<h3 className={styles.docs_subtitle}>Features</h3>
 				<ul className={styles.docs_list}>
 					<li className={styles.docs_list_item}>
@@ -231,7 +287,7 @@ export default function DocsPage() {
 						Auto-launch &amp; auto-hide – Optional start on boot and to tray.
 					</li>
 				</ul>
-			</div>
+			</section>
 		</article>
 	)
 
