@@ -54,11 +54,6 @@ export default function DocsPage() {
 					customizable button pairs, text cycles, image rotation and profile
 					management via drag and drop.
 				</p>
-				<p className={styles.docs_text}>
-					The desktop window has a dark titlebar with a compact main card that
-					holds your client id, update interval, three cycle lists and a payload
-					preview panel at the bottom.
-				</p>
 			</section>
 
 			<section className={styles.docs_card}>
