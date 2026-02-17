@@ -192,15 +192,16 @@ export default function DocsPage() {
 					</li>
 					<li className={styles.docs_list_item}>
 						When all fields are filled, click the{' '}
-						<span className={styles.docs_code}>Save</span> button under the main
-						card in the app to apply your configuration. The current payload
-						panel at the bottom of the window will show exactly what is being
-						sent to Discord.
+						<span className={styles.docs_code}>Save and Restart Presence</span>{' '}
+						button under the main card in the app to apply your configuration.
+						The current payload panel at the bottom of the window will show
+						exactly what is being sent to Discord.
 					</li>
 				</ol>
 
 				<p className={styles.docs_text}>
-					Click <span className={styles.docs_code}>Save and Restart RPC</span>{' '}
+					Click{' '}
+					<span className={styles.docs_code}>Save and Restart Presence</span>{' '}
 					after each change – the app will automatically save your configuration
 					and restart the active Rich Presence session with the updated details,
 					images and buttons.
