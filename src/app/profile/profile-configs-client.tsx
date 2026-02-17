@@ -35,7 +35,7 @@ function CustomRpcPreview({
 	const maxLen = Math.max(
 		cycles.length || 1,
 		images.length || 1,
-		buttonPairs.length || 1
+		buttonPairs.length || 1,
 	)
 
 	const localIndex = maxLen ? previewIndex % maxLen : 0
@@ -159,7 +159,7 @@ function filterConfigs(configs: Config[], searchTerm: string) {
 		config =>
 			config.title.toLowerCase().includes(term) ||
 			config.author.toLowerCase().includes(term) ||
-			config.description.toLowerCase().includes(term)
+			config.description.toLowerCase().includes(term),
 	)
 }
 
@@ -201,7 +201,7 @@ export function ProfileConfigsClient({ configs, userId }: Props) {
 				setHasLoadedFirstSnapshot(true)
 			},
 			undefined,
-			userId
+			userId,
 		)
 
 		const interval = setInterval(() => {
@@ -216,11 +216,11 @@ export function ProfileConfigsClient({ configs, userId }: Props) {
 
 	const filteredConfigs = useMemo(
 		() => filterConfigs(liveConfigs, searchTerm),
-		[liveConfigs, searchTerm]
+		[liveConfigs, searchTerm],
 	)
 	const sortedConfigs = useMemo(
 		() => sortConfigs(filteredConfigs),
-		[filteredConfigs]
+		[filteredConfigs],
 	)
 
 	const showSkeleton = loading
@@ -326,7 +326,7 @@ export function ProfileConfigsClient({ configs, userId }: Props) {
 														try {
 															await deleteConfig(config.id)
 															setLiveConfigs(prev =>
-																prev.filter(c => c.id !== config.id)
+																prev.filter(c => c.id !== config.id),
 															)
 														} finally {
 															setDeleting(null)
@@ -344,7 +344,9 @@ export function ProfileConfigsClient({ configs, userId }: Props) {
 											hasColor={hasColor}
 											onColorReady={hex =>
 												setColors(prev =>
-													prev[config.id] ? prev : { ...prev, [config.id]: hex }
+													prev[config.id]
+														? prev
+														: { ...prev, [config.id]: hex },
 												)
 											}
 											id={userId}

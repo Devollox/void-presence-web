@@ -46,7 +46,7 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 	const maxLen = Math.max(
 		cycles.length || 1,
 		images.length || 1,
-		buttonsList.length || 1
+		buttonsList.length || 1,
 	)
 
 	const localIndex = maxLen ? previewTick % maxLen : 0
@@ -92,7 +92,10 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 								</div>
 								<section className={styles.addon_actions}>
 									<div className={styles.btn_container}>
-										<a href='/download' className={styles.download_btn_primary}>
+										<a
+											href='/download'
+											className={`${styles.download_btn_primary} ${styles.back_download_btn_primary}`}
+										>
 											Download Void Presence
 										</a>
 									</div>
