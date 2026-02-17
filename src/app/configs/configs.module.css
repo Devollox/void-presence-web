@@ -232,7 +232,7 @@
 	backdrop-filter: blur(10px);
 	color: #fff;
 	text-align: center;
-	background: #141414;
+	background: hsla(0, 0%, 100%, 0.078);
 	border: 1px solid #ffffff1a;
 	border-radius: 10px;
 	padding: 9px 14px;

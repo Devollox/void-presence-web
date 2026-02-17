@@ -4,7 +4,7 @@
 	backdrop-filter: blur(10px);
 	color: #fff;
 	text-align: left;
-	background: #141414;
+	background: hsla(0, 0%, 100%, 0.078);
 	border: 1px solid #ffffff1a;
 	border-radius: 12px;
 	padding: 12px 14px;
