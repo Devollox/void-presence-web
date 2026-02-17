@@ -107,7 +107,10 @@
 	background: rgba(26, 26, 26, 0.96);
 	border-color: rgba(91, 91, 91, 0.4);
 	--card-highlight: #5b5b5b;
-	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease,
+		border-color 0.2s ease;
 }
 
 .card_wrap::before {
@@ -226,11 +229,10 @@
 
 .btn_primary,
 .btn_secondary {
-	-webkit-backdrop-filter: blur(10px);
 	backdrop-filter: blur(10px);
 	color: #fff;
 	text-align: center;
-	background: #ffffff14;
+	background: #2a2a2a;
 	border: 1px solid #ffffff1a;
 	border-radius: 10px;
 	padding: 9px 14px;
@@ -303,7 +305,8 @@
 	max-height: 90vh;
 	width: 100%;
 	overflow: hidden;
-	box-shadow: 0 30px 60px hsla(0, 0%, 0%, 0.7),
+	box-shadow:
+		0 30px 60px hsla(0, 0%, 0%, 0.7),
 		0 0 0 1px hsla(255, 255%, 255%, 0.03);
 	animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }

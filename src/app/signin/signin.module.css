@@ -4,7 +4,7 @@
 	backdrop-filter: blur(10px);
 	color: #fff;
 	text-align: left;
-	background: #ffffff14;
+	background: #2a2a2a;
 	border: 1px solid #ffffff1a;
 	border-radius: 12px;
 	padding: 12px 14px;
@@ -20,7 +20,8 @@
 
 .signin_btn_primary:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 20px 40px hsla(0, 0%, 0%, 0.5),
+	box-shadow:
+		0 20px 40px hsla(0, 0%, 0%, 0.5),
 		0 0 0 1px hsla(255, 255%, 255%, 0.1);
 	background: linear-gradient(
 		135deg,
