@@ -173,7 +173,15 @@
 	justify-content: space-between;
 	cursor: pointer;
 }
-
+.assets_list {
+	background: #1f1f1fcc;
+	border: 1px solid #ffffff0f;
+	border-radius: 12px;
+	flex-direction: column;
+	gap: 8px;
+	padding: 16px;
+	display: flex;
+}
 .download_btn_primary:hover {
 	transform: translateY(-2px);
 	box-shadow:

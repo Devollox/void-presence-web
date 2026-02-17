@@ -35,6 +35,20 @@ export default function DownloadButtons({ assets }: Props) {
 		}
 	}
 
+	const getDisplayName = (filename: string) => {
+		const lastDotIndex = filename.lastIndexOf('.')
+		if (lastDotIndex === -1) return filename
+
+		const base = filename.slice(0, lastDotIndex)
+		const ext = filename.slice(lastDotIndex)
+
+		const cleanedBase = base
+			.replace(/-win32-x64-\d+\.\d+\.\d+$/i, '')
+			.replace(/\.Setup\.\d+\.\d+\.\d+$/i, '')
+
+		return cleanedBase + ext
+	}
+
 	return (
 		<div className={styles.assets_list}>
 			{assets.map(asset => (
@@ -44,7 +58,9 @@ export default function DownloadButtons({ assets }: Props) {
 					onClick={() => handleDownload(asset)}
 				>
 					<div className={styles.asset_info}>
-						<span className={styles.asset_name}>{asset.name}</span>
+						<span className={styles.asset_name}>
+							{getDisplayName(asset.name)}
+						</span>
 						<span className={styles.asset_size}>
 							{asset.size.toFixed(1)} MB
 						</span>
