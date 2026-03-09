@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import Footer from '../../../components/footer'
 import Page from '../../../components/page'
 import PageHeader from '../../../components/page-header'
+import RpcPreviewClient from '../download/rpc-preview-client'
 import styles from './docs.module.css'
 
 export const metadata: Metadata = {
@@ -16,6 +17,30 @@ export const metadata: Metadata = {
 			'Read the full Void Presence documentation including features, setup steps, and usage tips.',
 		url: '/docs',
 	},
+}
+
+const config = {
+	cycles: [
+		{
+			details: 'DETAILS',
+			state: 'STATE',
+		},
+	],
+	imageCycles: [
+		{
+			largeImage:
+				'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGE0ZXVvY3QwbmkyN2Vkbmg3ZHo1OXZkcW13OXU4aHphaWpvbndiNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PkKzNQjwPy7GvxZbfe/giphy.gif',
+			largeText: 'largeText',
+		},
+	],
+	buttonPairs: [
+		{
+			label1: 'BUTTON 1',
+			url1: 'https',
+			label2: 'BUTTON 2',
+			url2: 'https',
+		},
+	],
 }
 
 export default function DocsPage() {
@@ -205,6 +230,39 @@ export default function DocsPage() {
 					after each change – the app will automatically save your configuration
 					and restart the active Rich Presence session with the updated details,
 					images and buttons.
+				</p>
+
+				<div className={styles.rpc_preview_section}>
+					<div className={styles.rpc_card_preview}>
+						<RpcPreviewClient activityType='YOUR APP NAME' config={config} />
+					</div>
+					<div className={styles.preview_label}>
+						<span>YOUR APP NAME from Discord Developer Portal</span>
+					</div>
+					<div className={styles.preview_legend}>
+						<div>
+							<span className={styles.legend_key}>details</span> - main line
+							(from Details input)
+						</div>
+						<div>
+							<span className={styles.legend_key}>state</span> - subtitle (from
+							State input)
+						</div>
+						<div>
+							<span className={styles.legend_key}>largeImage</span> - main
+							artwork (from Images block)
+						</div>
+						<div>
+							<span className={styles.legend_key}>buttons</span> - clickable
+							links (from Button pairs)
+						</div>
+					</div>
+				</div>
+
+				<p className={styles.docs_text}>
+					<strong>App icon is important:</strong> This icon appears as your
+					activity avatar when you're in Discord voice/text channels. Upload a
+					512x512 PNG with transparent background for best results.
 				</p>
 			</section>
 

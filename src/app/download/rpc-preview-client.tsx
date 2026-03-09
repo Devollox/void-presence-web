@@ -5,15 +5,19 @@ import RpcPreview from '../../../components/rpc-preview/rpc-user'
 
 interface RpcPreviewClientProps {
 	config: any
+	activityType?: string
 }
 
-export default function RpcPreviewClient({ config }: RpcPreviewClientProps) {
+export default function RpcPreviewClient({
+	config,
+	activityType,
+}: RpcPreviewClientProps) {
 	const [currentIndex, setCurrentIndex] = useState(0)
 
 	useEffect(() => {
 		const interval = setInterval(
 			() => setCurrentIndex(prev => (prev + 1) % config.cycles.length),
-			1500
+			1500,
 		)
 		return () => clearInterval(interval)
 	}, [config.cycles.length])
@@ -24,6 +28,7 @@ export default function RpcPreviewClient({ config }: RpcPreviewClientProps) {
 
 	return (
 		<RpcPreview
+			activityType={activityType}
 			currentCycle={currentCycle}
 			currentImage={currentImage}
 			currentButtons={currentButtons}

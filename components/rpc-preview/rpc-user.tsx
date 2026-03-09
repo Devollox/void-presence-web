@@ -101,7 +101,7 @@ const RpcActivityDetails = ({
 	const maxLen = Math.max(
 		cycles.length || 1,
 		images.length || 1,
-		buttonPairs.length || 1
+		buttonPairs.length || 1,
 	)
 
 	const clampedIndex = (((currentIndex ?? 0) % maxLen) + maxLen) % maxLen
