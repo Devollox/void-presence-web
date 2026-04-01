@@ -7,7 +7,7 @@ type Params = {
 
 export async function POST(
 	_req: Request,
-	ctx: { params: Promise<Params> | Params }
+	ctx: { params: Promise<Params> | Params },
 ) {
 	const { id } = await ctx.params
 	const config = await getConfigById(id)
