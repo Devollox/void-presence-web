@@ -21,7 +21,7 @@ export function ConfigStructure({ configData }: Props) {
 				onClick={() => setOpen(o => !o)}
 			>
 				<div className={styles.details_toggle_left}>
-					<span className={styles.details_chevron}>{open ? '▴' : '▾'}</span>
+					<span className={styles.details_chevron}>{open ? '−' : '+'}</span>
 					<span className={styles.details_title}>Config structure</span>
 				</div>
 				<span className={styles.details_count}>
