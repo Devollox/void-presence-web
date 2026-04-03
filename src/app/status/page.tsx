@@ -25,6 +25,7 @@ export default function StatusPage() {
 	const left = (
 		<>
 			<InfoBox
+				variant='secondary'
 				title='Current status'
 				lines={[
 					'Void Presence is operating normally.',
@@ -33,6 +34,7 @@ export default function StatusPage() {
 				]}
 			/>
 			<InfoBox
+				variant='secondary'
 				title='What you will see'
 				lines={[
 					'In your own Discord client, Rich Presence buttons may be hidden or look inconsistent.',
