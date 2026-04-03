@@ -25,7 +25,6 @@ export default function StatusPage() {
 	const left = (
 		<>
 			<InfoBox
-				variant='secondary'
 				title='Current status'
 				lines={[
 					'Void Presence is operating normally.',
