@@ -33,7 +33,7 @@ function CustomRpcPreview({
 	const maxLen = Math.max(
 		cycles.length || 1,
 		images.length || 1,
-		buttonPairs.length || 1
+		buttonPairs.length || 1,
 	)
 
 	const localIndex = maxLen ? previewIndex % maxLen : 0
@@ -157,7 +157,7 @@ function filterConfigs(configs: Config[], searchTerm: string) {
 		config =>
 			config.title.toLowerCase().includes(term) ||
 			config.author.toLowerCase().includes(term) ||
-			config.description.toLowerCase().includes(term)
+			config.description.toLowerCase().includes(term),
 	)
 }
 
@@ -210,11 +210,11 @@ export function ConfigsClient({
 
 	const filteredConfigs = useMemo(
 		() => filterConfigs(configs, searchTerm),
-		[configs, searchTerm]
+		[configs, searchTerm],
 	)
 	const sortedConfigs = useMemo(
 		() => sortConfigs(filteredConfigs),
-		[filteredConfigs]
+		[filteredConfigs],
 	)
 
 	const showSkeleton = loading && !sortedConfigs.length
@@ -314,7 +314,7 @@ export function ConfigsClient({
 													setColors(prev =>
 														prev[config.id]
 															? prev
-															: { ...prev, [config.id]: hex }
+															: { ...prev, [config.id]: hex },
 													)
 												}
 											/>
