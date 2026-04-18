@@ -1,10 +1,8 @@
 import { PanelLayout } from '@components/panel-layout'
 import layoutStyles from '@components/panel-layout/layout-panels.module.css'
-import {
-	parseBuildTagFromNotes,
-	parseElectronVersionFromNotes,
-} from '@lib/electron-version'
+import { parseElectronVersionFromNotes } from '@lib/electron-version'
 import { githubHeaders } from '@lib/github-headers'
+import { classifyRelease } from '@lib/release-tags'
 import type { Metadata } from 'next'
 import { InfoBox } from '../../../components/status-info/info-box'
 import { normalizeReleaseNotes } from '../../../lib/release-notes'
@@ -56,44 +54,6 @@ function formatDate(input: string) {
 	const date = new Date(input)
 	if (Number.isNaN(date.getTime())) return input
 	return date.toISOString().slice(0, 10)
-}
-
-function classifyRelease(
-	raw: any,
-	notes: string,
-): { type: ReleaseType; buildTag?: string } {
-	const tagFromNotes = parseBuildTagFromNotes(notes)
-	const tag = tagFromNotes?.toLowerCase()
-
-	if (tag === 'nightly') {
-		return { type: 'nightly', buildTag: tag }
-	}
-
-	if (tag === 'broken' || tag === 'failed' || tag === 'borked') {
-		return { type: 'broken', buildTag: tag }
-	}
-
-	if (tag === 'alpha') {
-		return { type: 'pre-release', buildTag: 'alpha' }
-	}
-
-	if (tag === 'beta') {
-		return { type: 'pre-release', buildTag: 'beta' }
-	}
-
-	if (tag === 'pre-release' || tag === 'prerelease') {
-		return { type: 'pre-release', buildTag: 'pre-release' }
-	}
-
-	if (tag === 'stable') {
-		return { type: 'stable', buildTag: tag }
-	}
-
-	if (raw.prerelease) {
-		return { type: 'pre-release', buildTag: tagFromNotes }
-	}
-
-	return { type: 'end of life', buildTag: tagFromNotes }
 }
 
 function applyBuildTagPriority(releases: ReleaseInfo[]): ReleaseInfo[] {
