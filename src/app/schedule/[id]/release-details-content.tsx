@@ -355,13 +355,15 @@ export async function ReleaseDetailsContent({ id }: { id: string }) {
 																		? styles.dot_alpha
 																		: release.buildTag === 'beta'
 																			? styles.dot_beta
-																			: release.type === 'stable'
-																				? styles.dot_stable
-																				: release.type === 'nightly'
-																					? styles.dot_nightly
-																					: release.type === 'pre-release'
-																						? styles.dot_prerelease
-																						: styles.dot_eol
+																			: release.buildTag === 'broken'
+																				? styles.dot_broken
+																				: release.type === 'stable'
+																					? styles.dot_stable
+																					: release.type === 'nightly'
+																						? styles.dot_nightly
+																						: release.type === 'pre-release'
+																							? styles.dot_prerelease
+																							: styles.dot_eol
 																}
 															`}
 													/>

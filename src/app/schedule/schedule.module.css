@@ -369,6 +369,11 @@
 	);
 }
 
+.dot_broken {
+	background: #ef4444;
+	animation: pulse 1.5s infinite;
+}
+
 .bg_release_alpha {
 	background: linear-gradient(
 		135deg,
