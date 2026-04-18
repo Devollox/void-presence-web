@@ -408,9 +408,11 @@ export async function ReleaseDetailsContent({ id }: { id: string }) {
 										<span className={styles.package_snapshot_label}>
 											{dep.label}
 										</span>
-										<span className={styles.package_snapshot_value}>
-											{dep.value}
-										</span>
+										<div className={styles.package_snapshot_value}>
+											<span className={styles.package_snapshot_version}>
+												{dep.value}
+											</span>
+										</div>
 									</div>
 								))}
 							</div>

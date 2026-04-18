@@ -53,13 +53,23 @@ const INTERESTING_DEPENDENCIES: {
 	{ name: 'zod', label: 'Zod:', kind: 'runtime' },
 ]
 
-function findDepValue(pkg: PackageJson, name: string): string | undefined {
-	return (
-		pkg.dependencies?.[name] ||
-		pkg.devDependencies?.[name] ||
-		pkg.peerDependencies?.[name] ||
-		pkg.optionalDependencies?.[name]
-	)
+function findDepValue(
+	pkg: PackageJson,
+	name: string,
+): { value: string; kind: PackageDependencyEntry['kind'] } | null {
+	if (pkg.dependencies?.[name]) {
+		return { value: pkg.dependencies[name], kind: 'runtime' }
+	}
+	if (pkg.devDependencies?.[name]) {
+		return { value: pkg.devDependencies[name], kind: 'dev' }
+	}
+	if (pkg.peerDependencies?.[name]) {
+		return { value: pkg.peerDependencies[name], kind: 'runtime' }
+	}
+	if (pkg.optionalDependencies?.[name]) {
+		return { value: pkg.optionalDependencies[name], kind: 'runtime' }
+	}
+	return null
 }
 
 export function extractPackageMeta(
@@ -70,15 +80,41 @@ export function extractPackageMeta(
 	const entries: PackageDependencyEntry[] = []
 
 	for (const def of INTERESTING_DEPENDENCIES) {
-		const value = findDepValue(pkg, def.name)
-		if (!value) continue
+		const found = findDepValue(pkg, def.name)
+		if (!found) continue
 
 		entries.push({
 			key: def.name,
 			label: def.label,
-			value,
+			value: found.value,
 			kind: def.kind,
 		})
+	}
+
+	const knownNames = new Set(INTERESTING_DEPENDENCIES.map(d => d.name))
+
+	if (pkg.dependencies) {
+		for (const [name, value] of Object.entries(pkg.dependencies)) {
+			if (knownNames.has(name)) continue
+			entries.push({
+				key: name,
+				label: `${name}:`,
+				value,
+				kind: 'runtime',
+			})
+		}
+	}
+
+	if (pkg.devDependencies) {
+		for (const [name, value] of Object.entries(pkg.devDependencies)) {
+			if (knownNames.has(name)) continue
+			entries.push({
+				key: name,
+				label: `${name}:`,
+				value,
+				kind: 'dev',
+			})
+		}
 	}
 
 	return {
