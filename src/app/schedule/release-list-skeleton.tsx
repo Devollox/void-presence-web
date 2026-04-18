@@ -5,8 +5,10 @@ import scheduleStyles from './schedule.module.css'
 
 export default function ReleaseListSkeleton({
 	countSkeleton,
+	backBtn,
 }: {
 	countSkeleton: number
+	backBtn?: boolean
 }) {
 	const left = (
 		<>
@@ -62,6 +64,19 @@ export default function ReleaseListSkeleton({
 
 	const right = (
 		<section className={scheduleStyles.page_section}>
+			{backBtn === true && (
+				<div
+					className={layoutStyles.preview_card_wrap}
+					style={{ marginBottom: 20 }}
+				>
+					<div className={layoutStyles.preview_card}>
+						<div className={layoutStyles.preview_header}>
+							<div className={skeletonStyles.skeleton_title} />
+						</div>
+					</div>
+				</div>
+			)}
+
 			<div className={layoutStyles.preview_card_wrap}>
 				<div className={layoutStyles.preview_card}>
 					<div className={layoutStyles.preview_header}>

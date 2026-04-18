@@ -42,7 +42,9 @@ export default async function ReleaseDetailsPage(
 					title={title}
 					subtitle='Release details loaded from GitHub release and this tag package.json.'
 				/>
-				<Suspense fallback={<ReleaseListSkeleton countSkeleton={1} />}>
+				<Suspense
+					fallback={<ReleaseListSkeleton countSkeleton={1} backBtn={true} />}
+				>
 					<ReleaseDetailsContent id={id} />
 				</Suspense>
 			</main>
