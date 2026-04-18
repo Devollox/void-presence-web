@@ -106,7 +106,7 @@
 
 .changelog_text_open {
 	padding: 10px 14px 0;
-	max-height: 600px;
+	max-height: 1200px;
 	opacity: 1;
 	transform: translateY(0);
 }
