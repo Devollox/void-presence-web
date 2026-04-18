@@ -27,31 +27,7 @@ const INTERESTING_DEPENDENCIES: {
 	name: string
 	label: string
 	kind: PackageDependencyEntry['kind']
-}[] = [
-	{ name: 'electron', label: 'Electron:', kind: 'runtime' },
-	{ name: 'react', label: 'React:', kind: 'runtime' },
-	{ name: 'react-dom', label: 'React DOM:', kind: 'runtime' },
-	{ name: 'typescript', label: 'TypeScript:', kind: 'tooling' },
-	{ name: 'vite', label: 'Vite:', kind: 'tooling' },
-	{ name: 'webpack', label: 'Webpack:', kind: 'tooling' },
-	{ name: 'electron-builder', label: 'electron-builder:', kind: 'tooling' },
-	{ name: 'eslint', label: 'ESLint:', kind: 'tooling' },
-	{ name: 'prettier', label: 'Prettier:', kind: 'tooling' },
-	{ name: '@types/node', label: '@types/node:', kind: 'dev' },
-	{ name: '@types/react', label: '@types/react:', kind: 'dev' },
-	{ name: 'firebase', label: 'Firebase:', kind: 'runtime' },
-	{ name: 'firebase-admin', label: 'Firebase Admin:', kind: 'runtime' },
-	{ name: 'discord-rpc', label: 'discord-rpc:', kind: 'runtime' },
-	{
-		name: 'discord-rich-presence',
-		label: 'discord-rich-presence:',
-		kind: 'runtime',
-	},
-	{ name: 'electron-store', label: 'electron-store:', kind: 'runtime' },
-	{ name: 'react-router', label: 'React Router:', kind: 'runtime' },
-	{ name: 'react-router-dom', label: 'React Router DOM:', kind: 'runtime' },
-	{ name: 'zod', label: 'Zod:', kind: 'runtime' },
-]
+}[] = []
 
 function findDepValue(
 	pkg: PackageJson,

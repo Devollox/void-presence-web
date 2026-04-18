@@ -370,7 +370,10 @@ export async function ReleaseDetailsContent({ id }: { id: string }) {
 												</div>
 
 												<span className={styles.electron_versions}>
-													Electron v{pkgMeta?.dependencies[0].value}
+													Electron v
+													{pkgMeta?.dependencies.find(
+														dep => dep.key === 'electron',
+													)?.value ?? 'unknown'}
 												</span>
 											</div>
 										)}
