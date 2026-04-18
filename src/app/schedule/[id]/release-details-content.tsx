@@ -276,8 +276,13 @@ export async function ReleaseDetailsContent({ id }: { id: string }) {
 		<section className={styles.page_section}>
 			<div className={layoutStyles.preview_card_wrap}>
 				<div className={layoutStyles.preview_card}>
-					<div className={styles.preview_header}>
+					<div className={layoutStyles.preview_header}>
 						<h3 className={styles.preview_title}>Release details</h3>
+						<div className={layoutStyles.preview_badge}>
+							<span className={layoutStyles.preview_badge_text}>
+								{release && release.version}
+							</span>
+						</div>
 					</div>
 
 					{release && (
