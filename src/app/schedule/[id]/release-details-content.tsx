@@ -217,7 +217,7 @@ export async function ReleaseDetailsContent({ id }: { id: string }) {
 						{electronFromPkg && (
 							<div className={styles.release_row}>
 								<span className={styles.release_label}>Electron</span>
-								<span className={styles.release_value}>{electronFromPkg}</span>
+								<span className={styles.release_value}>v{electronFromPkg}</span>
 							</div>
 						)}
 
