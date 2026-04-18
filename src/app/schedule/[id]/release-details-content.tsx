@@ -344,7 +344,7 @@ export async function ReleaseDetailsContent({ id }: { id: string }) {
 									</div>
 
 									<div className={styles.release_card_meta}>
-										{release.electronCurrent && (
+										{pkgMeta && (
 											<div className={styles.electron_row}>
 												<div className={styles.dot_wrap}>
 													<div
@@ -368,8 +368,9 @@ export async function ReleaseDetailsContent({ id }: { id: string }) {
 															`}
 													/>
 												</div>
+
 												<span className={styles.electron_versions}>
-													Electron v{release.electronCurrent}
+													Electron v{pkgMeta?.dependencies[0].value}
 												</span>
 											</div>
 										)}
