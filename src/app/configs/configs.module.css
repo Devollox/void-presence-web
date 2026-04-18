@@ -4,15 +4,15 @@
 	padding: 40px var(--section-padding-desktop);
 	gap: 40px;
 	margin: 0 auto;
-	display: flex;
 }
 
 .themes_left_side {
-	width: 320px;
-	flex-shrink: 0;
-	display: flex;
 	flex-direction: column;
-	gap: 24px;
+
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	margin-bottom: 20px;
 }
 
 .filter_header {
@@ -94,7 +94,7 @@
 .theme_listings {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-	gap: 24px;
+	gap: 20px;
 }
 
 .card_wrap {

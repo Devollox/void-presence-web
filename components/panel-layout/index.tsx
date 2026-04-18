@@ -14,7 +14,9 @@ export function PanelLayout({ left, right, className }: PanelLayoutProps) {
 
 	return (
 		<div className={rootClassName}>
-			<div className={styles.panel_left_side}>{left}</div>
+			<div className={styles.wrapper_panel_left_side}>
+				<div className={styles.panel_left_side}>{left}</div>
+			</div>
 			<div className={styles.panel_right_side}>{right}</div>
 		</div>
 	)

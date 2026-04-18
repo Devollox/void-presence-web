@@ -15,13 +15,6 @@ export function SignInPageClient() {
 	const left = (
 		<>
 			<InfoBox
-				lines={[
-					'Choose a provider to continue.',
-					'You can disconnect at any time in your account settings.',
-				]}
-			/>
-
-			<InfoBox
 				variant='secondary'
 				title="Don't have the app yet?"
 				lines={[
@@ -29,6 +22,11 @@ export function SignInPageClient() {
 				]}
 				linkHref='/download'
 				linkLabel='Go to download page'
+			/>
+
+			<InfoBox
+				title='Choose a provider to continue'
+				lines={['You can disconnect at any time in your account settings.']}
 			/>
 		</>
 	)

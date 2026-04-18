@@ -22,8 +22,6 @@ function SkeletonLine(props: { width?: string; height?: string }) {
 export default function ReleaseDetailsSkeleton() {
 	const left = (
 		<>
-			<div className={styles.filter_header}>Release</div>
-
 			<div className={styles.release_meta}>
 				<div className={styles.release_row}>
 					<span className={styles.release_label}>Version</span>

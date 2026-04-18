@@ -10,8 +10,6 @@ export default function ReleaseListSkeleton({
 }) {
 	const left = (
 		<>
-			<div className={scheduleStyles.filter_header}>Latest build</div>
-
 			<div className={skeletonStyles.skeleton_meta}>
 				<div className={skeletonStyles.skeleton_row}>
 					<div className={skeletonStyles.skeleton_label} />

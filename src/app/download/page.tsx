@@ -96,8 +96,6 @@ async function DownloadContent() {
 
 	const left = (
 		<>
-			<div className={styles.filter_header}>Latest build</div>
-
 			{error ? (
 				<InfoBox variant='muted' lines={[error]} />
 			) : release ? (
@@ -126,18 +124,6 @@ async function DownloadContent() {
 			) : (
 				<InfoBox lines={['No release info available.']} />
 			)}
-
-			<InfoBox
-				variant='secondary'
-				title='Schedule info'
-				lines={[
-					'Latest stable release appears at the top.',
-					'Prereleases are ordered by release date.',
-					'Older stable versions are marked as End of Life.',
-				]}
-				linkHref='/schedule'
-				linkLabel='Read schedule'
-			/>
 
 			<InfoBox
 				variant='secondary'

@@ -191,8 +191,6 @@ export async function ReleaseDetailsContent({ id }: { id: string }) {
 
 	const left = (
 		<>
-			<div className={styles.filter_header}>Release</div>
-
 			{error ? (
 				<InfoBox variant='muted' lines={[error]} />
 			) : release ? (

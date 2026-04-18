@@ -222,8 +222,6 @@ export function ConfigsClient({
 	return (
 		<>
 			<div className={styles.themes_left_side}>
-				<div className={styles.filter_header}>Filter Configs</div>
-
 				<form
 					className={styles.search_container}
 					onSubmit={e => e.preventDefault()}
@@ -257,7 +255,6 @@ export function ConfigsClient({
 				<section id='configs-content' className={styles.page_section}>
 					{showSkeleton ? (
 						<div className={styles.theme_listings}>
-							<SkeletonCard />
 							<SkeletonCard />
 							<SkeletonCard />
 							<SkeletonCard />

@@ -5,8 +5,6 @@ import styles from '../../../styles/skeleton.module.css'
 export default function DownloadSkeleton() {
 	const left = (
 		<>
-			<div className={styles.filter_header}>Latest build</div>
-
 			<div className={styles.skeleton_meta}>
 				<div className={styles.skeleton_row}>
 					<div className={styles.skeleton_label} />

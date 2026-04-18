@@ -211,8 +211,6 @@ export async function ReleasesSection() {
 
 	const left = (
 		<>
-			<div className={styles.filter_header}>Latest build</div>
-
 			{error ? (
 				<InfoBox variant='muted' lines={[error]} />
 			) : stableRelease ? (
