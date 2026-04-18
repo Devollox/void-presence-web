@@ -252,6 +252,13 @@ export async function ReleaseDetailsContent({ id }: { id: string }) {
 
 	const right = (
 		<section className={styles.page_section}>
+			<div style={{ marginBottom: '20px' }}>
+				<InfoBox
+					variant='secondary'
+					linkHref={'/schedule'}
+					linkLabel='Back to Schedule'
+				/>
+			</div>
 			<div className={layoutStyles.preview_card_wrap}>
 				<div className={layoutStyles.preview_card}>
 					<div className={layoutStyles.preview_header}>

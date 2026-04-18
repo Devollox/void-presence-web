@@ -32,11 +32,14 @@ export default function Navbar() {
 					<Link className={styles.nav_link} href='/download'>
 						Download
 					</Link>
-					<Link className={styles.nav_link} href='/schedule'>
+					<Link
+						className={`${styles.nav_link} ${styles.nav_link_schedule}`}
+						href='/schedule'
+					>
 						Schedule
 					</Link>
 					<Link
-						className={styles.nav_link}
+						className={`${styles.nav_link} ${styles.nav_link_github}`}
 						target='_blank'
 						href='https://github.com/Devollox/void-presence'
 						rel='noreferrer'
