@@ -16,6 +16,10 @@
 	margin-bottom: 20px;
 }
 
+.panel_left_side > *:last-child {
+	grid-column: 1 / -1;
+}
+
 .panel_right_side {
 	min-width: 0;
 }
