@@ -16,10 +16,6 @@
 	margin-bottom: 20px;
 }
 
-.panel_left_side > *:last-child {
-	grid-column: 1 / -1;
-}
-
 .panel_right_side {
 	min-width: 0;
 }
@@ -98,6 +94,12 @@
 	font-size: 12px;
 	font-weight: 600;
 	color: #e4e4e7;
+}
+
+@media (max-width: 1035px) {
+	.panel_left_side > *:last-child {
+		grid-column: 1 / -1;
+	}
 }
 
 @media (max-width: 830px) {
