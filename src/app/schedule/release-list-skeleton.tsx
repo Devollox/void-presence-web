@@ -3,7 +3,11 @@ import layoutStyles from '@components/panel-layout/layout-panels.module.css'
 import skeletonStyles from '../../../styles/skeleton.module.css'
 import scheduleStyles from './schedule.module.css'
 
-export default function ReleaseListSkeleton() {
+export default function ReleaseListSkeleton({
+	countSkeleton,
+}: {
+	countSkeleton: number
+}) {
 	const left = (
 		<>
 			<div className={scheduleStyles.filter_header}>Latest build</div>
@@ -65,7 +69,7 @@ export default function ReleaseListSkeleton() {
 					</div>
 
 					<ul className={scheduleStyles.release_list}>
-						{Array.from({ length: 5 }).map((_, idx) => (
+						{Array.from({ length: countSkeleton }).map((_, idx) => (
 							<li key={idx} className={scheduleStyles.release_item}>
 								<div className={scheduleStyles.release_card}>
 									<div className={scheduleStyles.release_card_top}>

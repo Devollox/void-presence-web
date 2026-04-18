@@ -1,5 +1,7 @@
 import { PanelLayout } from '@components/panel-layout'
 import layoutStyles from '@components/panel-layout/layout-panels.module.css'
+import { parseElectronVersionFromNotes } from '@lib/electron-version'
+import { githubHeaders } from '@lib/github-headers'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import Footer from '../../../components/footer'
@@ -25,6 +27,7 @@ interface ReleaseInfo {
 	date: string
 	notes: string
 	assets: ReleaseAsset[]
+	electronCurrent?: string
 }
 
 export const metadata: Metadata = {
@@ -47,7 +50,9 @@ async function getLatestRelease(): Promise<{
 		const res = await fetch(
 			'https://api.github.com/repos/Devollox/void-presence/releases/latest',
 			{
-				cache: 'no-store',
+				cache: 'force-cache',
+				next: { revalidate: 900 },
+				headers: githubHeaders(),
 			},
 		)
 
@@ -64,13 +69,17 @@ async function getLatestRelease(): Promise<{
 			downloadUrl: asset.browser_download_url,
 		}))
 
+		const notes = normalizeReleaseNotes(data.body || '')
+		const electronCurrent = parseElectronVersionFromNotes(notes)
+
 		const release: ReleaseInfo = {
 			version: data.tag_name,
 			date: data.published_at
 				? new Date(data.published_at).toISOString().slice(0, 10)
 				: '',
-			notes: normalizeReleaseNotes(data.body || ''),
+			notes,
 			assets,
+			electronCurrent,
 		}
 
 		return { release, error: null }
@@ -104,6 +113,14 @@ async function DownloadContent() {
 							<span className={styles.release_label}>Release date</span>
 							<span className={styles.release_value}>{release.date}</span>
 						</div>
+						{release.electronCurrent && (
+							<div className={styles.release_row}>
+								<span className={styles.release_label}>Electron</span>
+								<span className={styles.release_value}>
+									v{release.electronCurrent}
+								</span>
+							</div>
+						)}
 					</div>
 				</>
 			) : (

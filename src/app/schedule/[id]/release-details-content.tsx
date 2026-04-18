@@ -1,0 +1,394 @@
+import DownloadButtons from '@/app/download/download-buttons'
+import { PanelLayout } from '@components/panel-layout'
+import layoutStyles from '@components/panel-layout/layout-panels.module.css'
+import {
+	parseBuildTagFromNotes,
+	parseElectronVersionFromNotes,
+} from '@lib/electron-version'
+import { githubHeaders } from '@lib/github-headers'
+import { extractPackageMeta, type PackageJson } from '@lib/package-meta'
+import type { Metadata } from 'next'
+import { InfoBox } from '../../../../components/status-info/info-box'
+import { normalizeReleaseNotes } from '../../../../lib/release-notes'
+import ChangelogClient from '../../download/changelog-client'
+import styles from '../schedule.module.css'
+
+interface ReleaseAsset {
+	name: string
+	size: number
+	downloadUrl: string
+}
+
+type ReleaseType = 'stable' | 'pre-release' | 'nightly' | 'end of life'
+
+interface ReleaseDetails {
+	version: string
+	date: string
+	notes: string
+	assets: ReleaseAsset[]
+	url: string
+	type: ReleaseType
+	electronCurrent?: string
+	buildTag?: string
+}
+
+interface ReleaseAsset {
+	name: string
+	size: number
+	downloadUrl: string
+}
+
+interface ReleaseDetails {
+	version: string
+	date: string
+	notes: string
+	assets: ReleaseAsset[]
+	url: string
+	type: ReleaseType
+	electronCurrent?: string
+	buildTag?: string
+}
+
+export const metadata: Metadata = {
+	title: 'Release Details',
+}
+
+function formatDate(input: string | null | undefined) {
+	if (!input) return 'Unknown'
+	const date = new Date(input)
+	if (Number.isNaN(date.getTime())) return input
+	return date.toISOString().slice(0, 10)
+}
+
+function classifyRelease(
+	raw: any,
+	notes: string,
+): { type: ReleaseType; buildTag?: string } {
+	const tagFromNotes = parseBuildTagFromNotes(notes)
+
+	if (tagFromNotes === 'nightly') {
+		return { type: 'nightly', buildTag: tagFromNotes }
+	}
+
+	if (tagFromNotes === 'pre-release' || tagFromNotes === 'prerelease') {
+		return { type: 'pre-release', buildTag: tagFromNotes }
+	}
+
+	if (tagFromNotes === 'stable') {
+		return { type: 'stable', buildTag: tagFromNotes }
+	}
+
+	if (raw.prerelease) {
+		return { type: 'pre-release', buildTag: undefined }
+	}
+
+	return { type: 'stable', buildTag: undefined }
+}
+
+async function getPackageJsonByTag(tag: string): Promise<PackageJson | null> {
+	const url = `https://raw.githubusercontent.com/Devollox/void-presence/${encodeURIComponent(
+		tag,
+	)}/package.json`
+
+	const res = await fetch(url, {
+		cache: 'force-cache',
+		next: { revalidate: 900 },
+		headers: githubHeaders(),
+	})
+
+	if (!res.ok) {
+		return null
+	}
+
+	try {
+		const json = (await res.json()) as PackageJson
+		return json
+	} catch (err) {
+		if (process.env.NODE_ENV !== 'production') {
+			console.error('[release-details] package.json parse failed', {
+				tag,
+				error: err,
+			})
+		}
+		return null
+	}
+}
+
+async function getReleaseDetailsByTag(
+	tag: string,
+): Promise<{ release: ReleaseDetails | null; error: string | null }> {
+	const url = `https://api.github.com/repos/Devollox/void-presence/releases/tags/${encodeURIComponent(
+		tag,
+	)}`
+
+	try {
+		const res = await fetch(url, {
+			cache: 'force-cache',
+			next: { revalidate: 900 },
+			headers: githubHeaders(),
+		})
+
+		if (!res.ok) {
+			return {
+				release: null,
+				error:
+					res.status === 403
+						? 'GitHub API rate limit exceeded. Please try again in a few minutes or open the GitHub releases page.'
+						: 'Failed to load this release from GitHub. Please try again later.',
+			}
+		}
+
+		const data = await res.json()
+
+		const rawAssets = Array.isArray(data.assets) ? data.assets : []
+
+		const assets: ReleaseAsset[] = rawAssets.map((asset: any) => ({
+			name: asset.name,
+			size: asset.size / (1024 * 1024),
+			downloadUrl: asset.browser_download_url,
+		}))
+
+		const rawBody = data.body || ''
+		const notes = normalizeReleaseNotes(rawBody)
+		const electronVersion = parseElectronVersionFromNotes(notes)
+		const classification = classifyRelease(data, rawBody)
+
+		const release: ReleaseDetails = {
+			version: data.tag_name || tag,
+			date: formatDate(data.published_at),
+			notes,
+			assets,
+			url: data.html_url || '',
+			type: classification.type,
+			electronCurrent: electronVersion,
+			buildTag: classification.buildTag,
+		}
+
+		return { release, error: null }
+	} catch (err) {
+		if (process.env.NODE_ENV !== 'production') {
+			console.error('[release-details] getReleaseDetailsByTag failed', err)
+		}
+		return {
+			release: null,
+			error: 'Failed to load this release. Please try again later.',
+		}
+	}
+}
+
+export async function ReleaseDetailsContent({ id }: { id: string }) {
+	const [pkg, releaseResult] = await Promise.all([
+		getPackageJsonByTag(id),
+		getReleaseDetailsByTag(id),
+	])
+
+	const release = releaseResult.release
+	const error = releaseResult.error
+
+	const pkgMeta = extractPackageMeta(pkg)
+	const electronFromPkg =
+		pkg?.dependencies?.electron ?? pkg?.devDependencies?.electron
+
+	const left = (
+		<>
+			<div className={styles.filter_header}>Release</div>
+
+			{error ? (
+				<InfoBox variant='muted' lines={[error]} />
+			) : release ? (
+				<>
+					{release.assets.length > 0 && (
+						<DownloadButtons assets={release.assets} />
+					)}
+
+					<div className={styles.release_meta}>
+						<div className={styles.release_row}>
+							<span className={styles.release_label}>Version</span>
+							<span className={styles.release_value}>{release.version}</span>
+						</div>
+
+						{release.date && (
+							<div className={styles.release_row}>
+								<span className={styles.release_label}>Release date</span>
+								<span className={styles.release_value}>{release.date}</span>
+							</div>
+						)}
+
+						{electronFromPkg && (
+							<div className={styles.release_row}>
+								<span className={styles.release_label}>Electron</span>
+								<span className={styles.release_value}>{electronFromPkg}</span>
+							</div>
+						)}
+
+						{pkgMeta?.version && (
+							<div className={styles.release_row}>
+								<span className={styles.release_label}>App version</span>
+								<span className={styles.release_value}>{pkgMeta.version}</span>
+							</div>
+						)}
+
+						<div className={styles.release_row}>
+							<span className={styles.release_label}>Type</span>
+							<span className={styles.release_value}>
+								{release.type === 'stable'
+									? 'Stable'
+									: release.type === 'nightly'
+										? 'Nightly'
+										: release.type === 'pre-release'
+											? 'Prerelease'
+											: 'End of Life'}
+							</span>
+						</div>
+					</div>
+
+					{release.url && (
+						<InfoBox
+							variant='secondary'
+							lines={[
+								'View this release on GitHub for full changelog and assets.',
+							]}
+							linkHref={release.url}
+							linkLabel='Check GitHub'
+						/>
+					)}
+				</>
+			) : (
+				<InfoBox
+					variant='muted'
+					lines={[
+						'This release could not be loaded from GitHub.',
+						'It may have been removed or is temporarily unavailable.',
+					]}
+				/>
+			)}
+
+			{!pkg && (
+				<p className={styles.release_footer_note}>
+					Could not load package.json for this tag. It may not exist for older
+					releases or this tag may not be available on GitHub.
+				</p>
+			)}
+		</>
+	)
+
+	const right = (
+		<section className={styles.page_section}>
+			<div className={layoutStyles.preview_card_wrap}>
+				<div className={layoutStyles.preview_card}>
+					<div className={styles.preview_header}>
+						<h3 className={styles.preview_title}>Release details</h3>
+					</div>
+
+					{release && (
+						<ul className={styles.release_list}>
+							<li
+								className={`${styles.release_item} ${
+									release.type === 'stable'
+										? styles.bg_release_stable
+										: release.type === 'nightly'
+											? styles.bg_release_nightly
+											: release.type === 'pre-release'
+												? styles.bg_release_prerelease
+												: styles.bg_release_eol
+								}`}
+							>
+								<div className={styles.release_card}>
+									<div className={styles.release_card_top}>
+										<div className={styles.release_card_left}>
+											<div className={styles.version_row}>
+												<span className={styles.release_card_version}>
+													{release.version}
+												</span>
+												<span className={styles.release_card_badge}>
+													{release.type === 'stable'
+														? 'Stable'
+														: release.type === 'nightly'
+															? 'Nightly'
+															: release.type === 'pre-release'
+																? 'Prerelease'
+																: 'End of Life'}
+												</span>
+											</div>
+										</div>
+
+										{release.date && (
+											<span className={styles.release_card_date}>
+												{release.date}
+											</span>
+										)}
+									</div>
+
+									<div className={styles.release_card_meta}>
+										{release.electronCurrent && (
+											<div className={styles.electron_row}>
+												<div className={styles.dot_wrap}>
+													<div
+														className={`
+                              ${styles.dot}
+                              ${
+																release.type === 'stable'
+																	? styles.dot_stable
+																	: release.type === 'nightly'
+																		? styles.dot_nightly
+																		: release.type === 'pre-release'
+																			? styles.dot_prerelease
+																			: styles.dot_eol
+															}
+                            `}
+													/>
+												</div>
+												<span className={styles.electron_versions}>
+													Electron v{release.electronCurrent}
+												</span>
+											</div>
+										)}
+
+										<span className={styles.release_card_meta_item}>
+											{release.assets.length} assets
+										</span>
+										<span className={styles.release_card_meta_item}>
+											{release.notes ? 'Has changelog' : 'No changelog'}
+										</span>
+									</div>
+								</div>
+
+								{release.notes && (
+									<div className={styles.release_card_changelog}>
+										<ChangelogClient
+											release={{
+												version: release.version,
+												date: release.date,
+												notes: release.notes,
+												assets: release.assets,
+											}}
+										/>
+									</div>
+								)}
+							</li>
+						</ul>
+					)}
+
+					{pkgMeta && (
+						<div className={styles.package_snapshot_wrap}>
+							<div className={styles.package_snapshot_grid}>
+								{pkgMeta.dependencies.map(dep => (
+									<div key={dep.key} className={styles.package_snapshot_row}>
+										<span className={styles.package_snapshot_label}>
+											{dep.label}
+										</span>
+										<span className={styles.package_snapshot_value}>
+											{dep.value}
+										</span>
+									</div>
+								))}
+							</div>
+						</div>
+					)}
+				</div>
+			</div>
+		</section>
+	)
+
+	return <PanelLayout left={left} right={right} />
+}

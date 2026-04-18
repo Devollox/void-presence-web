@@ -36,8 +36,8 @@ export function CopyJsonButton({ configId }: Props) {
 					{status === 'copied'
 						? 'Copied!'
 						: status === 'error'
-						? 'Error'
-						: 'Copy JSON'}
+							? 'Error'
+							: 'Copy JSON'}
 				</span>
 				<span className={styles.action_btn_hint}>to clipboard</span>
 			</button>

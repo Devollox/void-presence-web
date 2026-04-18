@@ -12,7 +12,7 @@ interface ReleaseAsset {
 }
 
 interface Props {
-	assets: ReleaseAsset[]
+	assets?: ReleaseAsset[]
 }
 
 export default function DownloadButtons({ assets }: Props) {
@@ -51,7 +51,7 @@ export default function DownloadButtons({ assets }: Props) {
 
 	return (
 		<div className={styles.assets_list}>
-			{assets.map(asset => (
+			{assets?.map(asset => (
 				<button
 					key={asset.name}
 					className={styles.download_btn_primary}

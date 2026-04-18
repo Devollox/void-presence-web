@@ -64,7 +64,7 @@ const right = (
 					<h3
 						style={{
 							margin: 0,
-							fontSize: 15,
+							fontSize: 16,
 							fontWeight: 600,
 							color: '#e5e7eb',
 						}}
