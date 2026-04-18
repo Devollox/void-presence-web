@@ -61,5 +61,28 @@ export function parseBuildTagFromNotes(notes: string): string | undefined {
 		}
 	}
 
+	if (lines.length > 0) {
+		const firstLine = lines[0].trim()
+
+		if (/nightly/i.test(firstLine)) {
+			return 'nightly'
+		}
+		if (/stable/i.test(firstLine)) {
+			return 'stable'
+		}
+		if (/broken|failed|borked/i.test(firstLine)) {
+			return 'broken'
+		}
+		if (/pre-?release/i.test(firstLine)) {
+			return 'pre-release'
+		}
+		if (/alpha/i.test(firstLine)) {
+			return 'alpha'
+		}
+		if (/beta/i.test(firstLine)) {
+			return 'beta'
+		}
+	}
+
 	return undefined
 }

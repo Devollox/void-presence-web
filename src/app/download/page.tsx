@@ -51,7 +51,7 @@ async function getLatestRelease(): Promise<{
 			'https://api.github.com/repos/Devollox/void-presence/releases/latest',
 			{
 				cache: 'force-cache',
-				next: { revalidate: 900 },
+				next: { revalidate: 300 },
 				headers: githubHeaders(),
 			},
 		)

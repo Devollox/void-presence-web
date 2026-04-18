@@ -18,7 +18,12 @@ interface ReleaseAsset {
 	downloadUrl: string
 }
 
-type ReleaseType = 'stable' | 'pre-release' | 'nightly' | 'end of life'
+type ReleaseType =
+	| 'stable'
+	| 'pre-release'
+	| 'nightly'
+	| 'end of life'
+	| 'broken'
 
 interface ReleaseInfo {
 	version: string
@@ -58,24 +63,37 @@ function classifyRelease(
 	notes: string,
 ): { type: ReleaseType; buildTag?: string } {
 	const tagFromNotes = parseBuildTagFromNotes(notes)
+	const tag = tagFromNotes?.toLowerCase()
 
-	if (tagFromNotes === 'nightly') {
-		return { type: 'nightly', buildTag: tagFromNotes }
+	if (tag === 'nightly') {
+		return { type: 'nightly', buildTag: tag }
 	}
 
-	if (tagFromNotes === 'pre-release' || tagFromNotes === 'prerelease') {
-		return { type: 'pre-release', buildTag: tagFromNotes }
+	if (tag === 'broken' || tag === 'failed' || tag === 'borked') {
+		return { type: 'broken', buildTag: tag }
 	}
 
-	if (tagFromNotes === 'stable') {
-		return { type: 'stable', buildTag: tagFromNotes }
+	if (tag === 'alpha') {
+		return { type: 'pre-release', buildTag: 'alpha' }
+	}
+
+	if (tag === 'beta') {
+		return { type: 'pre-release', buildTag: 'beta' }
+	}
+
+	if (tag === 'pre-release' || tag === 'prerelease') {
+		return { type: 'pre-release', buildTag: 'pre-release' }
+	}
+
+	if (tag === 'stable') {
+		return { type: 'stable', buildTag: tag }
 	}
 
 	if (raw.prerelease) {
-		return { type: 'pre-release', buildTag: undefined }
+		return { type: 'pre-release', buildTag: tagFromNotes }
 	}
 
-	return { type: 'stable', buildTag: undefined }
+	return { type: 'end of life', buildTag: tagFromNotes }
 }
 
 function applyBuildTagPriority(releases: ReleaseInfo[]): ReleaseInfo[] {
@@ -101,7 +119,7 @@ async function getReleases(): Promise<{
 			'https://api.github.com/repos/Devollox/void-presence/releases?per_page=100',
 			{
 				cache: 'force-cache',
-				next: { revalidate: 900 },
+				next: { revalidate: 300 },
 				headers: githubHeaders(),
 			},
 		)
@@ -124,11 +142,21 @@ async function getReleases(): Promise<{
 			.map((item: any) => {
 				const rawAssets = Array.isArray(item.assets) ? item.assets : []
 
-				const assets: ReleaseAsset[] = rawAssets.map((asset: any) => ({
-					name: asset.name,
-					size: asset.size / (1024 * 1024),
-					downloadUrl: asset.browser_download_url,
-				}))
+				const assets: ReleaseAsset[] = rawAssets
+					.map((asset: any) => ({
+						name: asset.name,
+						size: asset.size / (1024 * 1024),
+						downloadUrl: asset.browser_download_url,
+					}))
+					.sort((a: ReleaseAsset, b: ReleaseAsset) => {
+						const aIsExe = a.name.toLowerCase().endsWith('.exe')
+						const bIsExe = b.name.toLowerCase().endsWith('.exe')
+
+						if (aIsExe && !bIsExe) return -1
+						if (bIsExe && !aIsExe) return 1
+
+						return 0
+					})
 
 				const rawBody = item.body || ''
 				const notes = normalizeReleaseNotes(rawBody)
@@ -158,17 +186,42 @@ async function getReleases(): Promise<{
 
 		releases = applyBuildTagPriority(releases)
 
-		const stableLatest = releases.find(r => r.type === 'stable') ?? null
+		const normalSorted = [...releases].filter(
+			r =>
+				r.type !== 'nightly' && r.type !== 'pre-release' && r.type !== 'broken',
+		)
 
-		if (stableLatest) {
-			releases = releases.map(release =>
-				release.version === stableLatest.version
-					? release
-					: release.type === 'stable'
-						? { ...release, type: 'end of life' as const }
-						: release,
-			)
-		}
+		normalSorted.sort((a, b) => {
+			const dateA = a.date === 'Unknown' ? new Date(0) : new Date(a.date)
+			const dateB = b.date === 'Unknown' ? new Date(0) : new Date(b.date)
+			return dateB.getTime() - dateA.getTime()
+		})
+
+		const latestNormal = normalSorted[0] ?? null
+
+		const stableTagVersions = new Set(
+			releases
+				.filter(r => r.buildTag?.toLowerCase() === 'stable')
+				.map(r => r.version),
+		)
+
+		releases = releases.map(r => {
+			if (
+				r.type === 'nightly' ||
+				r.type === 'pre-release' ||
+				r.type === 'broken'
+			) {
+				return r
+			}
+
+			const isLatest = latestNormal && r.version === latestNormal.version
+
+			if (isLatest || stableTagVersions.has(r.version)) {
+				return { ...r, type: 'stable' as const }
+			}
+
+			return { ...r, type: 'end of life' as const }
+		})
 
 		let lastElectronVersion: string | undefined
 
@@ -284,13 +337,19 @@ export async function ReleasesSection() {
 								<li
 									key={release.version}
 									className={`${styles.release_item} ${
-										release.type === 'stable'
-											? styles.bg_release_stable
-											: release.type === 'nightly'
-												? styles.bg_release_nightly
-												: release.type === 'pre-release'
-													? styles.bg_release_prerelease
-													: styles.bg_release_eol
+										release.buildTag === 'alpha'
+											? styles.bg_release_alpha
+											: release.buildTag === 'beta'
+												? styles.bg_release_beta
+												: release.type === 'stable'
+													? styles.bg_release_stable
+													: release.type === 'nightly'
+														? styles.bg_release_nightly
+														: release.type === 'pre-release'
+															? styles.bg_release_prerelease
+															: release.type === 'broken'
+																? styles.bg_release_broken
+																: styles.bg_release_eol
 									}`}
 								>
 									<a
@@ -304,13 +363,19 @@ export async function ReleasesSection() {
 														{release.version}
 													</span>
 													<span className={styles.release_card_badge}>
-														{release.type === 'stable'
-															? 'Stable'
-															: release.type === 'nightly'
-																? 'Nightly'
-																: release.type === 'pre-release'
-																	? 'Prerelease'
-																	: 'End of Life'}
+														{release.buildTag === 'alpha'
+															? 'Alpha'
+															: release.buildTag === 'beta'
+																? 'Beta'
+																: release.type === 'stable'
+																	? 'Stable'
+																	: release.type === 'nightly'
+																		? 'Nightly'
+																		: release.type === 'pre-release'
+																			? 'Prerelease'
+																			: release.type === 'broken'
+																				? 'Broken'
+																				: 'End of Life'}
 													</span>
 												</div>
 											</div>
@@ -326,17 +391,21 @@ export async function ReleasesSection() {
 													<div className={styles.dot_wrap}>
 														<div
 															className={`
-                                ${styles.dot}
-                                ${
-																	release.type === 'stable'
-																		? styles.dot_stable
-																		: release.type === 'nightly'
-																			? styles.dot_nightly
-																			: release.type === 'pre-release'
-																				? styles.dot_prerelease
-																				: styles.dot_eol
+																${styles.dot}
+																${
+																	release.buildTag === 'alpha'
+																		? styles.dot_alpha
+																		: release.buildTag === 'beta'
+																			? styles.dot_beta
+																			: release.type === 'stable'
+																				? styles.dot_stable
+																				: release.type === 'nightly'
+																					? styles.dot_nightly
+																					: release.type === 'pre-release'
+																						? styles.dot_prerelease
+																						: styles.dot_eol
 																}
-                              `}
+															`}
 														/>
 													</div>
 													<span className={styles.electron_versions}>
