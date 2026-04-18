@@ -7,7 +7,6 @@ import { PanelLayout } from '@components/panel-layout'
 import layoutStyles from '@components/panel-layout/layout-panels.module.css'
 import { InfoBox } from '@components/status-info/info-box'
 import { signIn } from 'next-auth/react'
-import Link from 'next/link'
 import styles from './signin.module.css'
 
 export function SignInPageClient() {
@@ -28,15 +27,9 @@ export function SignInPageClient() {
 				lines={[
 					'Download the latest Void Presence build and start customizing your Discord activity.',
 				]}
-			>
-				<Link
-					style={{ marginTop: '10px', display: 'inline-block' }}
-					href='/download'
-					className={styles.signin_btn_primary}
-				>
-					<span className={styles.asset_action_text}>Go to download page</span>
-				</Link>
-			</InfoBox>
+				linkHref='/download'
+				linkLabel='Go to download page'
+			/>
 		</>
 	)
 

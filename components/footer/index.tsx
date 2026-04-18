@@ -17,6 +17,7 @@ const PRODUCT: Link[] = [
 const RESOURCES: Link[] = [
 	{ label: 'Docs', href: '/docs' },
 	{ label: 'Status', href: '/status' },
+	{ label: 'Schedule', href: '/schedule' },
 ]
 
 const META: Link[] = [

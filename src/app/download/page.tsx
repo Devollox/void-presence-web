@@ -1,6 +1,7 @@
 import { PanelLayout } from '@components/panel-layout'
 import layoutStyles from '@components/panel-layout/layout-panels.module.css'
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import Footer from '../../../components/footer'
 import Page from '../../../components/page'
 import PageHeader from '../../../components/page-header'
@@ -9,6 +10,7 @@ import config from '../../../data/config.json'
 import { normalizeReleaseNotes } from '../../../lib/release-notes'
 import ChangelogClient from './changelog-client'
 import DownloadButtons from './download-buttons'
+import DownloadSkeleton from './download-skeleton'
 import styles from './download.module.css'
 import RpcPreviewClient from './rpc-preview-client'
 
@@ -46,7 +48,7 @@ async function getLatestRelease(): Promise<{
 			'https://api.github.com/repos/Devollox/void-presence/releases/latest',
 			{
 				cache: 'no-store',
-			}
+			},
 		)
 
 		if (!res.ok) {
@@ -80,7 +82,7 @@ async function getLatestRelease(): Promise<{
 	}
 }
 
-export default async function DownloadPage() {
+async function DownloadContent() {
 	const { release, error } = await getLatestRelease()
 
 	const left = (
@@ -110,10 +112,24 @@ export default async function DownloadPage() {
 
 			<InfoBox
 				variant='secondary'
+				title='Schedule info'
+				lines={[
+					'Latest stable release appears at the top.',
+					'Prereleases are ordered by release date.',
+					'Older stable versions are marked as End of Life.',
+				]}
+				linkHref='/schedule'
+				linkLabel='Read schedule'
+			/>
+
+			<InfoBox
+				variant='secondary'
 				title='Need help installing?'
 				lines={[
 					'Check the install guide on the main page for platform-specific setup and tips.',
 				]}
+				linkHref='/docs'
+				linkLabel='Read docs'
 			/>
 
 			<InfoBox
@@ -154,6 +170,10 @@ export default async function DownloadPage() {
 		</section>
 	)
 
+	return <PanelLayout left={left} right={right} />
+}
+
+export default function DownloadPage() {
 	return (
 		<Page>
 			<main id='main-page-content'>
@@ -161,7 +181,9 @@ export default async function DownloadPage() {
 					title='Download Void Presence'
 					subtitle='Get the desktop client and keep your Discord Rich Presence always in sync.'
 				/>
-				<PanelLayout left={left} right={right} />
+				<Suspense fallback={<DownloadSkeleton />}>
+					<DownloadContent />
+				</Suspense>
 			</main>
 			<Footer />
 		</Page>

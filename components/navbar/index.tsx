@@ -32,6 +32,9 @@ export default function Navbar() {
 					<Link className={styles.nav_link} href='/download'>
 						Download
 					</Link>
+					<Link className={styles.nav_link} href='/schedule'>
+						Schedule
+					</Link>
 					<Link
 						className={styles.nav_link}
 						target='_blank'
@@ -53,7 +56,6 @@ export default function Navbar() {
 							></path>
 						</svg>
 					</Link>
-
 					{!isAuth && (
 						<Link className={styles.nav_cta_wrap} href='/signin'>
 							<button
@@ -65,7 +67,6 @@ export default function Navbar() {
 							</button>
 						</Link>
 					)}
-
 					{isAuth && (
 						<Link className={styles.nav_cta_wrap} href='/profile'>
 							<button

@@ -1,0 +1,285 @@
+.filter_header {
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.16em;
+	color: #f1f1f1;
+	margin-bottom: 12px;
+}
+
+.release_meta {
+	background: #1f1f1fcc;
+	border: 1px solid #ffffff0f;
+	border-radius: 12px;
+	flex-direction: column;
+	gap: 8px;
+	padding: 16px;
+	display: flex;
+}
+
+.release_row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.release_label {
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: #a1a1aa;
+	font-size: 12px;
+}
+
+.release_value {
+	color: #f1f1f1;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.page_section {
+	width: 100%;
+}
+
+.release_list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.release_item {
+	border-radius: 12px;
+	overflow: hidden;
+	border: 1px solid #ffffff10;
+	transition: all 0.15s ease;
+}
+
+.release_item:hover {
+	transform: translateY(-1px);
+	border-color: #ffffff20;
+}
+
+.release_card {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 12px;
+	text-decoration: none;
+	color: inherit;
+}
+
+.release_card_top {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.release_card_left {
+	flex: 1;
+	min-width: 0;
+}
+
+.version_row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.release_card_version {
+	font-size: 13px;
+	font-weight: 700;
+	color: #f1f1f1;
+}
+
+.release_card_badge {
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	padding: 3px 6px;
+	border-radius: 6px;
+	color: #f1f1f1;
+	background: hsla(0, 0%, 100%, 0.1);
+	border: 1px solid hsla(0, 0%, 100%, 0.1);
+}
+
+.electron_row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 2px;
+}
+
+.dot_wrap {
+	display: flex;
+	align-items: center;
+}
+
+.dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	flex-shrink: 0;
+	box-shadow: 0 0 6px currentColor;
+}
+
+.dot_stable {
+	background: #22c55e;
+}
+
+.dot_prerelease {
+	background: #eab308;
+	animation: pulse 1.5s infinite;
+}
+
+.dot_eol {
+	background: #6b7280;
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.4;
+	}
+}
+
+.electron_versions {
+	font-size: 10px;
+	font-weight: 600;
+	color: hsla(0, 0%, 100%, 0.85);
+	font-feature-settings: 'tnum' 1;
+	letter-spacing: -0.02em;
+}
+
+.release_card_date {
+	font-size: 11px;
+	color: hsla(0, 0%, 100%, 0.6);
+	white-space: nowrap;
+	font-weight: 500;
+	flex-shrink: 0;
+}
+
+.release_card_meta {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+	padding-top: 4px;
+	border-top: 1px solid hsla(0, 0%, 100%, 0.05);
+}
+
+.release_card_meta_item {
+	font-size: 11px;
+	color: hsla(0, 0%, 100%, 0.65);
+	font-weight: 500;
+}
+
+.release_card_changelog {
+	padding: 12px 12px 12px;
+	border-top: 1px solid hsla(0, 0%, 100%, 0.05);
+}
+
+.release_footer_note {
+	margin-top: 12px;
+	font-size: 11px;
+	color: hsla(0, 0%, 100%, 0.5);
+	line-height: 1.4;
+}
+
+.bg_release_stable {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, #22c55e 8%, transparent) 0%,
+		transparent 100%
+	);
+}
+
+.bg_release_stable:hover {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, #22c55e 12%, transparent) 0%,
+		transparent 100%
+	);
+}
+
+.dark .bg_release_stable {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, #22c55e 6%, transparent) 0%,
+		transparent 100%
+	);
+}
+
+.dark .bg_release_stable:hover {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, #22c55e 10%, transparent) 0%,
+		transparent 100%
+	);
+}
+
+.bg_release_prerelease {
+	background-image: repeating-linear-gradient(
+		45deg,
+		color-mix(in srgb, #eab308 6%, transparent),
+		color-mix(in srgb, #eab308 6%, transparent) 8px,
+		color-mix(in srgb, #eab308 10%, transparent) 8px 16px
+	);
+}
+
+.bg_release_prerelease:hover {
+	background-image: repeating-linear-gradient(
+		45deg,
+		color-mix(in srgb, #eab308 10%, transparent),
+		color-mix(in srgb, #eab308 10%, transparent) 8px,
+		color-mix(in srgb, #eab308 14%, transparent) 8px 16px
+	);
+}
+
+.dark .bg_release_prerelease {
+	background-image: repeating-linear-gradient(
+		45deg,
+		color-mix(in srgb, #eab308 4%, transparent),
+		color-mix(in srgb, #eab308 4%, transparent) 8px,
+		color-mix(in srgb, #eab308 7%, transparent) 8px 16px
+	);
+}
+
+.bg_release_eol {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, #2d2d2d 8%, transparent) 0%,
+		transparent 100%
+	);
+}
+
+.bg_release_eol:hover {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, #2d2d2d 12%, transparent) 0%,
+		transparent 100%
+	);
+}
+
+.dark .bg_release_eol {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, #2d2d2d 6%, transparent) 0%,
+		transparent 100%
+	);
+}
+
+.dark .bg_release_eol:hover {
+	background: linear-gradient(
+		135deg,
+		color-mix(in srgb, #2d2d2d 10%, transparent) 0%,
+		transparent 100%
+	);
+}

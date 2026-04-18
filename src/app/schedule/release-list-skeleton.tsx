@@ -1,0 +1,96 @@
+import { PanelLayout } from '@components/panel-layout'
+import layoutStyles from '@components/panel-layout/layout-panels.module.css'
+import skeletonStyles from '../../../styles/skeleton.module.css'
+import scheduleStyles from './schedule.module.css'
+
+export default function ReleaseListSkeleton() {
+	const left = (
+		<>
+			<div className={scheduleStyles.filter_header}>Latest build</div>
+
+			<div className={skeletonStyles.skeleton_meta}>
+				<div className={skeletonStyles.skeleton_row}>
+					<div className={skeletonStyles.skeleton_label} />
+					<div className={skeletonStyles.skeleton_value_short} />
+				</div>
+				<div className={skeletonStyles.skeleton_row}>
+					<div className={skeletonStyles.skeleton_label} />
+					<div className={skeletonStyles.skeleton_value_short} />
+				</div>
+				<div className={skeletonStyles.skeleton_row}>
+					<div className={skeletonStyles.skeleton_label} />
+					<div className={skeletonStyles.skeleton_value_long} />
+				</div>
+			</div>
+
+			<div className={skeletonStyles.skeleton_release_meta}>
+				<div className={skeletonStyles.skeleton_row}>
+					<div className={skeletonStyles.skeleton_label} />
+					<div className={skeletonStyles.skeleton_value_short} />
+				</div>
+				<div className={skeletonStyles.skeleton_row}>
+					<div className={skeletonStyles.skeleton_label} />
+					<div className={skeletonStyles.skeleton_value_short} />
+				</div>
+			</div>
+
+			<div className={skeletonStyles.skeleton_release_meta}>
+				<div className={skeletonStyles.skeleton_row}>
+					<div className={skeletonStyles.skeleton_label} />
+					<div className={skeletonStyles.skeleton_value_short} />
+				</div>
+			</div>
+			<div className={skeletonStyles.skeleton_release_meta}>
+				<div className={skeletonStyles.skeleton_row}>
+					<div className={skeletonStyles.skeleton_label} />
+					<div className={skeletonStyles.skeleton_value_short} />
+				</div>
+			</div>
+			<div className={skeletonStyles.skeleton_release_meta}>
+				<div className={skeletonStyles.skeleton_row}>
+					<div className={skeletonStyles.skeleton_label} />
+					<div className={skeletonStyles.skeleton_value_short} />
+				</div>
+			</div>
+		</>
+	)
+
+	const right = (
+		<section className={scheduleStyles.page_section}>
+			<div className={layoutStyles.preview_card_wrap}>
+				<div className={layoutStyles.preview_card}>
+					<div className={layoutStyles.preview_header}>
+						<div className={skeletonStyles.skeleton_title} />
+						<div className={skeletonStyles.skeleton_badge} />
+					</div>
+
+					<ul className={scheduleStyles.release_list}>
+						{Array.from({ length: 5 }).map((_, idx) => (
+							<li key={idx} className={scheduleStyles.release_item}>
+								<div className={scheduleStyles.release_card}>
+									<div className={scheduleStyles.release_card_top}>
+										<div className={scheduleStyles.release_card_left}>
+											<div className={skeletonStyles.skeleton_version_row}>
+												<div className={skeletonStyles.skeleton_version} />
+												<div className={skeletonStyles.skeleton_badge_small} />
+											</div>
+											<div className={skeletonStyles.skeleton_electron_row} />
+										</div>
+										<div className={skeletonStyles.skeleton_date} />
+									</div>
+
+									<div className={scheduleStyles.release_card_meta}>
+										<div className={skeletonStyles.skeleton_meta_chip} />
+										<div className={skeletonStyles.skeleton_meta_chip} />
+									</div>
+								</div>
+							</li>
+						))}
+					</ul>
+				</div>
+			</div>
+		</section>
+	)
+
+	return <PanelLayout left={left} right={right} />
+}

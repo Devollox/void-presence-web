@@ -23,8 +23,8 @@ export function InfoBox({
 		variant === 'muted'
 			? styles.info_box_muted
 			: variant === 'secondary'
-			? styles.info_box_secondary
-			: styles.info_box
+				? styles.info_box_secondary
+				: styles.info_box
 
 	return (
 		<div className={boxClass}>
@@ -43,6 +43,12 @@ export function InfoBox({
 
 			{variant === 'muted' && linkHref && linkLabel && (
 				<Link href={linkHref} className={styles.back_link}>
+					{linkLabel}
+				</Link>
+			)}
+
+			{variant != 'muted' && linkHref && linkLabel && (
+				<Link href={linkHref} className={styles.action_button}>
 					{linkLabel}
 				</Link>
 			)}
