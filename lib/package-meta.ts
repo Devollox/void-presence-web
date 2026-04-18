@@ -28,7 +28,7 @@ const INTERESTING_DEPENDENCIES = [
 	{ name: 'typescript', label: 'TypeScript', kind: 'tooling' },
 	{ name: 'firebase', label: 'Firebase', kind: 'runtime' },
 	{ name: 'discord-rpc', label: 'Discord RPC', kind: 'runtime' },
-	{ name: 'electron-builder', label: 'Electron Builder', kind: 'tooling' },
+	{ name: 'ts-node', label: 'TypeScript Node', kind: 'runtime' },
 	{
 		name: 'electron-squirrel-startup',
 		label: 'Electron Squirrel Startup',
