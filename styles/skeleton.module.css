@@ -22,7 +22,8 @@
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
-	padding: 14px;
+	height: 160px;
+	padding: 55px 14px 14px 14px;
 	background: hsla(0, 0%, 10%, 0.9);
 	border-radius: 10px;
 	border: 1px solid hsla(255, 255%, 255%, 0.04);
@@ -31,11 +32,25 @@
 .skeleton_release_meta {
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
+	gap: 14px;
 	padding: 14px;
 	background: hsla(0, 0%, 10%, 0.9);
 	border-radius: 10px;
 	border: 1px solid hsla(255, 255%, 255%, 0.04);
+}
+
+.skeleton_release_meta_release {
+	.skeleton_label {
+		width: 100%;
+		height: 58px;
+		border-radius: 12px;
+	}
+}
+
+.skeleton_release_meta_info {
+	.skeleton_label {
+		width: 100%;
+	}
 }
 
 .skeleton_row {
@@ -96,6 +111,7 @@
 	display: flex;
 	align-items: center;
 	gap: 6px;
+	height: 23px;
 }
 
 .skeleton_version {
@@ -127,6 +143,16 @@
 	width: 90px;
 	height: 11px;
 	border-radius: 999px;
+	height: 13px;
+}
+
+.skeleton_meta_chip_changelog {
+	margin-top: 12px;
+	margin-left: 2px;
+	margin-right: 2px;
+	border-radius: 12px;
+	width: 100%;
+	height: 35px;
 }
 
 .skeleton_rpc_preview {
@@ -158,6 +184,7 @@
 .skeleton_value_short,
 .skeleton_value_long,
 .skeleton_rpc_preview,
+.skeleton_meta_chip_changelog,
 .skeleton_changelog {
 	composes: skeleton_shimmer;
 }

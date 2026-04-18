@@ -10,6 +10,17 @@ export default function ReleaseListSkeleton({
 }) {
 	const left = (
 		<>
+			<div
+				className={`${skeletonStyles.skeleton_release_meta} ${skeletonStyles.skeleton_release_meta_release}`}
+			>
+				<div className={skeletonStyles.skeleton_row}>
+					<div className={skeletonStyles.skeleton_label} />
+				</div>
+				<div className={skeletonStyles.skeleton_row}>
+					<div className={skeletonStyles.skeleton_label} />
+				</div>
+			</div>
+
 			<div className={skeletonStyles.skeleton_meta}>
 				<div className={skeletonStyles.skeleton_row}>
 					<div className={skeletonStyles.skeleton_label} />
@@ -25,33 +36,25 @@ export default function ReleaseListSkeleton({
 				</div>
 			</div>
 
-			<div className={skeletonStyles.skeleton_release_meta}>
+			<div
+				className={`${skeletonStyles.skeleton_release_meta} ${skeletonStyles.skeleton_release_meta_info}`}
+			>
 				<div className={skeletonStyles.skeleton_row}>
 					<div className={skeletonStyles.skeleton_label} />
-					<div className={skeletonStyles.skeleton_value_short} />
 				</div>
 				<div className={skeletonStyles.skeleton_row}>
 					<div className={skeletonStyles.skeleton_label} />
-					<div className={skeletonStyles.skeleton_value_short} />
 				</div>
 			</div>
 
-			<div className={skeletonStyles.skeleton_release_meta}>
+			<div
+				className={`${skeletonStyles.skeleton_release_meta} ${skeletonStyles.skeleton_release_meta_info}`}
+			>
 				<div className={skeletonStyles.skeleton_row}>
 					<div className={skeletonStyles.skeleton_label} />
-					<div className={skeletonStyles.skeleton_value_short} />
 				</div>
-			</div>
-			<div className={skeletonStyles.skeleton_release_meta}>
 				<div className={skeletonStyles.skeleton_row}>
 					<div className={skeletonStyles.skeleton_label} />
-					<div className={skeletonStyles.skeleton_value_short} />
-				</div>
-			</div>
-			<div className={skeletonStyles.skeleton_release_meta}>
-				<div className={skeletonStyles.skeleton_row}>
-					<div className={skeletonStyles.skeleton_label} />
-					<div className={skeletonStyles.skeleton_value_short} />
 				</div>
 			</div>
 		</>
@@ -76,14 +79,17 @@ export default function ReleaseListSkeleton({
 												<div className={skeletonStyles.skeleton_version} />
 												<div className={skeletonStyles.skeleton_badge_small} />
 											</div>
-											<div className={skeletonStyles.skeleton_electron_row} />
 										</div>
 										<div className={skeletonStyles.skeleton_date} />
 									</div>
 
 									<div className={scheduleStyles.release_card_meta}>
 										<div className={skeletonStyles.skeleton_meta_chip} />
-										<div className={skeletonStyles.skeleton_meta_chip} />
+									</div>
+									<div className={scheduleStyles.release_card_meta}>
+										<div
+											className={skeletonStyles.skeleton_meta_chip_changelog}
+										/>
 									</div>
 								</div>
 							</li>
