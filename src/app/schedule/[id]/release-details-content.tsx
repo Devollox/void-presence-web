@@ -220,26 +220,6 @@ export async function ReleaseDetailsContent({ id }: { id: string }) {
 								<span className={styles.release_value}>v{electronFromPkg}</span>
 							</div>
 						)}
-
-						{pkgMeta?.version && (
-							<div className={styles.release_row}>
-								<span className={styles.release_label}>App version</span>
-								<span className={styles.release_value}>{pkgMeta.version}</span>
-							</div>
-						)}
-
-						<div className={styles.release_row}>
-							<span className={styles.release_label}>Type</span>
-							<span className={styles.release_value}>
-								{release.type === 'stable'
-									? 'Stable'
-									: release.type === 'nightly'
-										? 'Nightly'
-										: release.type === 'pre-release'
-											? 'Prerelease'
-											: 'End of Life'}
-							</span>
-						</div>
 					</div>
 
 					{release.url && (
