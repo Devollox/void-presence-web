@@ -63,11 +63,21 @@ async function getLatestRelease(): Promise<{
 		const data = await res.json()
 		const rawAssets = Array.isArray(data.assets) ? data.assets : []
 
-		const assets: ReleaseAsset[] = rawAssets.map((asset: any) => ({
-			name: asset.name,
-			size: asset.size / (1024 * 1024),
-			downloadUrl: asset.browser_download_url,
-		}))
+		const assets: ReleaseAsset[] = rawAssets
+			.map((asset: any) => ({
+				name: asset.name,
+				size: asset.size / (1024 * 1024),
+				downloadUrl: asset.browser_download_url,
+			}))
+			.sort((a: ReleaseAsset, b: ReleaseAsset) => {
+				const aIsExe = a.name.toLowerCase().endsWith('.exe')
+				const bIsExe = b.name.toLowerCase().endsWith('.exe')
+
+				if (aIsExe && !bIsExe) return -1
+				if (bIsExe && !aIsExe) return 1
+
+				return 0
+			})
 
 		const notes = normalizeReleaseNotes(data.body || '')
 		const electronCurrent = parseElectronVersionFromNotes(notes)
