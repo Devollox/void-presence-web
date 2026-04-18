@@ -230,9 +230,6 @@ export function ProfileConfigsClient({ configs, userId }: Props) {
 			<div className={styles.profile_configs_layout}>
 				<div className={styles.profile_header_row}>
 					<div className={styles.profile_header_title}>Your configs</div>
-					<div className={styles.profile_header_badge}>
-						{sortedConfigs.length} total
-					</div>
 				</div>
 
 				<div className={styles.profile_search_row}>

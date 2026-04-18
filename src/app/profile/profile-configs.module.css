@@ -7,7 +7,7 @@
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
-	gap: 32px;
+	gap: 20px;
 }
 
 .profile_header_row {
@@ -19,7 +19,7 @@
 
 .profile_header_title {
 	font-size: 14px;
-	font-weight: 600;
+	font-weight: 300;
 	text-transform: uppercase;
 	letter-spacing: 0.16em;
 	color: #f1f1f1;
@@ -43,17 +43,15 @@
 }
 
 .profile_search_container {
-	position: relative;
-	display: flex;
+	background: #1f1f1fe6;
+	border: 1px solid #ffffff0f;
+	border-radius: 12px;
 	align-items: center;
-	background: hsla(0, 0%, 12%, 0.9);
-	border: 1px solid hsla(255, 255%, 255%, 0.06);
-	border-radius: 999px;
-	padding: 12px 18px;
-	gap: 10px;
+	gap: 12px;
+	padding: 12px 16px;
+	display: flex;
+	position: relative;
 	width: 100%;
-	max-width: 520px;
-	box-shadow: 0 18px 40px hsla(0, 0%, 0%, 0.55);
 }
 
 .profile_search_icon {
@@ -104,16 +102,17 @@
 }
 
 .profile_stats_row {
-	display: flex;
-	justify-content: center;
-	font-size: 13px;
-	color: hsla(0, 0%, 100%, 0.6);
+	color: #f1f1f1;
+	background: #1f1f1f99;
+	border-radius: 12px;
+	padding: 12px;
+	font-size: 14px;
 }
 
 .profile_cards_grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-	gap: 24px;
+	gap: 20px;
 }
 
 .profile_card_wrap {
@@ -337,7 +336,7 @@
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 24px;
+	gap: 20px;
 }
 
 .filter_header {
@@ -418,7 +417,7 @@
 .theme_listings {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-	gap: 24px;
+	gap: 20px;
 }
 
 .card_wrap {
@@ -683,7 +682,7 @@ modal_info::-webkit-scrollbar-track {
 	margin-top: 24px;
 	display: flex;
 	flex-direction: column;
-	gap: 24px;
+	gap: 20px;
 }
 
 .info_section h3 {
