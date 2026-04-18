@@ -23,11 +23,34 @@ export type PackageMeta = {
 	dependencies: PackageDependencyEntry[]
 }
 
-const INTERESTING_DEPENDENCIES: {
+const INTERESTING_DEPENDENCIES = [
+	{ name: 'electron', label: 'Electron', kind: 'tooling' },
+	{ name: 'typescript', label: 'TypeScript', kind: 'tooling' },
+	{ name: 'firebase', label: 'Firebase', kind: 'runtime' },
+	{ name: 'discord-rpc', label: 'Discord RPC', kind: 'runtime' },
+	{ name: 'electron-builder', label: 'Electron Builder', kind: 'tooling' },
+	{
+		name: 'electron-squirrel-startup',
+		label: 'Electron Squirrel Startup',
+		kind: 'tooling',
+	},
+	{ name: 'electron-reloader', label: 'Electron Reloader', kind: 'tooling' },
+	{ name: 'eslint', label: 'ESLint', kind: 'tooling' },
+	{
+		name: '@coooookies/windows-smtc-monitor',
+		label: 'Windows Smtc Monitor',
+		kind: 'tooling',
+	},
+	{
+		name: 'dotenv',
+		label: 'Dotenv',
+		kind: 'tooling',
+	},
+] satisfies {
 	name: string
 	label: string
 	kind: PackageDependencyEntry['kind']
-}[] = []
+}[]
 
 function findDepValue(
 	pkg: PackageJson,
@@ -65,32 +88,6 @@ export function extractPackageMeta(
 			value: found.value,
 			kind: def.kind,
 		})
-	}
-
-	const knownNames = new Set(INTERESTING_DEPENDENCIES.map(d => d.name))
-
-	if (pkg.dependencies) {
-		for (const [name, value] of Object.entries(pkg.dependencies)) {
-			if (knownNames.has(name)) continue
-			entries.push({
-				key: name,
-				label: `${name}:`,
-				value,
-				kind: 'runtime',
-			})
-		}
-	}
-
-	if (pkg.devDependencies) {
-		for (const [name, value] of Object.entries(pkg.devDependencies)) {
-			if (knownNames.has(name)) continue
-			entries.push({
-				key: name,
-				label: `${name}:`,
-				value,
-				kind: 'dev',
-			})
-		}
 	}
 
 	return {
