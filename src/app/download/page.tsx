@@ -1,7 +1,7 @@
 import { PanelLayout } from '@components/panel-layout'
 import layoutStyles from '@components/panel-layout/layout-panels.module.css'
-import { parseElectronVersionFromNotes } from '@lib/electron-version'
 import { githubHeaders } from '@lib/github-headers'
+import { extractPackageMeta, type PackageJson } from '@lib/package-meta'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import Footer from '../../../components/footer'
@@ -42,6 +42,29 @@ export const metadata: Metadata = {
 	},
 }
 
+async function getPackageJsonByTag(tag: string): Promise<PackageJson | null> {
+	const url = `https://raw.githubusercontent.com/Devollox/void-presence/${encodeURIComponent(
+		tag,
+	)}/package.json`
+
+	const res = await fetch(url, {
+		cache: 'force-cache',
+		next: { revalidate: 300 },
+		headers: githubHeaders(),
+	})
+
+	if (!res.ok) {
+		return null
+	}
+
+	try {
+		const json = (await res.json()) as PackageJson
+		return json
+	} catch {
+		return null
+	}
+}
+
 async function getLatestRelease(): Promise<{
 	release: ReleaseInfo | null
 	error: string | null
@@ -80,7 +103,13 @@ async function getLatestRelease(): Promise<{
 			})
 
 		const notes = normalizeReleaseNotes(data.body || '')
-		const electronCurrent = parseElectronVersionFromNotes(notes)
+
+		const pkg = await getPackageJsonByTag(data.tag_name)
+		const pkgMeta = extractPackageMeta(pkg)
+		const electronFromPkg =
+			pkgMeta?.dependencies.find(dep => dep.key === 'electron')?.value ??
+			pkg?.dependencies?.electron ??
+			pkg?.devDependencies?.electron
 
 		const release: ReleaseInfo = {
 			version: data.tag_name,
@@ -89,7 +118,7 @@ async function getLatestRelease(): Promise<{
 				: '',
 			notes,
 			assets,
-			electronCurrent,
+			electronCurrent: electronFromPkg || undefined,
 		}
 
 		return { release, error: null }

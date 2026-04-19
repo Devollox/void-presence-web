@@ -37,6 +37,13 @@ export function classifyRelease(
 ): ClassifiedReleaseTag {
 	const tagFromTagName = parseBuildTagFromTagName(raw.tag_name)
 	const tagFromNotes = parseBuildTagFromNotes(notes)
+
+	const lowerNotes = tagFromNotes?.toLowerCase()
+
+	if (lowerNotes && ['broken', 'failed', 'borked'].includes(lowerNotes)) {
+		return { type: 'broken', buildTag: 'broken' }
+	}
+
 	const tag = (tagFromTagName ?? tagFromNotes)?.toLowerCase()
 
 	if (tag === 'nightly') {

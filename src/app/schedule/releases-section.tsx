@@ -1,41 +1,11 @@
 import { PanelLayout } from '@components/panel-layout'
 import layoutStyles from '@components/panel-layout/layout-panels.module.css'
-import { parseElectronVersionFromNotes } from '@lib/electron-version'
-import { githubHeaders } from '@lib/github-headers'
-import { classifyRelease } from '@lib/release-tags'
+import { getReleases } from '@lib/releases-schedule'
 import type { Metadata } from 'next'
 import { InfoBox } from '../../../components/status-info/info-box'
-import { normalizeReleaseNotes } from '../../../lib/release-notes'
 import ChangelogClient from '../download/changelog-client'
 import DownloadButtons from '../download/download-buttons'
 import styles from './schedule.module.css'
-
-interface ReleaseAsset {
-	name: string
-	size: number
-	downloadUrl: string
-}
-
-type ReleaseType =
-	| 'stable'
-	| 'pre-release'
-	| 'nightly'
-	| 'end of life'
-	| 'broken'
-
-interface ReleaseInfo {
-	version: string
-	commit: string | null
-	date: string
-	notes: string
-	assets: ReleaseAsset[]
-	prerelease: boolean
-	draft: boolean
-	url: string
-	type: ReleaseType
-	electronCurrent?: string
-	buildTag?: string
-}
 
 export const metadata: Metadata = {
 	title: 'Release Schedule',
@@ -49,178 +19,12 @@ export const metadata: Metadata = {
 	},
 }
 
-function formatDate(input: string) {
-	if (!input) return 'Unknown'
-	const date = new Date(input)
-	if (Number.isNaN(date.getTime())) return input
-	return date.toISOString().slice(0, 10)
-}
-
-function applyBuildTagPriority(releases: ReleaseInfo[]): ReleaseInfo[] {
-	return releases.map(release => {
-		const tag = release.buildTag
-		let type: ReleaseType | null = null
-
-		if (tag === 'nightly') type = 'nightly'
-		else if (tag === 'stable') type = 'stable'
-		else if (tag === 'pre-release' || tag === 'prerelease') type = 'pre-release'
-
-		if (!type) return release
-		return { ...release, type }
-	})
-}
-
-async function getReleases(): Promise<{
-	releases: ReleaseInfo[]
-	error: string | null
-}> {
-	try {
-		const res = await fetch(
-			'https://api.github.com/repos/Devollox/void-presence/releases?per_page=100',
-			{
-				cache: 'force-cache',
-				next: { revalidate: 300 },
-				headers: githubHeaders(),
-			},
-		)
-
-		if (!res.ok) {
-			return {
-				releases: [],
-				error:
-					res.status === 403
-						? 'GitHub API rate limit exceeded. Please try again in a few minutes or open the GitHub releases page.'
-						: 'Failed to load release schedule. Please try again later.',
-			}
-		}
-
-		const data = await res.json()
-		const rawReleases = Array.isArray(data) ? data : []
-
-		let releases: ReleaseInfo[] = rawReleases
-			.filter((item: any) => item && !item.draft)
-			.map((item: any) => {
-				const rawAssets = Array.isArray(item.assets) ? item.assets : []
-
-				const assets: ReleaseAsset[] = rawAssets
-					.map((asset: any) => ({
-						name: asset.name,
-						size: asset.size / (1024 * 1024),
-						downloadUrl: asset.browser_download_url,
-					}))
-					.sort((a: ReleaseAsset, b: ReleaseAsset) => {
-						const aIsExe = a.name.toLowerCase().endsWith('.exe')
-						const bIsExe = b.name.toLowerCase().endsWith('.exe')
-
-						if (aIsExe && !bIsExe) return -1
-						if (bIsExe && !aIsExe) return 1
-
-						return 0
-					})
-
-				const rawBody = item.body || ''
-				const notes = normalizeReleaseNotes(rawBody)
-				const electronVersion = parseElectronVersionFromNotes(notes)
-				const classification = classifyRelease(item, rawBody)
-
-				return {
-					version: item.tag_name || 'unknown',
-					commit: item.target_commitish || null,
-					date: item.published_at ? formatDate(item.published_at) : 'Unknown',
-					notes,
-					assets,
-					prerelease: !!item.prerelease,
-					draft: !!item.draft,
-					url: item.html_url || '',
-					type: classification.type,
-					electronCurrent: electronVersion,
-					buildTag: classification.buildTag,
-				} as ReleaseInfo
-			})
-
-		releases = releases.sort((a, b) => {
-			const dateA = a.date === 'Unknown' ? new Date(0) : new Date(a.date)
-			const dateB = b.date === 'Unknown' ? new Date(0) : new Date(b.date)
-			return dateB.getTime() - dateA.getTime()
-		})
-
-		releases = applyBuildTagPriority(releases)
-
-		const normalSorted = [...releases].filter(
-			r =>
-				r.type !== 'nightly' && r.type !== 'pre-release' && r.type !== 'broken',
-		)
-
-		normalSorted.sort((a, b) => {
-			const dateA = a.date === 'Unknown' ? new Date(0) : new Date(a.date)
-			const dateB = b.date === 'Unknown' ? new Date(0) : new Date(b.date)
-			return dateB.getTime() - dateA.getTime()
-		})
-
-		const latestNormal = normalSorted[0] ?? null
-
-		const stableTagVersions = new Set(
-			releases
-				.filter(r => r.buildTag?.toLowerCase() === 'stable')
-				.map(r => r.version),
-		)
-
-		releases = releases.map(r => {
-			if (
-				r.type === 'nightly' ||
-				r.type === 'pre-release' ||
-				r.type === 'broken'
-			) {
-				return r
-			}
-
-			const isLatest = latestNormal && r.version === latestNormal.version
-
-			if (isLatest || stableTagVersions.has(r.version)) {
-				return { ...r, type: 'stable' as const }
-			}
-
-			return { ...r, type: 'end of life' as const }
-		})
-
-		let lastElectronVersion: string | undefined
-
-		releases = releases
-			.sort((a, b) => {
-				const dateA = a.date === 'Unknown' ? new Date(0) : new Date(a.date)
-				const dateB = b.date === 'Unknown' ? new Date(0) : new Date(b.date)
-				return dateA.getTime() - dateB.getTime()
-			})
-			.map(release => {
-				if (release.electronCurrent) {
-					lastElectronVersion = release.electronCurrent
-					return release
-				}
-
-				return {
-					...release,
-					electronCurrent: lastElectronVersion,
-				}
-			})
-			.sort((a, b) => {
-				const dateA = a.date === 'Unknown' ? new Date(0) : new Date(a.date)
-				const dateB = b.date === 'Unknown' ? new Date(0) : new Date(b.date)
-				return dateB.getTime() - dateA.getTime()
-			})
-
-		return { releases, error: null }
-	} catch (err) {
-		return {
-			releases: [],
-			error: 'Failed to load release schedule. Please try again later.',
-		}
-	}
-}
-
 export async function ReleasesSection() {
-	const { releases, error } = await getReleases()
+	const { releases, githubLatestRelease, error } = await getReleases()
 
-	const stableRelease = releases[0]
+	const stableRelease = githubLatestRelease ?? releases[0] ?? null
+	const scheduleElectronSource =
+		releases.find(r => r.version === stableRelease?.version) ?? stableRelease
 
 	const left = (
 		<>
@@ -228,7 +32,9 @@ export async function ReleasesSection() {
 				<InfoBox variant='muted' lines={[error]} />
 			) : stableRelease ? (
 				<>
-					<DownloadButtons assets={stableRelease.assets} />
+					{stableRelease.assets.length > 0 && (
+						<DownloadButtons assets={stableRelease.assets} />
+					)}
 
 					<div className={styles.release_meta}>
 						<div className={styles.release_row}>
@@ -241,11 +47,11 @@ export async function ReleasesSection() {
 							<span className={styles.release_label}>Release date</span>
 							<span className={styles.release_value}>{stableRelease.date}</span>
 						</div>
-						{stableRelease.electronCurrent && (
+						{scheduleElectronSource?.electronCurrent && (
 							<div className={styles.release_row}>
 								<span className={styles.release_label}>Electron</span>
 								<span className={styles.release_value}>
-									v{stableRelease.electronCurrent}
+									v{scheduleElectronSource.electronCurrent}
 								</span>
 							</div>
 						)}
@@ -259,7 +65,7 @@ export async function ReleasesSection() {
 				variant='secondary'
 				title='Schedule info'
 				lines={[
-					'Latest stable release appears at the top.',
+					'Latest GitHub release appears at the top.',
 					'Prereleases and nightly builds are ordered by release date.',
 					'Older stable versions are marked as End of Life .',
 				]}
@@ -292,6 +98,10 @@ export async function ReleasesSection() {
 					<ul className={styles.release_list}>
 						{releases.map(release => {
 							const hasElectron = release.electronCurrent
+							const isCurrentStable =
+								stableRelease && release.version === stableRelease.version
+
+							const effectiveType = isCurrentStable ? 'stable' : release.type
 
 							return (
 								<li
@@ -301,13 +111,13 @@ export async function ReleasesSection() {
 											? styles.bg_release_alpha
 											: release.buildTag === 'beta'
 												? styles.bg_release_beta
-												: release.type === 'stable'
+												: effectiveType === 'stable'
 													? styles.bg_release_stable
-													: release.type === 'nightly'
+													: effectiveType === 'nightly'
 														? styles.bg_release_nightly
-														: release.type === 'pre-release'
+														: effectiveType === 'pre-release'
 															? styles.bg_release_prerelease
-															: release.type === 'broken'
+															: effectiveType === 'broken'
 																? styles.bg_release_broken
 																: styles.bg_release_eol
 									}`}
@@ -327,13 +137,13 @@ export async function ReleasesSection() {
 															? 'Alpha'
 															: release.buildTag === 'beta'
 																? 'Beta'
-																: release.type === 'stable'
+																: effectiveType === 'stable'
 																	? 'Stable'
-																	: release.type === 'nightly'
+																	: effectiveType === 'nightly'
 																		? 'Nightly'
-																		: release.type === 'pre-release'
+																		: effectiveType === 'pre-release'
 																			? 'Prerelease'
-																			: release.type === 'broken'
+																			: effectiveType === 'broken'
 																				? 'Broken'
 																				: 'End of Life'}
 													</span>
@@ -351,23 +161,23 @@ export async function ReleasesSection() {
 													<div className={styles.dot_wrap}>
 														<div
 															className={`
-																${styles.dot}
-																${
-																	release.buildTag === 'alpha'
-																		? styles.dot_alpha
-																		: release.buildTag === 'beta'
-																			? styles.dot_beta
-																			: release.buildTag === 'broken'
-																				? styles.dot_broken
-																				: release.type === 'stable'
-																					? styles.dot_stable
-																					: release.type === 'nightly'
-																						? styles.dot_nightly
-																						: release.type === 'pre-release'
-																							? styles.dot_prerelease
-																							: styles.dot_eol
-																}
-															`}
+                    ${styles.dot}
+                    ${
+											release.buildTag === 'alpha'
+												? styles.dot_alpha
+												: release.buildTag === 'beta'
+													? styles.dot_beta
+													: release.buildTag === 'broken'
+														? styles.dot_broken
+														: effectiveType === 'stable'
+															? styles.dot_stable
+															: effectiveType === 'nightly'
+																? styles.dot_nightly
+																: effectiveType === 'pre-release'
+																	? styles.dot_prerelease
+																	: styles.dot_eol
+										}
+                  `}
 														/>
 													</div>
 													<span className={styles.electron_versions}>
