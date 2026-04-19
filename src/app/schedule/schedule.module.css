@@ -507,3 +507,28 @@
 	white-space: nowrap;
 	margin-left: 6px;
 }
+
+.release_legend {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 0.75rem;
+	padding: 0 0.7rem 0 0.7rem;
+	border-top: 1px solid var(--border-subtle);
+}
+
+.preview_release_legend {
+	margin-bottom: 20px;
+}
+
+.release_legend_item {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.82rem;
+	color: var(--text-muted);
+}
+
+.release_legend_label {
+	white-space: nowrap;
+}

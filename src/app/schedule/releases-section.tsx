@@ -84,6 +84,44 @@ export async function ReleasesSection() {
 
 	const right = (
 		<section className={styles.page_section}>
+			<div
+				className={`${layoutStyles.preview_card_wrap} ${styles.preview_release_legend}`}
+			>
+				<div className={layoutStyles.preview_card}>
+					<div className={styles.release_legend}>
+						<div className={styles.release_legend_item}>
+							<span className={`${styles.dot} ${styles.dot_stable}`} />
+							<span className={styles.release_legend_label}>
+								Stable (Long-tested, latest recommended)
+							</span>
+						</div>
+						<div className={styles.release_legend_item}>
+							<span className={`${styles.dot} ${styles.dot_prerelease}`} />
+							<span className={styles.release_legend_label}>
+								Prerelease (Testing build)
+							</span>
+						</div>
+						<div className={styles.release_legend_item}>
+							<span className={`${styles.dot} ${styles.dot_nightly}`} />
+							<span className={styles.release_legend_label}>
+								Nightly (Fast builds, experimental)
+							</span>
+						</div>
+						<div className={styles.release_legend_item}>
+							<span className={`${styles.dot} ${styles.dot_broken}`} />
+							<span className={styles.release_legend_label}>
+								Broken (Known issues, debug only)
+							</span>
+						</div>
+						<div className={styles.release_legend_item}>
+							<span className={`${styles.dot} ${styles.dot_eol}`} />
+							<span className={styles.release_legend_label}>
+								End of Life (Legacy, lightly tested)
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div className={layoutStyles.preview_card_wrap}>
 				<div className={layoutStyles.preview_card}>
 					<div className={layoutStyles.preview_header}>
