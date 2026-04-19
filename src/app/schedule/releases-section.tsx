@@ -119,6 +119,18 @@ export async function ReleasesSection() {
 								End of Life (Legacy, lightly tested)
 							</span>
 						</div>
+						<div className={styles.release_legend_item}>
+							<span className={`${styles.dot} ${styles.dot_alpha}`} />
+							<span className={styles.release_legend_label}>
+								Alpha (Early testing, very unstable)
+							</span>
+						</div>
+						<div className={styles.release_legend_item}>
+							<span className={`${styles.dot} ${styles.dot_beta}`} />
+							<span className={styles.release_legend_label}>
+								Beta (Feature-complete, might be unstable)
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>
