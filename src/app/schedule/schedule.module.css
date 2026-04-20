@@ -17,7 +17,7 @@
 .release_meta {
 	background: #1f1f1fcc;
 	border: 1px solid #ffffff0f;
-	border-radius: 12px;
+	border-radius: 16px;
 	flex-direction: column;
 	gap: 8px;
 	padding: 16px;

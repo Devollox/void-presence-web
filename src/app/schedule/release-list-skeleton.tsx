@@ -67,11 +67,20 @@ export default function ReleaseListSkeleton({
 			{backBtn === true && (
 				<div
 					className={layoutStyles.preview_card_wrap}
-					style={{ marginBottom: 20 }}
+					style={{ marginBottom: 20, height: 70 }}
 				>
-					<div className={layoutStyles.preview_card}>
-						<div className={layoutStyles.preview_header}>
-							<div className={skeletonStyles.skeleton_title} />
+					<div
+						className={layoutStyles.preview_card}
+						style={{ flexDirection: 'row' }}
+					>
+						<div
+							className={layoutStyles.preview_header}
+							style={{ width: '100%' }}
+						>
+							<div
+								className={skeletonStyles.skeleton_title}
+								style={{ width: '100%', height: 40, borderRadius: 12 }}
+							/>
 						</div>
 					</div>
 				</div>
