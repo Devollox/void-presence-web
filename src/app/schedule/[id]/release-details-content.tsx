@@ -20,6 +20,7 @@ async function getPackageJsonByTag(tag: string): Promise<PackageJson | null> {
 
 	const res = await fetch(url, {
 		cache: 'force-cache',
+		next: { revalidate: 300 },
 		headers: githubHeaders(),
 	})
 
