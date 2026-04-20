@@ -25,7 +25,7 @@
 	height: 160px;
 	padding: 55px 14px 14px 14px;
 	background: hsla(0, 0%, 10%, 0.9);
-	border-radius: 10px;
+	border-radius: 16px;
 	border: 1px solid hsla(255, 255%, 255%, 0.04);
 }
 
@@ -35,7 +35,7 @@
 	gap: 14px;
 	padding: 14px;
 	background: hsla(0, 0%, 10%, 0.9);
-	border-radius: 10px;
+	border-radius: 16px;
 	border: 1px solid hsla(255, 255%, 255%, 0.04);
 }
 
@@ -90,7 +90,7 @@
 .skeleton_info_box_small {
 	margin-top: 8px;
 	height: 52px;
-	border-radius: 10px;
+	border-radius: 16px;
 	background: hsla(0, 0%, 8%, 0.9);
 	border: 1px dashed hsla(255, 255%, 255%, 0.06);
 }

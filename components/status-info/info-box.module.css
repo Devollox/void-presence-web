@@ -9,7 +9,7 @@
 
 .info_box {
 	padding: 14px 16px;
-	border-radius: 14px;
+	border-radius: 16px;
 	background: #141414f2;
 	border: 1px solid #ffffff14;
 }
@@ -17,7 +17,7 @@
 .info_box_secondary {
 	background: rgba(23, 23, 23, 0.9);
 	border: 1px solid rgba(255, 255, 255, 0.04);
-	border-radius: 12px;
+	border-radius: 16px;
 	padding: 14px 16px;
 }
 
@@ -36,7 +36,7 @@
 
 .info_box_muted {
 	padding: 12px 14px;
-	border-radius: 10px;
+	border-radius: 16px;
 	background: hsla(0, 0%, 6%, 0.9);
 	border: 1px dashed hsla(0, 0%, 100%, 0.09);
 }
