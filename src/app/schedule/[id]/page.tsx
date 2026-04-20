@@ -4,6 +4,7 @@ import Footer from '../../../../components/footer'
 import Page from '../../../../components/page'
 import PageHeader from '../../../../components/page-header'
 import ReleaseListSkeleton from '../release-list-skeleton'
+import { ReleaseDetailsContent } from './release-details-content'
 
 export async function generateMetadata(
 	props: ReleaseDetailsPageProps,
@@ -44,7 +45,7 @@ export default async function ReleaseDetailsPage(
 				<Suspense
 					fallback={<ReleaseListSkeleton countSkeleton={1} backBtn={true} />}
 				>
-					<ReleaseListSkeleton countSkeleton={1} backBtn={true} />
+					<ReleaseDetailsContent id={id} />
 				</Suspense>
 			</main>
 			<Footer />
