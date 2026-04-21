@@ -9,6 +9,12 @@ export interface ReleaseAsset {
 	downloadUrl: string
 }
 
+export interface ReleaseDownloadsItem {
+	tag: string
+	name: string | null
+	totalDownloads: number
+}
+
 export type ReleaseType =
 	| 'stable'
 	| 'pre-release'
@@ -264,4 +270,64 @@ export async function getReleases(): Promise<{
 			error: 'Failed to load release schedule. Please try again later.',
 		}
 	}
+}
+
+export interface ReleaseDownloadsResult {
+	items: ReleaseDownloadsItem[]
+	error: string | null
+}
+
+export async function getReleaseDownloads(): Promise<ReleaseDownloadsResult> {
+	const res = await fetch(
+		'https://api.github.com/repos/Devollox/void-presence/releases?per_page=100',
+		{
+			cache: 'force-cache',
+			next: { revalidate: 300 },
+			headers: githubHeaders(),
+		},
+	)
+
+	if (!res.ok) {
+		return {
+			items: [],
+			error:
+				res.status === 403
+					? 'GitHub API rate limit exceeded. Please try again in a few minutes or open the GitHub releases page.'
+					: 'Failed to load release schedule. Please try again later.',
+		}
+	}
+
+	const data = await res.json()
+	const rawReleases = Array.isArray(data) ? data : []
+
+	const items: ReleaseDownloadsItem[] = rawReleases
+		.filter((item: any) => item && !item.draft)
+		.map((item: any) => {
+			const tag = item.tag_name as string
+			const name = (item.name as string) ?? null
+			const assets = Array.isArray(item.assets) ? item.assets : []
+
+			const totalDownloads = assets.reduce(
+				(sum: number, asset: any) =>
+					sum +
+					(typeof asset.download_count === 'number' ? asset.download_count : 0),
+				0,
+			)
+
+			return {
+				tag,
+				name,
+				totalDownloads,
+			}
+		})
+		.sort((a, b) => {
+			const aTag = a.tag
+			const bTag = b.tag
+			return bTag.localeCompare(aTag, undefined, {
+				numeric: true,
+				sensitivity: 'base',
+			})
+		})
+
+	return { items, error: null }
 }

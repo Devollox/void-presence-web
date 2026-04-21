@@ -26,7 +26,16 @@ export default function SchedulePage() {
 					title='Void Presence Release Schedule'
 					subtitle='Track current and past releases, prereleases, and published builds.'
 				/>
-				<Suspense fallback={<ReleaseListSkeleton countSkeleton={5} />}>
+				<Suspense
+					fallback={
+						<ReleaseListSkeleton
+							countSkeleton={5}
+							backBtn={false}
+							analytics={true}
+							list={true}
+						/>
+					}
+				>
 					<ReleasesSection />
 				</Suspense>
 			</main>

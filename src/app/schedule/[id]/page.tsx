@@ -33,7 +33,7 @@ export default async function ReleaseDetailsPage(
 	props: ReleaseDetailsPageProps,
 ) {
 	const { id } = await props.params
-	const title = id ? `Void Presence – ${id}` : 'Void Presence – Release'
+	const title = id ? `Void Presence ${id}` : 'Void Presence Release'
 
 	return (
 		<Page>
@@ -43,7 +43,9 @@ export default async function ReleaseDetailsPage(
 					subtitle='Release details loaded from GitHub release and this tag package.json.'
 				/>
 				<Suspense
-					fallback={<ReleaseListSkeleton countSkeleton={1} backBtn={true} />}
+					fallback={
+						<ReleaseListSkeleton countSkeleton={1} backBtn={true} list={true} />
+					}
 				>
 					<ReleaseDetailsContent id={id} />
 				</Suspense>

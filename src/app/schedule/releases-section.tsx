@@ -67,8 +67,9 @@ export async function ReleasesSection() {
 				lines={[
 					'Latest GitHub release appears at the top.',
 					'Prereleases and nightly builds are ordered by release date.',
-					'Older stable versions are marked as End of Life .',
 				]}
+				linkHref='/schedule/downloads'
+				linkLabel='View downloads analytics'
 			/>
 
 			<InfoBox
@@ -140,7 +141,7 @@ export async function ReleasesSection() {
 						<h3 className={styles.preview_title}>Release list</h3>
 						<div className={layoutStyles.preview_badge}>
 							<span className={layoutStyles.preview_badge_text}>
-								{releases.length} total
+								{releases.length} total release
 							</span>
 						</div>
 					</div>
