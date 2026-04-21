@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import '../../styles/globals.css'
 import { NextAuthProvider } from './providers/session-provider'
+import { Analytics } from '@vercel/analytics/next'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -198,6 +199,7 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={`${geistSans.variable} ${geistMono.variable}`}>
 				<NextAuthProvider>{children}</NextAuthProvider>
+				<Analytics />
 			</body>
 		</html>
 	)
