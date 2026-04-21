@@ -46,6 +46,11 @@ const INTERESTING_DEPENDENCIES = [
 		label: 'Dotenv',
 		kind: 'tooling',
 	},
+	{
+		name: 'marked',
+		label: 'Marked',
+		kind: 'tooling',
+	},
 ] satisfies {
 	name: string
 	label: string
