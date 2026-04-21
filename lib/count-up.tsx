@@ -1,4 +1,4 @@
-import { useCountUp } from '../hook/useCountUp'
+import { useCountUp } from '../hook/use-count-up'
 
 interface CountUpProps {
 	to: number

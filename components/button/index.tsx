@@ -9,6 +9,7 @@ import styles from './button.module.css'
 export default function Button() {
 	const [downloadUrl, setDownloadUrl] = useState('')
 	const [loading, setLoading] = useState(true)
+	const [isRedirecting, setIsRedirecting] = useState(false)
 	const router = useRouter()
 
 	useEffect(() => {
@@ -37,31 +38,39 @@ export default function Button() {
 		fetchLatestRelease()
 	}, [])
 
-	const handleDownloadClick = () => {
-		incrementDownloadsStats()
+	const handleDownloadClick = async (e: React.MouseEvent) => {
+		if (!downloadUrl || isRedirecting) return
 
-		setTimeout(() => {
+		e.preventDefault()
+		setIsRedirecting(true)
+
+		try {
+			await incrementDownloadsStats()
+		} catch (error) {
+			console.error(error)
+		} finally {
+			const link = document.createElement('a')
+			link.href = downloadUrl
+			link.style.display = 'none'
+			document.body.appendChild(link)
+			link.click()
+			document.body.removeChild(link)
+
 			router.push('/docs')
-		}, 1)
+		}
 	}
 
 	return (
 		<div className={`${styles.btn_container} ${styles.btn_width}`}>
-			<a
-				href={downloadUrl}
-				rel='noreferrer'
+			<button
+				className={`${styles.btn} ${styles.btn_primary} ${loading || isRedirecting ? styles.disabled : ''}`}
+				id='hero-download-button'
+				disabled={loading || !downloadUrl || isRedirecting}
 				onClick={handleDownloadClick}
-				className={loading ? styles.disabled : ''}
 			>
-				<button
-					className={`${styles.btn} ${styles.btn_primary}`}
-					id='hero-download-button'
-					disabled={loading || !downloadUrl}
-				>
-					<Download size={18} color='#000000' />
-					<span>{loading ? 'Install Now' : 'Install Now'}</span>
-				</button>
-			</a>
+				<Download size={18} color='#000000' />
+				<span>{loading || isRedirecting ? 'Install Now' : 'Install Now'}</span>
+			</button>
 
 			<a href='/configs'>
 				<button
