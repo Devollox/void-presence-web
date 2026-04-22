@@ -1,10 +1,9 @@
-# Void Presence Web
+<img width="3844" height="793" alt="484064966-2c662772-bca231-4de4-988f-5304d7dfd87d" src="https://github.com/user-attachments/assets/eea692df-b300-45de-8acb-03ab75cfdf3c" />
+
+## 
 
 Void Presence Web is the web interface for **Void Presence** – a service for browsing, sharing, and using community-made Discord Rich Presence configs.
 
-Live site: https://www.voidpresence.site/
-
----
 
 ## Features
 
@@ -14,8 +13,6 @@ Live site: https://www.voidpresence.site/
 - Copy JSON to clipboard with a single click.
 - Responsive UI for both desktop and mobile.
 
----
-
 ## Tech Stack
 
 - **Next.js** (App Router)
@@ -23,9 +20,10 @@ Live site: https://www.voidpresence.site/
 - **Firebase** (config storage)
 - **CSS / SCSS** for custom styling
 
----
+## 
+<img width="3844" height="302" alt="Security   data" src="https://github.com/user-attachments/assets/f8ce7096-9d0a-4cd0-9ab5-e52b1e39204b" />
 
-## Security & data
+## 
 
 Void Presence uploads only **Rich Presence configuration data** when you use cloud features or share configs on the website.
 
@@ -43,9 +41,11 @@ What is **not** stored:
 
 Configs are used only to render Rich Presence and to let you share presets between machines or with other users through the Void Presence website.
 
----
 
-## Author
+##
+<img width="3844" height="302" alt="Author" src="https://github.com/user-attachments/assets/40ce01ee-a7e0-439e-b376-ad1974fbb5bf" />
+
+## 
 
 Made with ❤️ by [Devollox](https://github.com/Devollox)
 
