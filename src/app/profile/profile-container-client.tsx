@@ -28,7 +28,7 @@ export function ProfileContainerClient({
 				setConfigs(next)
 			},
 			undefined,
-			userId
+			userId,
 		)
 
 		return () => {
@@ -38,12 +38,13 @@ export function ProfileContainerClient({
 
 	const lastConfig = useMemo(
 		() => (configs.length ? configs[configs.length - 1] : null),
-		[configs]
+		[configs],
 	)
 
 	return (
 		<>
 			<ProfileDetailsClient
+				authorID={user.id}
 				user={user}
 				session={session}
 				lastConfig={lastConfig}

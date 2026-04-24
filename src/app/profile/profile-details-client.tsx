@@ -9,6 +9,7 @@ import styles from './profile-details.module.scss'
 
 type Props = {
 	user: any
+	authorID: number | string
 	session: Session
 	lastConfig: Config | null
 }
@@ -17,7 +18,7 @@ function getNextTick(prev: number) {
 	return prev + 1
 }
 
-export function ProfileDetailsClient({ user, lastConfig }: Props) {
+export function ProfileDetailsClient({ user, lastConfig, authorID }: Props) {
 	const [copied, setCopied] = useState(false)
 	const [previewTick, setPreviewTick] = useState(0)
 
@@ -139,6 +140,17 @@ export function ProfileDetailsClient({ user, lastConfig }: Props) {
 										<span>View all configs</span>
 										<span className={styles.action_btn_hint}>
 											community list
+										</span>
+									</a>
+									<a
+										href={`voidpresence://auth?authorId=${authorID}`}
+										className={styles.action_btn_primary}
+										target='_blank'
+										rel='noreferrer'
+									>
+										<span>Use this author ID in app</span>
+										<span className={styles.action_btn_hint}>
+											open app and connect profile
 										</span>
 									</a>
 									<button
