@@ -145,7 +145,6 @@ export function ProfileDetailsClient({ user, lastConfig, authorID }: Props) {
 									<a
 										href={`voidpresence://auth?authorId=${authorID}`}
 										className={styles.action_btn_primary}
-										target='_blank'
 										rel='noreferrer'
 									>
 										<span>Use this author ID in app</span>
