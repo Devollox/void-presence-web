@@ -31,8 +31,14 @@ export default function ReleasesDownloadsChart({
 
 	return (
 		<>
-			<div className={layoutStyles.preview_card}>
-				<div className={layoutStyles.preview_header}>
+			<div
+				className={layoutStyles.preview_card}
+				style={{ padding: '20px 20px 20px 0' }}
+			>
+				<div
+					className={layoutStyles.preview_header}
+					style={{ padding: '0 0 0 20px' }}
+				>
 					<h3 className={styles.preview_title}>Release downloads</h3>
 					<div className={layoutStyles.preview_badge}>
 						<span className={layoutStyles.preview_badge_text}>
