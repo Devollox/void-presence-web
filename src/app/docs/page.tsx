@@ -58,6 +58,17 @@ export default function DocsPage() {
 				lines={[
 					'Download the latest Void Presence build on the download page and follow this guide to configure it.',
 				]}
+				linkHref='/download'
+				linkLabel='Go to download page'
+			/>
+			<InfoBox
+				variant='secondary'
+				title='Where are my configs?'
+				lines={[
+					'You can find all your saved configurations right here in your profile.',
+				]}
+				linkHref='/profile'
+				linkLabel='View my configs'
 			/>
 			<InfoBox
 				variant='muted'

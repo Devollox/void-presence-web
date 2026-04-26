@@ -50,6 +50,7 @@ export default function ReleasesDownloadsChart({
 								stroke='rgba(148, 163, 184, 0.18)'
 								strokeDasharray='3 3'
 								vertical={false}
+								horizontal={false}
 							/>
 							<XAxis
 								dataKey='tag'
