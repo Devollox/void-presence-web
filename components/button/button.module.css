@@ -78,6 +78,8 @@
 	.btn_width {
 		button {
 			width: 100%;
+			min-width: 256px;
+			max-width: 440px;
 		}
 
 		> a {
