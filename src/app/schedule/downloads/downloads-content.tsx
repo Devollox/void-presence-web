@@ -7,7 +7,7 @@ import ReleasesDownloadsChart from './releases-downloads-chart'
 
 export async function DownloadsContent() {
 	const { items, error } = await getReleaseDownloads()
-
+	
 	const chartData = items
 		.map(r => ({
 			tag: r.tag,

@@ -17,7 +17,7 @@ const firebaseConfig = {
 	messagingSenderId: process.env
 		.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID as string,
 	appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID as string,
-	measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+	measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID as string,
 }
 
 export const app = initializeApp(firebaseConfig)
@@ -54,7 +54,7 @@ export interface Config {
 export function onConfigsChange(
 	callback: (configs: Config[]) => void,
 	refPath?: string,
-	authorId?: string
+	authorId?: string,
 ) {
 	const path = refPath || 'configs'
 	const configsRef = ref(db, path)
@@ -87,8 +87,8 @@ export function onConfigsChange(
 						cfg.authorId !== null &&
 						cfg.authorId !== undefined &&
 						cfg.authorId !== '' &&
-						String(cfg.authorId) === String(authorId)
-			  )
+						String(cfg.authorId) === String(authorId),
+				)
 			: allConfigs
 
 		callback(filtered)
@@ -161,7 +161,7 @@ export function onStatsChange(callback: (stats: Stats) => void) {
 
 export function onConfigByIdChange(
 	id: string,
-	callback: (config: Config | null) => void
+	callback: (config: Config | null) => void,
 ) {
 	const configRef = ref(db, `configs/${id}`)
 

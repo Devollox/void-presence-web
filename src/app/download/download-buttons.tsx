@@ -44,6 +44,7 @@ export default function DownloadButtons({ assets }: Props) {
 
 		const withoutPlatformOrSetup = base
 			.replace(/-win32-x64-[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$/i, '')
+			.replace(/.Portable.[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$/i, '')
 			.replace(/\.Setup\.[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$/i, '')
 
 		const cleanedBase = withoutPlatformOrSetup.replace(

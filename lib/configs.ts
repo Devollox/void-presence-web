@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-
 import { cache } from 'react'
 
 export interface ConfigData {
